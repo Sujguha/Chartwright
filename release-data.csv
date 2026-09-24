@@ -1,0 +1,181 @@
+Release ID,Release date,Tribe,Environment,Type,Status,Change requests,Defects found,Lead time (days)
+REL-1099,2025-10-01,Analytics,Production,Minor,Deployed,3,0,19
+REL-1015,2025-10-04,Analytics,QA,Minor,Deployed,4,2,12
+REL-1097,2025-10-06,Logistics,Production,Minor,Deployed,4,3,17
+REL-1027,2025-10-08,Procurement,QA,Hotfix,Deployed,11,2,12
+REL-1160,2025-10-08,Payments,Production,Minor,Rolled back,5,2,12
+REL-1169,2025-10-11,Procurement,Production,Minor,Deployed,9,3,18
+REL-1092,2025-10-16,Payments,Production,Major,Rolled back,25,6,23
+REL-1061,2025-10-17,Finance,Production,Minor,Deployed,10,0,16
+REL-1073,2025-10-21,Payments,Production,Minor,Deployed,10,1,8
+REL-1141,2025-10-24,Finance,Production,Hotfix,Deployed,8,3,4
+REL-1142,2025-10-28,Logistics,QA,Hotfix,Delayed,11,2,8
+REL-1109,2025-11-05,Logistics,Production,Minor,Deployed,10,1,16
+REL-1161,2025-11-05,Finance,Production,Minor,Deployed,6,0,20
+REL-1176,2025-11-12,Procurement,Pre-production,Minor,Deployed,5,1,14
+REL-1028,2025-11-22,Payments,Production,Major,Delayed,15,7,34
+REL-1022,2025-11-26,Analytics,QA,Minor,Deployed,7,1,14
+REL-1117,2025-12-01,Finance,QA,Major,Delayed,16,9,39
+REL-1170,2025-12-03,HR,QA,Minor,Deployed,10,2,8
+REL-1060,2025-12-06,Analytics,Production,Major,Deployed,21,11,23
+REL-1016,2025-12-07,Procurement,Production,Hotfix,Deployed,5,1,1
+REL-1154,2025-12-07,Procurement,Production,Hotfix,Deployed,7,1,10
+REL-1132,2025-12-11,HR,Production,Hotfix,Deployed,12,4,12
+REL-1148,2025-12-12,HR,Pre-production,Minor,Deployed,5,3,14
+REL-1036,2025-12-14,Logistics,Pre-production,Minor,Deployed,11,4,15
+REL-1056,2025-12-14,Finance,Production,Minor,Deployed,5,2,6
+REL-1051,2025-12-15,Payments,Pre-production,Minor,Deployed,8,2,8
+REL-1102,2025-12-15,Payments,QA,Hotfix,Deployed,5,4,15
+REL-1179,2025-12-16,Payments,Production,Major,Deployed,6,2,13
+REL-1017,2025-12-20,Analytics,Production,Minor,Deployed,4,2,9
+REL-1136,2025-12-20,Payments,Production,Minor,Deployed,4,4,20
+REL-1105,2025-12-21,Analytics,Production,Minor,Delayed,4,2,14
+REL-1101,2025-12-22,Payments,Production,Minor,Deployed,11,4,13
+REL-1178,2025-12-22,Analytics,QA,Hotfix,Deployed,4,1,6
+REL-1153,2025-12-26,Analytics,QA,Minor,Deployed,10,3,8
+REL-1150,2025-12-27,Logistics,QA,Major,Deployed,3,5,38
+REL-1005,2025-12-29,Logistics,Pre-production,Minor,Deployed,11,2,8
+REL-1149,2026-01-01,Finance,Production,Minor,Deployed,3,2,10
+REL-1094,2026-01-05,Finance,Production,Hotfix,Deployed,11,0,12
+REL-1003,2026-01-06,Procurement,Pre-production,Hotfix,Delayed,2,1,14
+REL-1130,2026-01-08,Finance,Production,Major,Deployed,11,7,34
+REL-1046,2026-01-10,HR,Production,Major,Deployed,20,1,36
+REL-1006,2026-01-12,HR,Pre-production,Major,Rolled back,23,11,9
+REL-1113,2026-01-18,Procurement,Pre-production,Minor,Deployed,7,1,14
+REL-1090,2026-01-27,HR,QA,Major,Deployed,28,3,29
+REL-1053,2026-01-28,Logistics,QA,Minor,Deployed,7,1,15
+REL-1127,2026-01-29,Payments,Pre-production,Major,Deployed,25,3,6
+REL-1143,2026-01-30,Logistics,Pre-production,Minor,Deployed,7,2,20
+REL-1010,2026-01-31,Procurement,Production,Minor,Deployed,6,3,15
+REL-1137,2026-02-03,Procurement,Production,Major,Deployed,12,2,28
+REL-1110,2026-02-07,Analytics,Pre-production,Minor,Rolled back,7,1,9
+REL-1111,2026-02-12,Payments,Pre-production,Major,Deployed,7,3,7
+REL-1135,2026-02-14,Finance,Production,Minor,Rolled back,9,1,15
+REL-1049,2026-02-15,HR,Production,Major,Deployed,4,9,22
+REL-1087,2026-02-15,HR,Production,Major,Deployed,3,10,9
+REL-1093,2026-02-16,Finance,Production,Minor,Deployed,9,1,14
+REL-1083,2026-02-17,Payments,Pre-production,Major,Rolled back,10,1,23
+REL-1163,2026-02-17,Procurement,Production,Major,Deployed,7,5,43
+REL-1039,2026-02-19,Analytics,Production,Minor,Deployed,5,2,18
+REL-1116,2026-02-19,Payments,Pre-production,Minor,Deployed,2,1,16
+REL-1125,2026-02-19,HR,Production,Minor,Delayed,8,1,12
+REL-1018,2026-02-22,Procurement,Production,Minor,Deployed,5,4,10
+REL-1164,2026-02-25,Analytics,Pre-production,Hotfix,Delayed,12,2,7
+REL-1139,2026-02-28,Payments,Pre-production,Major,Deployed,27,4,41
+REL-1165,2026-02-28,Procurement,Production,Hotfix,Deployed,11,4,10
+REL-1030,2026-03-05,Payments,Pre-production,Major,Deployed,10,6,27
+REL-1166,2026-03-06,Logistics,Production,Major,Deployed,22,11,20
+REL-1032,2026-03-07,Procurement,Production,Minor,Delayed,6,1,16
+REL-1147,2026-03-08,HR,Production,Minor,Deployed,8,1,19
+REL-1146,2026-03-13,Procurement,Production,Hotfix,Deployed,2,1,4
+REL-1096,2026-03-14,Finance,Production,Minor,Rolled back,6,2,11
+REL-1171,2026-03-14,Analytics,Pre-production,Major,Deployed,31,3,12
+REL-1082,2026-03-16,HR,Production,Minor,Deployed,4,0,16
+REL-1042,2026-03-22,Analytics,Pre-production,Hotfix,Deployed,6,2,10
+REL-1126,2026-03-23,Logistics,Pre-production,Minor,Deployed,10,2,7
+REL-1063,2026-03-27,HR,QA,Minor,Deployed,9,4,20
+REL-1004,2026-03-28,Finance,Production,Minor,Deployed,3,2,14
+REL-1065,2026-03-29,Procurement,Production,Minor,Deployed,10,2,19
+REL-1091,2026-03-29,HR,Production,Minor,Deployed,12,1,11
+REL-1019,2026-03-30,HR,Production,Minor,Deployed,5,1,10
+REL-1128,2026-04-01,Finance,Production,Hotfix,Deployed,8,2,9
+REL-1054,2026-04-04,Payments,Production,Major,Deployed,32,3,24
+REL-1055,2026-04-04,Procurement,Production,Minor,Deployed,12,3,10
+REL-1059,2026-04-06,HR,Production,Minor,Deployed,9,0,15
+REL-1009,2026-04-08,Analytics,Pre-production,Minor,Delayed,11,2,14
+REL-1034,2026-04-11,Payments,Production,Major,Rolled back,10,8,32
+REL-1173,2026-04-13,Finance,Production,Major,Deployed,10,4,9
+REL-1088,2026-04-14,Analytics,Pre-production,Minor,Deployed,9,2,19
+REL-1144,2026-04-14,HR,Pre-production,Hotfix,Deployed,3,1,9
+REL-1038,2026-04-18,Procurement,Production,Minor,Deployed,8,3,18
+REL-1159,2026-04-21,HR,Pre-production,Minor,Deployed,5,1,6
+REL-1106,2026-04-22,Finance,Production,Minor,Deployed,9,0,14
+REL-1035,2026-04-23,Finance,Production,Minor,Rolled back,5,3,13
+REL-1152,2026-04-23,HR,Production,Minor,Deployed,10,2,11
+REL-1033,2026-04-24,Procurement,Pre-production,Hotfix,Deployed,10,2,13
+REL-1037,2026-04-26,Finance,QA,Minor,Deployed,7,3,13
+REL-1123,2026-04-26,Payments,QA,Minor,Delayed,5,1,20
+REL-1095,2026-04-28,Analytics,Production,Hotfix,Deployed,10,1,16
+REL-1021,2026-04-29,Finance,Pre-production,Major,Deployed,29,10,23
+REL-1162,2026-04-29,Payments,Production,Hotfix,Delayed,4,3,12
+REL-1075,2026-05-03,Logistics,Production,Minor,Deployed,9,3,9
+REL-1062,2026-05-06,Finance,Production,Minor,Deployed,11,0,13
+REL-1000,2026-05-08,Procurement,Production,Minor,Deployed,7,1,14
+REL-1157,2026-05-09,Finance,Pre-production,Hotfix,Deployed,5,2,13
+REL-1008,2026-05-12,Procurement,QA,Minor,Rolled back,5,3,8
+REL-1085,2026-05-13,Payments,Production,Minor,Deployed,5,4,18
+REL-1040,2026-05-14,Payments,Production,Minor,Deployed,12,2,9
+REL-1067,2026-05-15,Analytics,Production,Major,Deployed,26,9,6
+REL-1045,2026-05-17,Finance,Production,Minor,Deployed,8,1,12
+REL-1120,2026-05-17,Analytics,Production,Minor,Deployed,12,3,6
+REL-1014,2026-05-18,Procurement,Production,Minor,Deployed,3,3,11
+REL-1041,2026-05-19,Procurement,Production,Minor,Deployed,10,4,13
+REL-1069,2026-05-19,HR,QA,Major,Deployed,7,7,8
+REL-1070,2026-05-24,HR,QA,Minor,Deployed,6,2,8
+REL-1115,2026-05-24,Analytics,QA,Minor,Deployed,11,2,13
+REL-1031,2026-05-25,Payments,Production,Minor,Delayed,11,0,18
+REL-1107,2026-05-26,Analytics,Production,Minor,Deployed,10,1,12
+REL-1108,2026-05-27,Analytics,QA,Minor,Delayed,6,4,19
+REL-1066,2026-05-28,Finance,Pre-production,Major,Delayed,4,2,15
+REL-1104,2026-05-29,Analytics,Pre-production,Minor,Rolled back,8,2,17
+REL-1124,2026-05-30,Logistics,Production,Major,Deployed,29,12,31
+REL-1151,2026-05-30,HR,Production,Minor,Delayed,4,3,8
+REL-1175,2026-05-30,Procurement,Pre-production,Minor,Deployed,6,0,9
+REL-1020,2026-06-02,Procurement,Production,Major,Delayed,6,4,7
+REL-1100,2026-06-03,HR,Pre-production,Minor,Delayed,10,0,18
+REL-1026,2026-06-06,HR,Production,Major,Deployed,27,2,20
+REL-1068,2026-06-07,HR,QA,Minor,Deployed,7,2,18
+REL-1002,2026-06-08,Finance,QA,Minor,Rolled back,3,2,5
+REL-1047,2026-06-09,Payments,Production,Minor,Delayed,5,1,8
+REL-1077,2026-06-11,HR,QA,Major,Deployed,9,2,18
+REL-1084,2026-06-13,Logistics,Production,Hotfix,Deployed,8,1,6
+REL-1013,2026-06-16,Finance,Production,Minor,Deployed,9,1,8
+REL-1043,2026-06-19,Logistics,Production,Minor,Rolled back,3,2,17
+REL-1172,2026-06-21,Payments,Pre-production,Minor,Delayed,3,4,19
+REL-1131,2026-06-25,Analytics,QA,Minor,Deployed,9,3,10
+REL-1158,2026-06-25,Logistics,Production,Minor,Deployed,7,1,17
+REL-1024,2026-06-29,Logistics,Pre-production,Hotfix,Rolled back,9,3,16
+REL-1074,2026-06-29,HR,Pre-production,Minor,Rolled back,11,2,11
+REL-1177,2026-07-01,Analytics,Production,Major,Deployed,12,10,27
+REL-1134,2026-07-05,Analytics,QA,Minor,Deployed,11,2,19
+REL-1103,2026-07-08,Logistics,Production,Hotfix,Deployed,8,2,10
+REL-1072,2026-07-09,Payments,QA,Hotfix,Rolled back,2,0,9
+REL-1012,2026-07-14,Finance,QA,Minor,Delayed,3,4,8
+REL-1029,2026-07-17,HR,Pre-production,Minor,Delayed,6,2,12
+REL-1112,2026-07-19,HR,Production,Hotfix,Deployed,5,3,10
+REL-1023,2026-07-22,HR,QA,Major,Deployed,17,10,39
+REL-1118,2026-07-23,Finance,Production,Major,Deployed,4,9,35
+REL-1025,2026-07-25,Analytics,Pre-production,Minor,Deployed,6,2,18
+REL-1044,2026-08-02,Payments,Production,Minor,Delayed,9,1,18
+REL-1129,2026-08-03,Payments,QA,Minor,Delayed,10,2,6
+REL-1057,2026-08-11,Logistics,Pre-production,Major,Deployed,3,8,8
+REL-1001,2026-08-12,Analytics,Pre-production,Minor,Deployed,5,1,13
+REL-1122,2026-08-13,HR,Production,Minor,Deployed,5,4,19
+REL-1050,2026-08-14,Analytics,Production,Minor,Deployed,3,2,15
+REL-1155,2026-08-15,Analytics,QA,Major,Deployed,24,0,26
+REL-1121,2026-08-16,Logistics,Production,Minor,Deployed,10,2,13
+REL-1089,2026-08-19,Analytics,Production,Hotfix,Deployed,9,2,8
+REL-1119,2026-08-22,HR,Pre-production,Minor,Deployed,5,4,17
+REL-1138,2026-08-24,Analytics,Pre-production,Minor,Deployed,9,1,9
+REL-1058,2026-08-25,Procurement,Production,Minor,Deployed,8,2,12
+REL-1081,2026-08-25,Analytics,Pre-production,Minor,Deployed,11,2,14
+REL-1156,2026-09-01,Payments,Production,Major,Delayed,10,10,39
+REL-1052,2026-09-02,Payments,QA,Minor,Deployed,8,1,6
+REL-1076,2026-09-03,HR,Production,Minor,Deployed,9,4,18
+REL-1167,2026-09-08,Finance,Production,Major,Deployed,14,4,25
+REL-1007,2026-09-10,Payments,Production,Minor,Deployed,2,1,12
+REL-1080,2026-09-10,HR,Production,Minor,Deployed,6,1,14
+REL-1140,2026-09-11,Logistics,Pre-production,Minor,Delayed,11,2,17
+REL-1086,2026-09-13,HR,Pre-production,Minor,Delayed,10,4,11
+REL-1079,2026-09-17,Logistics,Pre-production,Major,Deployed,14,3,17
+REL-1064,2026-09-19,Procurement,Production,Minor,Deployed,3,4,6
+REL-1168,2026-09-21,Payments,Production,Minor,Deployed,3,3,13
+REL-1071,2026-09-22,Procurement,Pre-production,Major,Deployed,18,8,41
+REL-1098,2026-09-22,Logistics,Pre-production,Minor,Deployed,7,3,8
+REL-1133,2026-09-22,Payments,Production,Major,Deployed,17,8,45
+REL-1145,2026-09-22,Logistics,Production,Major,Deployed,14,4,26
+REL-1078,2026-09-24,Payments,Pre-production,Minor,Deployed,8,4,9
+REL-1114,2026-09-24,Finance,Production,Major,Deployed,22,4,13
+REL-1174,2026-09-26,Payments,Production,Hotfix,Deployed,11,2,9
+REL-1048,2026-09-27,Finance,Pre-production,Minor,Deployed,2,3,17
+REL-1011,2026-09-28,HR,Production,Minor,Deployed,3,3,10
