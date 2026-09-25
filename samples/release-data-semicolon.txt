@@ -1,0 +1,181 @@
+Release ID;Release date;Tribe;Environment;Type;Status;Change requests;Defects found;Lead time (days);Verantwortlich
+REL-1099;01.10.2025;Analytics;Production;Minor;Deployed;3;0;19;Anja Größ
+REL-1015;04.10.2025;Analytics;QA;Minor;Deployed;4;2;12;Jürgen Müller
+REL-1097;06.10.2025;Logistics;Production;Minor;Deployed;4;3;17;Anja Größ
+REL-1027;08.10.2025;Procurement;QA;Hotfix;Deployed;11;2;12;Jürgen Müller
+REL-1160;08.10.2025;Payments;Production;Minor;Rolled back;5;2;12;Anja Größ
+REL-1169;11.10.2025;Procurement;Production;Minor;Deployed;9;3;18;Jürgen Müller
+REL-1092;16.10.2025;Payments;Production;Major;Rolled back;25;6;23;Anja Größ
+REL-1061;17.10.2025;Finance;Production;Minor;Deployed;10;0;16;Jürgen Müller
+REL-1073;21.10.2025;Payments;Production;Minor;Deployed;10;1;8;Anja Größ
+REL-1141;24.10.2025;Finance;Production;Hotfix;Deployed;8;3;4;Jürgen Müller
+REL-1142;28.10.2025;Logistics;QA;Hotfix;Delayed;11;2;8;Anja Größ
+REL-1109;05.11.2025;Logistics;Production;Minor;Deployed;10;1;16;Jürgen Müller
+REL-1161;05.11.2025;Finance;Production;Minor;Deployed;6;0;20;Anja Größ
+REL-1176;12.11.2025;Procurement;Pre-production;Minor;Deployed;5;1;14;Jürgen Müller
+REL-1028;22.11.2025;Payments;Production;Major;Delayed;15;7;34;Anja Größ
+REL-1022;26.11.2025;Analytics;QA;Minor;Deployed;7;1;14;Jürgen Müller
+REL-1117;01.12.2025;Finance;QA;Major;Delayed;16;9;39;Anja Größ
+REL-1170;03.12.2025;HR;QA;Minor;Deployed;10;2;8;Jürgen Müller
+REL-1060;06.12.2025;Analytics;Production;Major;Deployed;21;11;23;Anja Größ
+REL-1016;07.12.2025;Procurement;Production;Hotfix;Deployed;5;1;1;Jürgen Müller
+REL-1154;07.12.2025;Procurement;Production;Hotfix;Deployed;7;1;10;Anja Größ
+REL-1132;11.12.2025;HR;Production;Hotfix;Deployed;12;4;12;Jürgen Müller
+REL-1148;12.12.2025;HR;Pre-production;Minor;Deployed;5;3;14;Anja Größ
+REL-1036;14.12.2025;Logistics;Pre-production;Minor;Deployed;11;4;15;Jürgen Müller
+REL-1056;14.12.2025;Finance;Production;Minor;Deployed;5;2;6;Anja Größ
+REL-1051;15.12.2025;Payments;Pre-production;Minor;Deployed;8;2;8;Jürgen Müller
+REL-1102;15.12.2025;Payments;QA;Hotfix;Deployed;5;4;15;Anja Größ
+REL-1179;16.12.2025;Payments;Production;Major;Deployed;6;2;13;Jürgen Müller
+REL-1017;20.12.2025;Analytics;Production;Minor;Deployed;4;2;9;Anja Größ
+REL-1136;20.12.2025;Payments;Production;Minor;Deployed;4;4;20;Jürgen Müller
+REL-1105;21.12.2025;Analytics;Production;Minor;Delayed;4;2;14;Anja Größ
+REL-1101;22.12.2025;Payments;Production;Minor;Deployed;11;4;13;Jürgen Müller
+REL-1178;22.12.2025;Analytics;QA;Hotfix;Deployed;4;1;6;Anja Größ
+REL-1153;26.12.2025;Analytics;QA;Minor;Deployed;10;3;8;Jürgen Müller
+REL-1150;27.12.2025;Logistics;QA;Major;Deployed;3;5;38;Anja Größ
+REL-1005;29.12.2025;Logistics;Pre-production;Minor;Deployed;11;2;8;Jürgen Müller
+REL-1149;01.01.2026;Finance;Production;Minor;Deployed;3;2;10;Anja Größ
+REL-1094;05.01.2026;Finance;Production;Hotfix;Deployed;11;0;12;Jürgen Müller
+REL-1003;06.01.2026;Procurement;Pre-production;Hotfix;Delayed;2;1;14;Anja Größ
+REL-1130;08.01.2026;Finance;Production;Major;Deployed;11;7;34;Jürgen Müller
+REL-1046;10.01.2026;HR;Production;Major;Deployed;20;1;36;Anja Größ
+REL-1006;12.01.2026;HR;Pre-production;Major;Rolled back;23;11;9;Jürgen Müller
+REL-1113;18.01.2026;Procurement;Pre-production;Minor;Deployed;7;1;14;Anja Größ
+REL-1090;27.01.2026;HR;QA;Major;Deployed;28;3;29;Jürgen Müller
+REL-1053;28.01.2026;Logistics;QA;Minor;Deployed;7;1;15;Anja Größ
+REL-1127;29.01.2026;Payments;Pre-production;Major;Deployed;25;3;6;Jürgen Müller
+REL-1143;30.01.2026;Logistics;Pre-production;Minor;Deployed;7;2;20;Anja Größ
+REL-1010;31.01.2026;Procurement;Production;Minor;Deployed;6;3;15;Jürgen Müller
+REL-1137;03.02.2026;Procurement;Production;Major;Deployed;12;2;28;Anja Größ
+REL-1110;07.02.2026;Analytics;Pre-production;Minor;Rolled back;7;1;9;Jürgen Müller
+REL-1111;12.02.2026;Payments;Pre-production;Major;Deployed;7;3;7;Anja Größ
+REL-1135;14.02.2026;Finance;Production;Minor;Rolled back;9;1;15;Jürgen Müller
+REL-1049;15.02.2026;HR;Production;Major;Deployed;4;9;22;Anja Größ
+REL-1087;15.02.2026;HR;Production;Major;Deployed;3;10;9;Jürgen Müller
+REL-1093;16.02.2026;Finance;Production;Minor;Deployed;9;1;14;Anja Größ
+REL-1083;17.02.2026;Payments;Pre-production;Major;Rolled back;10;1;23;Jürgen Müller
+REL-1163;17.02.2026;Procurement;Production;Major;Deployed;7;5;43;Anja Größ
+REL-1039;19.02.2026;Analytics;Production;Minor;Deployed;5;2;18;Jürgen Müller
+REL-1116;19.02.2026;Payments;Pre-production;Minor;Deployed;2;1;16;Anja Größ
+REL-1125;19.02.2026;HR;Production;Minor;Delayed;8;1;12;Jürgen Müller
+REL-1018;22.02.2026;Procurement;Production;Minor;Deployed;5;4;10;Anja Größ
+REL-1164;25.02.2026;Analytics;Pre-production;Hotfix;Delayed;12;2;7;Jürgen Müller
+REL-1139;28.02.2026;Payments;Pre-production;Major;Deployed;27;4;41;Anja Größ
+REL-1165;28.02.2026;Procurement;Production;Hotfix;Deployed;11;4;10;Jürgen Müller
+REL-1030;05.03.2026;Payments;Pre-production;Major;Deployed;10;6;27;Anja Größ
+REL-1166;06.03.2026;Logistics;Production;Major;Deployed;22;11;20;Jürgen Müller
+REL-1032;07.03.2026;Procurement;Production;Minor;Delayed;6;1;16;Anja Größ
+REL-1147;08.03.2026;HR;Production;Minor;Deployed;8;1;19;Jürgen Müller
+REL-1146;13.03.2026;Procurement;Production;Hotfix;Deployed;2;1;4;Anja Größ
+REL-1096;14.03.2026;Finance;Production;Minor;Rolled back;6;2;11;Jürgen Müller
+REL-1171;14.03.2026;Analytics;Pre-production;Major;Deployed;31;3;12;Anja Größ
+REL-1082;16.03.2026;HR;Production;Minor;Deployed;4;0;16;Jürgen Müller
+REL-1042;22.03.2026;Analytics;Pre-production;Hotfix;Deployed;6;2;10;Anja Größ
+REL-1126;23.03.2026;Logistics;Pre-production;Minor;Deployed;10;2;7;Jürgen Müller
+REL-1063;27.03.2026;HR;QA;Minor;Deployed;9;4;20;Anja Größ
+REL-1004;28.03.2026;Finance;Production;Minor;Deployed;3;2;14;Jürgen Müller
+REL-1065;29.03.2026;Procurement;Production;Minor;Deployed;10;2;19;Anja Größ
+REL-1091;29.03.2026;HR;Production;Minor;Deployed;12;1;11;Jürgen Müller
+REL-1019;30.03.2026;HR;Production;Minor;Deployed;5;1;10;Anja Größ
+REL-1128;01.04.2026;Finance;Production;Hotfix;Deployed;8;2;9;Jürgen Müller
+REL-1054;04.04.2026;Payments;Production;Major;Deployed;32;3;24;Anja Größ
+REL-1055;04.04.2026;Procurement;Production;Minor;Deployed;12;3;10;Jürgen Müller
+REL-1059;06.04.2026;HR;Production;Minor;Deployed;9;0;15;Anja Größ
+REL-1009;08.04.2026;Analytics;Pre-production;Minor;Delayed;11;2;14;Jürgen Müller
+REL-1034;11.04.2026;Payments;Production;Major;Rolled back;10;8;32;Anja Größ
+REL-1173;13.04.2026;Finance;Production;Major;Deployed;10;4;9;Jürgen Müller
+REL-1088;14.04.2026;Analytics;Pre-production;Minor;Deployed;9;2;19;Anja Größ
+REL-1144;14.04.2026;HR;Pre-production;Hotfix;Deployed;3;1;9;Jürgen Müller
+REL-1038;18.04.2026;Procurement;Production;Minor;Deployed;8;3;18;Anja Größ
+REL-1159;21.04.2026;HR;Pre-production;Minor;Deployed;5;1;6;Jürgen Müller
+REL-1106;22.04.2026;Finance;Production;Minor;Deployed;9;0;14;Anja Größ
+REL-1035;23.04.2026;Finance;Production;Minor;Rolled back;5;3;13;Jürgen Müller
+REL-1152;23.04.2026;HR;Production;Minor;Deployed;10;2;11;Anja Größ
+REL-1033;24.04.2026;Procurement;Pre-production;Hotfix;Deployed;10;2;13;Jürgen Müller
+REL-1037;26.04.2026;Finance;QA;Minor;Deployed;7;3;13;Anja Größ
+REL-1123;26.04.2026;Payments;QA;Minor;Delayed;5;1;20;Jürgen Müller
+REL-1095;28.04.2026;Analytics;Production;Hotfix;Deployed;10;1;16;Anja Größ
+REL-1021;29.04.2026;Finance;Pre-production;Major;Deployed;29;10;23;Jürgen Müller
+REL-1162;29.04.2026;Payments;Production;Hotfix;Delayed;4;3;12;Anja Größ
+REL-1075;03.05.2026;Logistics;Production;Minor;Deployed;9;3;9;Jürgen Müller
+REL-1062;06.05.2026;Finance;Production;Minor;Deployed;11;0;13;Anja Größ
+REL-1000;08.05.2026;Procurement;Production;Minor;Deployed;7;1;14;Jürgen Müller
+REL-1157;09.05.2026;Finance;Pre-production;Hotfix;Deployed;5;2;13;Anja Größ
+REL-1008;12.05.2026;Procurement;QA;Minor;Rolled back;5;3;8;Jürgen Müller
+REL-1085;13.05.2026;Payments;Production;Minor;Deployed;5;4;18;Anja Größ
+REL-1040;14.05.2026;Payments;Production;Minor;Deployed;12;2;9;Jürgen Müller
+REL-1067;15.05.2026;Analytics;Production;Major;Deployed;26;9;6;Anja Größ
+REL-1045;17.05.2026;Finance;Production;Minor;Deployed;8;1;12;Jürgen Müller
+REL-1120;17.05.2026;Analytics;Production;Minor;Deployed;12;3;6;Anja Größ
+REL-1014;18.05.2026;Procurement;Production;Minor;Deployed;3;3;11;Jürgen Müller
+REL-1041;19.05.2026;Procurement;Production;Minor;Deployed;10;4;13;Anja Größ
+REL-1069;19.05.2026;HR;QA;Major;Deployed;7;7;8;Jürgen Müller
+REL-1070;24.05.2026;HR;QA;Minor;Deployed;6;2;8;Anja Größ
+REL-1115;24.05.2026;Analytics;QA;Minor;Deployed;11;2;13;Jürgen Müller
+REL-1031;25.05.2026;Payments;Production;Minor;Delayed;11;0;18;Anja Größ
+REL-1107;26.05.2026;Analytics;Production;Minor;Deployed;10;1;12;Jürgen Müller
+REL-1108;27.05.2026;Analytics;QA;Minor;Delayed;6;4;19;Anja Größ
+REL-1066;28.05.2026;Finance;Pre-production;Major;Delayed;4;2;15;Jürgen Müller
+REL-1104;29.05.2026;Analytics;Pre-production;Minor;Rolled back;8;2;17;Anja Größ
+REL-1124;30.05.2026;Logistics;Production;Major;Deployed;29;12;31;Jürgen Müller
+REL-1151;30.05.2026;HR;Production;Minor;Delayed;4;3;8;Anja Größ
+REL-1175;30.05.2026;Procurement;Pre-production;Minor;Deployed;6;0;9;Jürgen Müller
+REL-1020;02.06.2026;Procurement;Production;Major;Delayed;6;4;7;Anja Größ
+REL-1100;03.06.2026;HR;Pre-production;Minor;Delayed;10;0;18;Jürgen Müller
+REL-1026;06.06.2026;HR;Production;Major;Deployed;27;2;20;Anja Größ
+REL-1068;07.06.2026;HR;QA;Minor;Deployed;7;2;18;Jürgen Müller
+REL-1002;08.06.2026;Finance;QA;Minor;Rolled back;3;2;5;Anja Größ
+REL-1047;09.06.2026;Payments;Production;Minor;Delayed;5;1;8;Jürgen Müller
+REL-1077;11.06.2026;HR;QA;Major;Deployed;9;2;18;Anja Größ
+REL-1084;13.06.2026;Logistics;Production;Hotfix;Deployed;8;1;6;Jürgen Müller
+REL-1013;16.06.2026;Finance;Production;Minor;Deployed;9;1;8;Anja Größ
+REL-1043;19.06.2026;Logistics;Production;Minor;Rolled back;3;2;17;Jürgen Müller
+REL-1172;21.06.2026;Payments;Pre-production;Minor;Delayed;3;4;19;Anja Größ
+REL-1131;25.06.2026;Analytics;QA;Minor;Deployed;9;3;10;Jürgen Müller
+REL-1158;25.06.2026;Logistics;Production;Minor;Deployed;7;1;17;Anja Größ
+REL-1024;29.06.2026;Logistics;Pre-production;Hotfix;Rolled back;9;3;16;Jürgen Müller
+REL-1074;29.06.2026;HR;Pre-production;Minor;Rolled back;11;2;11;Anja Größ
+REL-1177;01.07.2026;Analytics;Production;Major;Deployed;12;10;27;Jürgen Müller
+REL-1134;05.07.2026;Analytics;QA;Minor;Deployed;11;2;19;Anja Größ
+REL-1103;08.07.2026;Logistics;Production;Hotfix;Deployed;8;2;10;Jürgen Müller
+REL-1072;09.07.2026;Payments;QA;Hotfix;Rolled back;2;0;9;Anja Größ
+REL-1012;14.07.2026;Finance;QA;Minor;Delayed;3;4;8;Jürgen Müller
+REL-1029;17.07.2026;HR;Pre-production;Minor;Delayed;6;2;12;Anja Größ
+REL-1112;19.07.2026;HR;Production;Hotfix;Deployed;5;3;10;Jürgen Müller
+REL-1023;22.07.2026;HR;QA;Major;Deployed;17;10;39;Anja Größ
+REL-1118;23.07.2026;Finance;Production;Major;Deployed;4;9;35;Jürgen Müller
+REL-1025;25.07.2026;Analytics;Pre-production;Minor;Deployed;6;2;18;Anja Größ
+REL-1044;02.08.2026;Payments;Production;Minor;Delayed;9;1;18;Jürgen Müller
+REL-1129;03.08.2026;Payments;QA;Minor;Delayed;10;2;6;Anja Größ
+REL-1057;11.08.2026;Logistics;Pre-production;Major;Deployed;3;8;8;Jürgen Müller
+REL-1001;12.08.2026;Analytics;Pre-production;Minor;Deployed;5;1;13;Anja Größ
+REL-1122;13.08.2026;HR;Production;Minor;Deployed;5;4;19;Jürgen Müller
+REL-1050;14.08.2026;Analytics;Production;Minor;Deployed;3;2;15;Anja Größ
+REL-1155;15.08.2026;Analytics;QA;Major;Deployed;24;0;26;Jürgen Müller
+REL-1121;16.08.2026;Logistics;Production;Minor;Deployed;10;2;13;Anja Größ
+REL-1089;19.08.2026;Analytics;Production;Hotfix;Deployed;9;2;8;Jürgen Müller
+REL-1119;22.08.2026;HR;Pre-production;Minor;Deployed;5;4;17;Anja Größ
+REL-1138;24.08.2026;Analytics;Pre-production;Minor;Deployed;9;1;9;Jürgen Müller
+REL-1058;25.08.2026;Procurement;Production;Minor;Deployed;8;2;12;Anja Größ
+REL-1081;25.08.2026;Analytics;Pre-production;Minor;Deployed;11;2;14;Jürgen Müller
+REL-1156;01.09.2026;Payments;Production;Major;Delayed;10;10;39;Anja Größ
+REL-1052;02.09.2026;Payments;QA;Minor;Deployed;8;1;6;Jürgen Müller
+REL-1076;03.09.2026;HR;Production;Minor;Deployed;9;4;18;Anja Größ
+REL-1167;08.09.2026;Finance;Production;Major;Deployed;14;4;25;Jürgen Müller
+REL-1007;10.09.2026;Payments;Production;Minor;Deployed;2;1;12;Anja Größ
+REL-1080;10.09.2026;HR;Production;Minor;Deployed;6;1;14;Jürgen Müller
+REL-1140;11.09.2026;Logistics;Pre-production;Minor;Delayed;11;2;17;Anja Größ
+REL-1086;13.09.2026;HR;Pre-production;Minor;Delayed;10;4;11;Jürgen Müller
+REL-1079;17.09.2026;Logistics;Pre-production;Major;Deployed;14;3;17;Anja Größ
+REL-1064;19.09.2026;Procurement;Production;Minor;Deployed;3;4;6;Jürgen Müller
+REL-1168;21.09.2026;Payments;Production;Minor;Deployed;3;3;13;Anja Größ
+REL-1071;22.09.2026;Procurement;Pre-production;Major;Deployed;18;8;41;Jürgen Müller
+REL-1098;22.09.2026;Logistics;Pre-production;Minor;Deployed;7;3;8;Anja Größ
+REL-1133;22.09.2026;Payments;Production;Major;Deployed;17;8;45;Jürgen Müller
+REL-1145;22.09.2026;Logistics;Production;Major;Deployed;14;4;26;Anja Größ
+REL-1078;24.09.2026;Payments;Pre-production;Minor;Deployed;8;4;9;Jürgen Müller
+REL-1114;24.09.2026;Finance;Production;Major;Deployed;22;4;13;Anja Größ
+REL-1174;26.09.2026;Payments;Production;Hotfix;Deployed;11;2;9;Jürgen Müller
+REL-1048;27.09.2026;Finance;Pre-production;Minor;Deployed;2;3;17;Anja Größ
+REL-1011;28.09.2026;HR;Production;Minor;Deployed;3;3;10;Jürgen Müller

@@ -3,6 +3,24 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.2.1] - 2026-09-25
+
+### Changed
+- A visible "Rename" button next to the dashboard name makes renaming easy to find.
+- Key-figure tiles show their ✎ pencil all the time, and clicking anywhere on a tile opens its editor.
+
+### Fixed
+- Typing straight after clicking the dashboard name no longer loses the first letters.
+
+## [1.2.0] - 2026-09-25
+
+### Added
+- Editable dashboard name: click the name in the top bar to rename it. The name is used in the browser tab, PDF and HTML reports, email subject and body, and file names of downloads. The source file name is shown underneath.
+- Editable key figures: hover a tile and click ✎ to change what it shows (a number column with Total, Average, Minimum or Maximum; a count of different values; a date range; or the number of rows), give it your own label, or remove it. "+ Add key figure" adds a tile (up to 6), and "Reset all to suggested" restores the defaults.
+
+### Fixed
+- Long date ranges in the key figures wrap onto two lines instead of being cut off.
+
 ## [1.1.0] - 2026-09-25
 
 ### Added

@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.1.0** · [Changelog](CHANGELOG.md)
+**Version 1.2.1** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -11,6 +11,7 @@ Everything runs in the browser. Your file is never uploaded to a server.
 ## Features
 
 - **Automatic dashboards**: key-figure tiles, a trend line over time, and breakdown charts chosen from your column types.
+- **Your own title and key figures**: rename the dashboard and choose what each key-figure tile shows.
 - **Filters**: narrow the whole dashboard by any category column.
 - **Chart builder**: bar, horizontal bar, line and doughnut charts, showing a count, total, average, minimum or maximum.
 - **Data table**: searchable and sortable.
