@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.0.0** · [Changelog](CHANGELOG.md)
+**Version 1.1.0** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 

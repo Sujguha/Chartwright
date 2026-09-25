@@ -3,6 +3,12 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.1.0] - 2026-09-25
+
+### Added
+- Clicking the logo in the top bar returns to the start page.
+- The start page then shows a "Back to your dashboard" card, so the open dashboard, its filters and charts are kept and nothing is lost by accident. Loading a new file replaces it.
+
 ## [1.0.0] - 2026-09-25
 
 First stable release.
