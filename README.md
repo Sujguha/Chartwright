@@ -1,5 +1,7 @@
 # Chartwright
 
+**Version 1.0.0** · [Changelog](CHANGELOG.md)
+
 **Drop a spreadsheet. Get a dashboard.**
 
 Chartwright turns an Excel, CSV or JSON file into an interactive dashboard in seconds. It reads your columns, works out which are dates, numbers and categories, and builds key figures and charts automatically. You can then filter, add your own charts, and share the result as a PDF, a data file or an email.
@@ -38,7 +40,7 @@ Power BI files (`.pbix`) can't be read directly. Export the data from Power BI t
 
 ## Try it
 
-Open the app and select **Try it with sample release data**, or upload one of the files in [`samples/`](samples/). Each sample holds the same 180 fictional release records in a different format:
+Open the app and select **Try it with sample release data**, or upload one of the files in [`samples/`](samples/). The small samples hold the same 180 fictional release records in different formats; the large ones are for testing performance. All data is fictional:
 
 | File | What it shows |
 |---|---|
@@ -48,6 +50,8 @@ Open the app and select **Try it with sample release data**, or upload one of th
 | `release-data.tsv` | Tab-separated file |
 | `release-data-semicolon.txt` | German-style export: semicolons, `dd.mm.yyyy` dates, umlauts, Windows-1252 encoding |
 | `release-data.xlsx`, `.xlsb`, `.ods` | Spreadsheet formats |
+| `release-data-large.xlsx` | 12,000 releases and 2,700 linked incidents across 25 columns, for load testing |
+| `finance-ledger-large.xlsx` | 15,000 general-ledger postings in 5 currencies, plus a monthly budget vs actual sheet |
 
 ## Run it yourself
 
@@ -71,6 +75,16 @@ An internet connection is needed on first load, because the libraries below are 
 - Email attachments aren't possible through a mail-app link, so attach a downloaded PDF by hand if you need one.
 - Very large files (hundreds of thousands of rows) work but can be slow, depending on your computer.
 - The guide uses the viewer's Claude account, so it only appears when Chartwright is opened inside Claude. It is hidden on GitHub Pages and other hosting.
+
+## Versioning
+
+Chartwright uses [Semantic Versioning](https://semver.org/). The current version appears on the start page, in the top bar, and in the footer of every PDF report. See [CHANGELOG.md](CHANGELOG.md) for what changed in each release.
+
+To release a new version:
+
+1. Update `APP_VERSION` near the top of the script in `index.html` (and the `version` meta tag).
+2. Add an entry at the top of `CHANGELOG.md`.
+3. Commit, then create a GitHub release with a tag such as `v1.1.0`.
 
 ## License
 

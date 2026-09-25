@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="version" content="1.0.0">
+<meta name="generator" content="Chartwright 1.0.0">
 <title>Chartwright: dashboards from spreadsheets</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -164,6 +166,8 @@ textarea{resize:vertical;min-height:84px}
 .guide-row textarea{min-height:44px;max-height:140px;flex:1}
 .guide-foot .fine{margin-top:8px;font-size:12px}
 @media (min-width:1100px){body.guide-open .layout{margin-right:420px}body.guide-open .topbar{padding-right:440px}}
+.version-line{margin-top:32px}
+.ver-badge{font-size:11px;font-weight:600;color:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:1px 8px;white-space:nowrap}
 @media print{
   .no-print,aside,.builder-panel,dialog,.guide,.guide-btn{display:none!important}
   body.guide-open .layout{margin-right:0}
@@ -200,12 +204,14 @@ textarea{resize:vertical;min-height:84px}
     <li><b>Review</b><br>Key totals and charts appear automatically, based on your column types.</li>
     <li><b>Refine</b><br>Filter by any category, add your own charts, and print or save as PDF.</li>
   </ol>
+  <p class="fine version-line">Chartwright <span class="app-version"></span></p>
 </div>
 
 <!-- App -->
 <div id="app" class="hidden">
   <header class="topbar">
     <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
+    <span class="ver-badge app-version" title="Chartwright version"></span>
     <span id="fname" class="filename"></span>
     <div id="sheetField" class="field hidden">
       <label for="sheet">Sheet</label>
@@ -336,6 +342,8 @@ textarea{resize:vertical;min-height:84px}
 <script>
 (function(){
 const $ = s => document.querySelector(s);
+const APP_VERSION = '1.0.0';
+document.querySelectorAll('.app-version').forEach(el=>el.textContent='v'+APP_VERSION);
 const COUNT = '__count';
 const S = {rows:[], cols:[], filters:{}, charts:[], auto:[], sortCol:null, sortDir:1, q:'', fileName:''};
 let wb = null, chartObjs = [];
@@ -385,7 +393,15 @@ function inferColumns(rows,names){
       if(d/n>=0.8) type='date'; else if(num/n>=0.8) type='number';
     }
     const distinct=new Set(vals.map(v=>v instanceof Date?v.getTime():String(v).trim())).size;
-    if(type==='number' && /(^|[\s_\-#])(id|no|nr|number|code|key)$/i.test(name) && distinct===n) type='text';
+    if(type==='number' && /(^|[\s_\-#])(id|no|nr|number|code|key)\.?$/i.test(name) && distinct===n) type='text';
+    if(type==='number' && n>=5){
+      // Codes such as GL accounts, cost centres or document numbers: whole numbers that all have the same number of digits
+      const nums=vals.map(parseNum);
+      const len=String(Math.abs(nums[0])).length;
+      const codeLike=len>=4&&nums.every(x=>Number.isInteger(x)&&x>=0&&String(x).length===len)&&!(len===4&&nums.every(x=>x>=1900&&x<=2100));
+      const codeName=/(^|[\s_\-#.])(id|no|nr|number|code|key|account|acct|konto|gl|sku|zip|postcode|plz|phone|ref|reference)\.?$/i.test(name)||/\b(account|code|number|id)\b/i.test(name);
+      if(codeLike&&(codeName||distinct===n)) type=distinct<=60?'category':'text';
+    }
     if(type==='number' && distinct<=15 && vals.every(v=>{const x=parseNum(v);return Number.isInteger(x)&&x>=1900&&x<=2100;})) type='category';
     if(type==='text' && distinct<=Math.max(15,n*0.5) && distinct<=60) type='category';
     return {name,type,distinct,filled:n};
@@ -593,6 +609,24 @@ function aggFn(arr,agg){
   if(agg==='max') return Math.max(...arr);
   return 0;
 }
+function periodKey(v){
+  const t=String(v).trim(); let m;
+  if(/^\d{4}-\d{2}$/.test(t)) return t;
+  if((m=t.match(/^Q([1-4])[\s\-\/]*(\d{4})$/i))) return m[2]+'-Q'+m[1];
+  if((m=t.match(/^(\d{4})[\s\-\/]*Q([1-4])$/i))) return m[1]+'-Q'+m[2];
+  if(/^(19|20)\d{2}$/.test(t)) return t;
+  if((m=t.match(/^FY\s?(\d{2,4})$/i))) return 'FY'+m[1];
+  return null;
+}
+const periodCache=new Map();
+function isPeriodCol(col){
+  if(!col||col.type!=='category') return false;
+  const key=col.name+'|'+S.rows.length+'|'+S.fileName;
+  if(periodCache.has(key)) return periodCache.get(key);
+  const vals=[...new Set(S.rows.map(r=>r[col.name]).filter(v=>v!==null))];
+  const res=vals.length>=3&&vals.every(v=>periodKey(v)!==null);
+  periodCache.set(key,res); return res;
+}
 function aggregate(rows,spec){
   const col=colByName(spec.group); if(!col) return {labels:[],values:[]};
   const agg=spec.value===COUNT?'count':spec.agg;
@@ -612,6 +646,10 @@ function aggregate(rows,spec){
     entries.sort((a,b)=>a[0]<b[0]?-1:1);
     return {labels:entries.map(e=>dateLabel(e[0],g)),values:entries.map(e=>aggFn(e[1],agg))};
   }
+  if(isPeriodCol(col)){
+    entries.sort((a,b)=>(periodKey(a[0])||a[0])<(periodKey(b[0])||b[0])?-1:1);
+    return {labels:entries.map(e=>e[0]),values:entries.map(e=>aggFn(e[1],agg))};
+  }
   entries=entries.map(([k,a])=>[k,a,aggFn(a,agg)]).sort((a,b)=>b[2]-a[2]);
   const max=spec.type==='doughnut'?7:(spec.type==='line'?30:12);
   if(entries.length>max){
@@ -628,19 +666,44 @@ function titleFor(spec){
 
 function suggestCharts(){
   const dates=S.cols.filter(c=>c.type==='date');
-  const nums=S.cols.filter(c=>c.type==='number');
-  const cats=S.cols.filter(c=>c.type==='category'&&c.distinct>=2).sort((a,b)=>a.distinct-b.distinct);
+  const nums=rankedNumbers();
+  const catScore=c=>{
+    let sc=c.distinct>=3&&c.distinct<=12?3:(c.distinct===2?1.5:(c.distinct<=25?1:0.3));
+    if(/(status|type|category|priority|severity|risk|region|department|tribe|team|program|programme|stage|phase|segment|channel|country|product|account type|entity)/i.test(c.name)) sc+=2;
+    if(/(status|type|category|severity|priority|risk)/i.test(c.name)) sc+=0.5;
+    if(/(id|code|no\.?|number|currency|quarter|period|month|year)$/i.test(c.name)) sc-=2;
+    const vals=[...new Set(S.rows.map(r=>r[c.name]).filter(v=>v!==null).map(String))];
+    if(vals.length&&vals.every(v=>/^[A-Z]{0,4}[\-_]?\d{3,}$/.test(v))) sc-=2;
+    if(isPeriodCol(c)) sc-=5;
+    return sc;
+  };
+  const uniform=c=>{const m=new Map();S.rows.forEach(r=>{const k=String(r[c.name]);m.set(k,(m.get(k)||0)+1);});const v=[...m.values()];return v.length>1&&Math.max(...v)===Math.min(...v);};
+  const codeOnly=c=>{const v=[...new Set(S.rows.map(r=>r[c.name]).filter(x=>x!==null).map(String))];return v.length>0&&v.every(x=>/^[A-Z]{0,4}[\-_]?\d{2,}$/.test(x));};
+  let cats=S.cols.filter(c=>c.type==='category'&&c.distinct>=2);
+  cats=cats.filter(c=>!(codeOnly(c)&&cats.some(o=>o!==c&&o.distinct===c.distinct&&!codeOnly(o))));
+  cats.sort((a,b)=>catScore(b)-catScore(a));
+  const main=nums.find(c=>!isRateLike(c.name));
   const out=[];
-  if(dates[0]) out.push({type:'line',group:dates[0].name,value:nums[0]?nums[0].name:COUNT,agg:'sum'});
-  cats.slice(0,4).forEach((c,i)=>out.push({type:i===0&&c.distinct<=6?'doughnut':(c.distinct>8?'hbar':'bar'),group:c.name,value:COUNT,agg:'sum'}));
-  const big=cats[cats.length-1];
-  if(nums[1]&&big) out.push({type:'hbar',group:big.name,value:nums[1].name,agg:'avg'});
-  else if(nums[0]&&big) out.push({type:'hbar',group:big.name,value:nums[0].name,agg:'sum'});
+  const period=S.cols.find(isPeriodCol);
+  if(dates[0]) out.push({type:'line',group:dates[0].name,value:main?main.name:COUNT,agg:'sum'});
+  else if(period) out.push({type:'line',group:period.name,value:main?main.name:COUNT,agg:'sum'});
+  cats.filter(c=>!isPeriodCol(c)).slice(0,4).forEach((c,i)=>{
+    const useMeasure=main&&(i===1||uniform(c));
+    out.push({type:i===0&&c.distinct<=6?'doughnut':(c.distinct>8?'hbar':'bar'),group:c.name,value:useMeasure?main.name:COUNT,agg:'sum'});
+  });
+  const hasConv=nums.some(c=>/(eur|usd|gbp|chf|€|\$)/i.test(c.name));
+  const second=nums.find(c=>c!==main&&!isRateLike(c.name)&&!(hasConv&&/(local|lc\b|original currency)/i.test(c.name)));
+  const big=cats.filter(c=>!isPeriodCol(c)).sort((a,b)=>b.distinct-a.distinct).find(c=>c.distinct<=25)||cats[0];
+  const moneyLike=c=>c&&/(eur|usd|gbp|chf|€|\$|revenue|sales|cost|amount|value|spend|profit|budget|actual)/i.test(c.name);
+  if(moneyLike(main)&&big) out.push({type:'hbar',group:big.name,value:main.name,agg:'sum'});
+  else if(second&&big) out.push({type:'hbar',group:big.name,value:second.name,agg:isRateLike(second.name)?'avg':'sum'});
+  else if(main&&big) out.push({type:'hbar',group:big.name,value:main.name,agg:'sum'});
   if(!out.length){
     const t=S.cols.find(c=>c.type==='text'&&c.distinct<=100);
-    if(t) out.push({type:'hbar',group:t.name,value:nums[0]?nums[0].name:COUNT,agg:'sum'});
+    if(t) out.push({type:'hbar',group:t.name,value:main?main.name:COUNT,agg:'sum'});
   }
-  return out.slice(0,6);
+  const seen=new Set();
+  return out.filter(o=>{const k=o.group+'|'+o.value+'|'+o.agg;if(seen.has(k))return false;seen.add(k);return true;}).slice(0,6);
 }
 
 /* ---------- Rendering ---------- */
@@ -657,10 +720,12 @@ function showApp(){
   $('#landing').classList.add('hidden'); $('#app').classList.remove('hidden');
   $('#fname').textContent=S.fileName;
   document.title=S.fileName+' | Chartwright';
+  firstPaint=true;
   renderColumns(); renderFilters(); renderBuilder(); renderData();
   if(typeof guideReset==='function') guideReset();
   window.scrollTo(0,0);
 }
+let firstPaint=true;
 function renderData(){renderKPIs();renderCharts();renderTable();}
 
 function renderColumns(){
@@ -702,12 +767,26 @@ function renderKPIs(){
   const items=kpiItems();
   $('#kpis').innerHTML=items.map(k=>'<div class="kpi"><div class="kpi-val"'+(k.small?' style="font-size:18px;line-height:1.4"':'')+' title="'+esc(k.v)+'">'+esc(k.v)+'</div><div class="kpi-label">'+esc(k.l)+'</div>'+(k.s?'<div class="kpi-sub">'+esc(k.s)+'</div>':'')+'</div>').join('');
 }
+function isRateLike(name){return /(rate|ratio|%|percent|fx|score|index|price|margin|avg|average|age|temperature)/i.test(name);}
+function rankedNumbers(){
+  const score=c=>{
+    const n=c.name; let s=0;
+    if(/(eur|usd|gbp|chf|€|\$|revenue|sales|cost|amount|value|total|spend|profit|budget|actual|invoice|price)/i.test(n)) s+=3;
+    if(/(local|lc\b|original currency)/i.test(n)) s-=2;
+    if(/(count|qty|quantity|units|hours|days|defects|incidents|requests|tickets|points)/i.test(n)) s+=1;
+    if(isRateLike(n)) s-=1;
+    return s;
+  };
+  return S.cols.map((c,i)=>({c,i})).filter(x=>x.c.type==='number').sort((a,b)=>score(b.c)-score(a.c)||a.i-b.i).map(x=>x.c);
+}
 function kpiItems(){
   const rows=filtered(), items=[];
   items.push({v:fmt.format(rows.length),l:'Rows',s:rows.length!==S.rows.length?'of '+fmt.format(S.rows.length)+' total':''});
-  S.cols.filter(c=>c.type==='number').slice(0,3).forEach(c=>{
+  const rn=rankedNumbers(), hasConv=rn.some(c=>/(eur|usd|gbp|chf|€|\$)/i.test(c.name));
+  rn.filter(c=>!(hasConv&&/(local|lc\b|original currency)/i.test(c.name))&&!/(fx|exchange rate)/i.test(c.name)).slice(0,3).forEach(c=>{
     const a=rows.map(r=>r[c.name]).filter(v=>typeof v==='number');
-    items.push({v:a.length?fmtC.format(aggFn(a,'sum')):'n/a',vf:a.length?fmt.format(aggFn(a,'sum')):'n/a',l:'Total '+c.name,s:a.length?'Average '+fmt.format(aggFn(a,'avg')):''});
+    if(isRateLike(c.name)) items.push({v:a.length?fmt.format(aggFn(a,'avg')):'n/a',l:'Average '+c.name,s:a.length?'Range '+fmt.format(aggFn(a,'min'))+' to '+fmt.format(aggFn(a,'max')):''});
+    else items.push({v:a.length?fmtC.format(aggFn(a,'sum')):'n/a',vf:a.length?fmt.format(aggFn(a,'sum')):'n/a',l:'Total '+c.name,s:a.length?'Average '+fmt.format(aggFn(a,'avg')):''});
   });
   const dc=S.cols.find(c=>c.type==='date');
   if(dc){
@@ -725,7 +804,9 @@ function renderCharts(){
   const rows=filtered(), t=tokens(), narrow=window.innerWidth<600;
   Chart.defaults.font.family=getComputedStyle(document.body).fontFamily;
   Chart.defaults.color=t.ink2;
-  Chart.defaults.animation=reduceMotion?false:{duration:350};
+  // Animate only the first drawing after a file loads; filter changes redraw instantly
+  Chart.defaults.animation=(reduceMotion||!firstPaint)?false:{duration:350};
+  firstPaint=false;
 
   S.charts.forEach((spec,idx)=>{
     const card=document.createElement('section');
@@ -740,7 +821,12 @@ function renderCharts(){
     const canvas=document.createElement('canvas');
     canvas.setAttribute('role','img'); canvas.setAttribute('aria-label',title);
     wrap.appendChild(canvas);
-    chartObjs.push({title,chart:new Chart(canvas,chartConfig(spec,labels,values,t,idx,{narrow}))});
+    try{
+      chartObjs.push({title,chart:new Chart(canvas,chartConfig(spec,labels,values,t,idx,{narrow}))});
+    }catch(err){
+      console.error('Chart failed:',title,err);
+      wrap.innerHTML='<p class="empty">This chart couldn’t be drawn. Try removing it and adding it again.</p>';
+    }
   });
 }
 
@@ -906,7 +992,7 @@ function reportHTML(){
     '.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:14px}figure{margin:0;background:'+t.surface+';border:1px solid '+t.line+';border-radius:12px;padding:12px}'+
     'figcaption{font-weight:600;font-size:14px;margin-bottom:8px}figure img{width:100%;height:auto;display:block}'+
     '.t{overflow-x:auto;border:1px solid '+t.line+';border-radius:12px;background:'+t.surface+'}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:7px 10px;border-bottom:1px solid '+t.line+';text-align:left;white-space:nowrap}td.n{text-align:right}'+
-    '</style></head><body><h1>'+esc(S.fileName)+'</h1><p class="m">Generated '+esc(fmtD.format(new Date()))+'. Filters: '+esc(filterText())+'.</p>'+
+    '</style></head><body><h1>'+esc(S.fileName)+'</h1><p class="m">Generated '+esc(fmtD.format(new Date()))+' with Chartwright v'+APP_VERSION+'. Filters: '+esc(filterText())+'.</p>'+
     '<div class="k">'+k.map(x=>'<div><b>'+esc(x.v)+'</b><span>'+esc(x.l)+(x.s?' · '+esc(x.s):'')+'</span></div>').join('')+'</div>'+
     '<div class="g">'+cards+'</div><h2>Data</h2><p class="m" style="margin-bottom:8px">'+(rows.length>shown.length?'First '+fmt.format(shown.length)+' of '+fmt.format(rows.length)+' rows. The full set is in the data download.':fmt.format(rows.length)+' rows.')+'</p><div class="t">'+table+'</div></body></html>';
 }
@@ -960,7 +1046,7 @@ function buildPDF(){
   const doc=new J({orientation:'landscape',unit:'pt',format:'a4',compress:true});
   const W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight(), M=36;
   const ink=[24,32,44], ink2=[85,98,116], line=[211,218,227];
-  const footer=()=>{const n=doc.getNumberOfPages();for(let i=1;i<=n;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...ink2);doc.text(pdfText(S.fileName)+'  |  page '+i+' of '+n,M,H-18);}};
+  const footer=()=>{const n=doc.getNumberOfPages();for(let i=1;i<=n;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...ink2);doc.text(pdfText(S.fileName)+'  |  page '+i+' of '+n+'  |  Chartwright v'+APP_VERSION,M,H-18);}};
   // Header
   doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(...ink); doc.text(pdfText(S.fileName),M,M+16);
   doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...ink2);
