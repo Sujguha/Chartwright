@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.3.0** · [Changelog](CHANGELOG.md)
+**Version 1.5.0** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -29,6 +29,7 @@ Everything runs in the browser. Your file is never uploaded to a server.
 | Excel | `.xlsx` `.xlsm` `.xls` `.xlsb` | All sheets are available; the first sheet with data opens by default. |
 | OpenDocument | `.ods` | LibreOffice and OpenOffice spreadsheets. |
 | Delimited text | `.csv` `.tsv` `.txt` | The separator (comma, semicolon, tab or pipe) is detected automatically. UTF-8 and Windows-1252 encodings are both supported. |
+| SAP exports | `.xlsx` `.txt` | Fiori "Export to Spreadsheet" and SAP GUI exports, including `|` list exports. Handles trailing minus signs (`1.234,56-`), German formats, leading zeros, and translates common technical field names such as `BUDAT` and `DMBTR`. |
 | JSON | `.json` `.jsonl` `.ndjson` | Finds the list of records anywhere in the file (for example a Jira or ServiceNow API export) and flattens nested fields into columns. |
 
 Power BI files (`.pbix`) can't be read directly. Export the data from Power BI to Excel or CSV first.
@@ -46,6 +47,7 @@ Open the app and select **Try it with sample release data**, or upload one of th
 
 | File | What it shows |
 |---|---|
+| `sap-gl-line-items.txt` | 1,751 G/L line items as an SAP GUI list export, with technical field names and trailing minus signs |
 | `jira-issues-export.csv` | 345 Jira issues across 8 sprints in Jira's CSV export format, for burnup and burndown |
 | `release-data.csv` | Standard comma-separated file |
 | `release-data.json` | Simple JSON: a list of records with one field per column |
@@ -55,6 +57,14 @@ Open the app and select **Try it with sample release data**, or upload one of th
 | `release-data.xlsx`, `.xlsb`, `.ods` | Spreadsheet formats |
 | `release-data-large.xlsx` | 12,000 releases and 2,700 linked incidents across 25 columns, for load testing |
 | `finance-ledger-large.xlsx` | 15,000 general-ledger postings in 5 currencies, plus a monthly budget vs actual sheet |
+
+## Plans and waitlist
+
+`plans.html` shows the Free plan (available now) and the upcoming Pro and Enterprise plans, with a waitlist form.
+
+The form uses **Netlify Forms**: when the site is deployed on Netlify, Netlify detects the form automatically and stores submissions under **Site → Forms → waitlist**, where you can also turn on email notifications. On other hosts (or when opening the file locally) the form can't submit and shows a message instead.
+
+Before collecting emails, add an `impressum.html` and `privacy.html` (linked in the page footer). The privacy page should explain that waitlist emails are stored with Netlify and used only for launch updates.
 
 ## Run it yourself
 

@@ -3,6 +3,30 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.5.0] - 2026-09-28
+
+### Added
+- **Plans page** (`plans.html`): Free is available now; Pro (live Jira, Jira Service Management, ServiceNow and SAP Cloud ALM connections) and Enterprise (SAP Solution Manager and S/4HANA) are marked as coming soon.
+- **Waitlist form** on the plans page, collecting email, plan and the tools people use, with consent. It uses Netlify Forms, so it needs no server.
+- The app's start page links to the plans page and mentions that live connections are coming soon.
+
+## [1.4.0] - 2026-09-28
+
+### Added
+- **SAP support** for exports from Fiori ("Export to Spreadsheet") and SAP GUI (spreadsheet, tab-separated text, and classic `|` list exports):
+  - Trailing minus signs (`1.234,56-`) and accounting brackets (`(1,234.56)`) are read as negative numbers.
+  - SAP list exports: separator lines, report title lines and page-break header rows are removed automatically.
+  - About 60 common technical field names are translated, for example `BUDAT` becomes "Posting date (BUDAT)" and `DMBTR` becomes "Amount in local currency (DMBTR)".
+  - Numbers with leading zeros (G/L accounts, cost centres, materials) are kept as codes with their zeros.
+  - Amounts in document or transaction currency are left out of key figures, because they mix currencies.
+- Dashboard suggestions recognise German column names (for example Betrag, Kostenstelle, Sachkonto, Buchungskreis, erstellt, erledigt), and explain SAP's sign convention for credits.
+- Sample file `sap-gl-line-items.txt`: 1,751 G/L line items as an SAP GUI list export.
+
+### Changed
+- Doughnut charts switch to bar charts when values are negative.
+- Account breakdowns with many values use horizontal bars so every label stays readable.
+- Default dashboard names keep common acronyms (SAP, GL, KPI, HR, IT and others) in capitals.
+
 ## [1.3.0] - 2026-09-28
 
 ### Added

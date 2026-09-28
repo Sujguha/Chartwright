@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="version" content="1.3.0">
-<meta name="generator" content="Chartwright 1.3.0">
+<meta name="version" content="1.5.0">
+<meta name="generator" content="Chartwright 1.5.0">
 <title>Chartwright: dashboards from spreadsheets</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -208,6 +208,13 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
 .sugg .why{margin:8px 0;padding-left:18px;font-size:14px}
 .sugg .why li{margin:2px 0}
 .sugg-charts{font-size:13px;color:var(--ink-2);margin:6px 0 10px}
+.landing-top{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap}
+.landing-nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:15px}
+.landing-nav a{color:var(--ink-2);text-decoration:none;font-weight:500}
+.landing-nav a:hover{color:var(--ink)}
+.soon-link{display:flex;align-items:center;gap:8px}
+.soon-tag{font-size:12px;font-weight:700;color:var(--ink-2);background:var(--sunk);border-radius:999px;padding:3px 9px}
+@media (max-width:640px){.soon-link{display:none}}
 @media print{
   .no-print,aside,.builder-panel,dialog,.guide,.guide-btn,.kpi-add,.kpi-edit{display:none!important}
   .dash-title{border:none;padding:0;margin:0}
@@ -225,7 +232,13 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
 
 <!-- Landing -->
 <div id="landing" class="landing">
-  <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Chartwright</div>
+  <div class="landing-top">
+    <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Chartwright</div>
+    <nav class="landing-nav" aria-label="Main">
+      <a href="plans.html" class="soon-link">Live Jira, ServiceNow and SAP connections <span class="soon-tag">Coming soon</span></a>
+      <a href="plans.html">Plans</a>
+    </nav>
+  </div>
   <div id="resume" class="resume resume-top hidden">
     <div><p class="resume-title">Your dashboard is still open</p><p id="resumeName" class="fine"></p></div>
     <button id="resumeBtn" class="btn primary" type="button">Back to your dashboard</button>
@@ -423,7 +436,7 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
 <script>
 (function(){
 const $ = s => document.querySelector(s);
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.5.0';
 document.querySelectorAll('.app-version').forEach(el=>el.textContent='v'+APP_VERSION);
 const COUNT = '__count';
 const S = {rows:[], cols:[], filters:{}, charts:[], auto:[], sortCol:null, sortDir:1, q:'', fileName:''};
@@ -442,12 +455,17 @@ function blank(v){return v===null||v===undefined||(typeof v==='string'&&v.trim()
 function parseNum(v){
   if(typeof v==='number') return isFinite(v)?v:null;
   if(typeof v!=='string') return null;
-  let s=v.trim().replace(/[€$£¥%\s]/g,'');
+  let s=v.trim(), neg=false;
+  s=s.replace(/^(EUR|USD|GBP|CHF|INR|SGD|JPY|CNY|AUD|CAD)\s*|\s*(EUR|USD|GBP|CHF|INR|SGD|JPY|CNY|AUD|CAD)$/i,'');
+  if(/\d\s*-$/.test(s)){neg=true;s=s.replace(/\s*-$/,'');}           // SAP style: 1.234,56-
+  if(/^\(.*\d.*\)$/.test(s)){neg=true;s=s.slice(1,-1);}              // accounting style: (1,234.56)
+  s=s.replace(/[€$£¥%\s]/g,'');
   if(!s) return null;
+  if(neg&&s.startsWith('-')) return null;
   if(/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s) || /^-?\d+,(\d{1,2}|\d{4,})$/.test(s)) s=s.replace(/\./g,'').replace(',','.');
   else s=s.replace(/,/g,'');
   if(!/^-?(\d+\.?\d*|\.\d+)(e-?\d+)?$/i.test(s)) return null;
-  const n=Number(s); return isFinite(n)?n:null;
+  const n=Number(s); return isFinite(n)?(neg?-n:n):null;
 }
 function parseDate(v){
   if(v instanceof Date) return isNaN(v)?null:v;
@@ -482,6 +500,7 @@ function inferColumns(rows,names){
       if(d/n>=0.8) type='date'; else if(num/n>=0.8) type='number';
     }
     const distinct=new Set(vals.map(v=>v instanceof Date?v.getTime():String(v).trim())).size;
+    if(type==='number'){const lz=vals.filter(v=>typeof v==='string'&&/^0\d+$/.test(v.trim())).length; if(lz/n>=0.5) type=distinct<=60?'category':'text';}
     if(type==='number' && /(^|[\s_\-#])(id|no|nr|number|code|key)\.?$/i.test(name) && distinct===n) type='text';
     if(type==='number' && n>=5){
       // Codes such as GL accounts, cost centres or document numbers: whole numbers that all have the same number of digits
@@ -535,13 +554,16 @@ function readSheet(name){
   const h=arr.findIndex(r=>r.filter(c=>!blank(c)).length>=2);
   if(h<0) throw new Error('No table found on this sheet. Use a sheet with a header row and at least two columns.');
   const header=arr[h], width=Math.max(...arr.slice(h).map(r=>r.length));
-  const seen={}, names=[];
+  const seen={}; let names=[];
   for(let i=0;i<width;i++){
     let base=blank(header[i])?'Column '+(i+1):(header[i] instanceof Date?fmtD.format(header[i]):String(header[i]).trim());
     let nm=base, k=2; while(seen[nm]) nm=base+' ('+(k++)+')';
     seen[nm]=1; names.push(nm);
   }
-  const rows=arr.slice(h+1).filter(r=>r.some(c=>!blank(c))).map(r=>{const o={};names.forEach((nm,i)=>o[nm]=r[i]===undefined?null:r[i]);return o;});
+  names=sapFriendlyNames(names);
+  const hk=header.map(c=>blank(c)?'':String(c).trim());
+  const isRepeatHeader=r=>hk.filter(Boolean).length>=2&&hk.every((c,i)=>(blank(r[i])?'':String(r[i]).trim())===c);  // page-break headers in SAP lists
+  const rows=arr.slice(h+1).filter(r=>r.some(c=>!blank(c))&&!isRepeatHeader(r)).map(r=>{const o={};names.forEach((nm,i)=>o[nm]=r[i]===undefined?null:r[i]);return o;});
   if(!rows.length) throw new Error('This sheet has a header row but no data rows below it.');
   prepare(rows,names,S.fileName);
 }
@@ -559,9 +581,10 @@ function loadFile(file){
       const buf=e.target.result;
       if(JSON_EXT.includes(ext)){ wb=null; $('#sheetField').classList.add('hidden'); loadJSON(decodeText(buf)); return; }
       if(TEXT_EXT.includes(ext)){
-        const text=decodeText(buf);
+        let text=decodeText(buf);
         if(!text.trim()) throw new Error('This file is empty.');
-        wb=XLSX.read(text,{type:'string',FS:sniffDelimiter(text,ext),raw:true,cellDates:true});
+        const sap=cleanSapList(text); text=sap.text;
+        wb=XLSX.read(text,{type:'string',FS:sap.fs||sniffDelimiter(text,ext),raw:true,cellDates:true});
       }else{
         wb=XLSX.read(new Uint8Array(buf),{type:'array',cellDates:true});
       }
@@ -585,6 +608,21 @@ function decodeText(buf){
   try{ t=new TextDecoder('utf-8',{fatal:true}).decode(buf); }
   catch(e){ t=new TextDecoder('windows-1252').decode(buf); }
   return t.replace(/^\uFEFF/,'');
+}
+/* SAP GUI list exports: |col|col| rows with ----- separator lines */
+function cleanSapList(text){
+  const lines=text.split(/\r?\n/), ne=lines.filter(l=>l.trim());
+  const piped=ne.filter(l=>/^\s*\|/.test(l)).length;
+  if(piped<3||piped/ne.length<0.3) return {text,fs:null};
+  const out=lines.filter(l=>l.trim()&&!/^[\s\-|=+_]*$/.test(l)).map(l=>/^\s*\|/.test(l)?l.replace(/^\s*\|/,'').replace(/\|\s*$/,''):l);
+  return {text:out.join('\n'),fs:'|'};
+}
+const SAP_FIELDS={BUKRS:'Company code',RBUKRS:'Company code',BELNR:'Document number',GJAHR:'Fiscal year',RYEAR:'Fiscal year',MONAT:'Posting period',POPER:'Posting period',BUDAT:'Posting date',BLDAT:'Document date',CPUDT:'Entry date',BLART:'Document type',BSART:'Document type',HKONT:'G/L account',SAKNR:'G/L account',RACCT:'G/L account',TXT20:'Account name',TXT50:'Account name',KOSTL:'Cost center',RCNTR:'Cost center',PRCTR:'Profit center',RPRCTR:'Profit center',AUFNR:'Order',POSID:'WBS element',PS_PSP_PNR:'WBS element',DMBTR:'Amount in local currency',HSL:'Amount in company code currency',KSL:'Amount in group currency',WRBTR:'Amount in document currency',TSL:'Amount in transaction currency',WAERS:'Currency',RHCUR:'Local currency',SHKZG:'Debit/credit indicator',DRCRK:'Debit/credit indicator',LIFNR:'Vendor',KUNNR:'Customer',MATNR:'Material',MAKTX:'Material description',WERKS:'Plant',LGORT:'Storage location',MENGE:'Quantity',MEINS:'Unit',EBELN:'Purchase order',EBELP:'PO item',VBELN:'Sales document',ERDAT:'Created on',AEDAT:'Changed on',ERNAM:'Created by',NETWR:'Net value',ZFBDT:'Baseline date',ZTERM:'Payment terms',AUGDT:'Clearing date',AUGBL:'Clearing document',SGTXT:'Text',KOART:'Account type',FKDAT:'Billing date',LFDAT:'Delivery date',EINDT:'Delivery date',MTART:'Material type',MATKL:'Material group',EKORG:'Purchasing organization',EKGRP:'Purchasing group',VKORG:'Sales organization',AUART:'Order type',GSBER:'Business area',FKBER:'Functional area',SEGMENT:'Segment',XBLNR:'Reference',BUZEI:'Line item',KTOKS:'Account group'};
+function sapFriendlyNames(names){
+  const key=n=>String(n).trim().toUpperCase();
+  const hits=names.filter(n=>SAP_FIELDS[key(n)]).length;
+  if(hits<2) return names;
+  return names.map(n=>SAP_FIELDS[key(n)]?SAP_FIELDS[key(n)]+' ('+key(n)+')':n);
 }
 function sniffDelimiter(text,ext){
   const lines=text.split(/\r?\n/).filter(l=>l.trim()).slice(0,8);
@@ -807,7 +845,7 @@ function suggestCharts(){
   const nums=rankedNumbers();
   const catScore=c=>{
     let sc=c.distinct>=3&&c.distinct<=12?3:(c.distinct===2?1.5:(c.distinct<=25?1:0.3));
-    if(/(status|type|category|priority|severity|risk|region|department|tribe|team|program|programme|stage|phase|segment|channel|country|product|account type|entity)/i.test(c.name)) sc+=2;
+    if(/(status|type|category|priority|severity|risk|region|department|tribe|team|program|programme|stage|phase|segment|channel|country|product|account type|entity|account name|plant|business area|kategorie|priorität|bereich|abteilung|werk|belegart|kontoart|\bart$|typ$)/i.test(c.name)) sc+=2;
     if(/(status|type|category|severity|priority|risk)/i.test(c.name)) sc+=0.5;
     if(/(id|code|no\.?|number|currency|quarter|period|month|year)$/i.test(c.name)) sc-=2;
     const vals=[...new Set(S.rows.map(r=>r[c.name]).filter(v=>v!==null).map(String))];
@@ -888,7 +926,11 @@ function resumeDashboard(){
 }
 function defaultTitle(){
   const t=(S.fileName||'Dashboard').replace(/\.[a-z0-9]+$/i,'').replace(/[_\-]+/g,' ').replace(/\s+/g,' ').trim();
-  return t?t.charAt(0).toUpperCase()+t.slice(1):'Dashboard';
+  if(!t) return 'Dashboard';
+  const AC={sap:'SAP',gl:'GL',kpi:'KPI',kpis:'KPIs',it:'IT',hr:'HR',pmo:'PMO',api:'API',csv:'CSV',jira:'Jira',erp:'ERP',crm:'CRM',sla:'SLA',q1:'Q1',q2:'Q2',q3:'Q3',q4:'Q4',fy:'FY',eur:'EUR',usd:'USD',ap:'AP',ar:'AR',po:'PO',wbs:'WBS',s4:'S/4'};
+  const w=t.split(' ').map(x=>AC[x.toLowerCase()]||x);
+  w[0]=w[0].charAt(0).toUpperCase()+w[0].slice(1);
+  return w.join(' ');
 }
 function dashName(){return (S.title&&S.title.trim())||defaultTitle();}
 function sizeTitle(){const el=$('#dashTitle');el.style.width=Math.min(52,Math.max(8,el.value.length+2))+'ch';}
@@ -903,8 +945,8 @@ function detectProfile(){
   const P={};
   P.key=S.cols.find(c=>/(^|\s)(issue )?key$|issue id|ticket (id|number)/i.test(c.name))||S.cols.find(c=>{const v=S.rows.slice(0,60).map(r=>r[c.name]).filter(x=>x!==null);return v.length>=3&&v.every(x=>/^[A-Z][A-Z0-9]+-\d+$/.test(String(x)));});
   P.status=colBy(/^(status|state)$|status category|workflow/i,['category','text'])||colBy(/status/i,['category']);
-  P.created=colBy(/(created|opened|reported|submitted|raised|logged)/i,['date']);
-  P.done=colBy(/(resolved|resolution ?date|closed|done|completed|finished)/i,['date']);
+  P.created=colBy(/(created|opened|reported|submitted|raised|logged|erstellt|angelegt|erfasst|eröffnet)/i,['date']);
+  P.done=colBy(/(resolved|resolution ?date|closed|done|completed|finished|erledigt|abgeschlossen|geschlossen|gelöst)/i,['date']);
   P.points=colBy(/story ?points?|story point estimate/i,['number'])||colBy(/(^|\s)points$/i,['number']);
   P.sprint=colBy(/sprint|iteration/i,['category','text']);
   P.itype=colBy(/(issue|work ?item|ticket|request) ?type/i,['category'])||colBy(/^type$/i,['category']);
@@ -914,10 +956,10 @@ function detectProfile(){
   P.severity=colBy(/severity|impact|urgency/i,['category']);
   P.sla=colBy(/sla/i,['category']);
   P.area=colBy(/category|service|component|application|module/i,['category']);
-  P.money=rankedNumbers().find(c=>/(eur|usd|gbp|chf|€|\$|revenue|sales|cost|amount|spend|budget|actual)/i.test(c.name));
-  P.acct=colBy(/account type/i,['category'])||colBy(/account|category/i,['category']);
-  P.costcenter=colBy(/cost ?cent(er|re) name/i,['category'])||colBy(/cost ?cent(er|re)/i,['category'])||colBy(/department/i,['category']);
-  P.entity=colBy(/entity/i,['category'])||colBy(/region|country/i,['category'])||colBy(/company/i,['category']);
+  P.money=rankedNumbers().find(c=>/(eur|usd|gbp|chf|€|\$|revenue|sales|cost|amount|spend|budget|actual|betrag|wert|umsatz|kosten|dmbtr|hsl|netwr)/i.test(c.name)&&!/(document currency|transaction currency|belegwährung|wrbtr)/i.test(c.name));
+  P.acct=colBy(/account type|kontoart/i,['category'])||colBy(/account name|kontobezeichnung|sachkontentext/i,['category','text'])||colBy(/account|sachkonto|konto|category|kategorie/i,['category']);
+  P.costcenter=colBy(/cost ?cent(er|re) name|kostenstellenbezeichnung/i,['category'])||colBy(/cost ?cent(er|re)|kostenstelle/i,['category'])||colBy(/profit ?cent(er|re)/i,['category'])||colBy(/department|abteilung/i,['category']);
+  P.entity=colBy(/entity|gesellschaft/i,['category'])||colBy(/region|country|land/i,['category'])||colBy(/company|buchungskreis|plant|werk/i,['category']);
   P.date=S.cols.find(c=>c.type==='date'); P.period=S.cols.find(isPeriodCol);
   P.agileScore=(P.key?2:0)+(P.status?1:0)+(P.created?1:0)+(P.done?1:0)+(P.points?1:0)+(P.sprint?1:0)+(P.itype?0.5:0);
   return P;
@@ -965,11 +1007,13 @@ function buildSuggestions(){
   if(P.money&&(P.date||P.period)&&(P.acct||P.costcenter)){
     const t=P.period||P.date, charts=[], kpis=[{kind:'rows'},{kind:'measure',col:P.money.name,calc:'sum'},{kind:'measure',col:P.money.name,calc:'avg'}], why=['“'+P.money.name+'” over “'+t.name+'” looks like financial data.'];
     charts.push({type:'line',group:t.name,value:P.money.name,agg:'sum'});
-    if(P.acct) charts.push({type:'bar',group:P.acct.name,value:P.money.name,agg:'sum'});
+    if(P.acct) charts.push({type:P.acct.distinct>6?'hbar':'bar',group:P.acct.name,value:P.money.name,agg:'sum'});
     if(P.costcenter) charts.push({type:'hbar',group:P.costcenter.name,value:P.money.name,agg:'sum'});
     if(P.entity) charts.push({type:'doughnut',group:P.entity.name,value:P.money.name,agg:'sum'});
     if(P.status) charts.push({type:'bar',group:P.status.name,value:P.money.name,agg:'sum'});
     if(P.acct&&P.acct.distinct<=12) why.push('Tip: filter by “'+P.acct.name+'” so revenue and costs are not added together.');
+    if(S.rows.some(r=>typeof r[P.money.name]==='number'&&r[P.money.name]<0)) why.push('Credits (such as revenue) are negative in “'+P.money.name+'”, as in SAP, so totals are net amounts. Filter by account to see one side.');
+    if(S.cols.some(c=>/\([A-Z_]{4,10}\)$/.test(c.name))) why.push('SAP technical field names were translated, for example BUDAT to “Posting date (BUDAT)”.');
     if(P.date) kpis.push({kind:'daterange',col:P.date.name});
     out.push({id:'finance',name:'Finance dashboard',desc:'Spend or revenue over time, by account, cost center and entity.',why,charts:dedupeSpecs(charts).slice(0,6),kpis});
   }
@@ -1076,8 +1120,10 @@ function isRateLike(name){return /(rate|ratio|%|percent|fx|score|index|price|mar
 function rankedNumbers(){
   const score=c=>{
     const n=c.name; let s=0;
-    if(/(eur|usd|gbp|chf|€|\$|revenue|sales|cost|amount|value|total|spend|profit|budget|actual|invoice|price)/i.test(n)) s+=3;
-    if(/(local|lc\b|original currency)/i.test(n)) s-=2;
+    if(/(eur|usd|gbp|chf|€|\$|revenue|sales|cost|amount|value|total|spend|profit|budget|actual|invoice|price|betrag|wert|umsatz|kosten|dmbtr|hsl|netwr)/i.test(n)) s+=3;
+    if(/(local|lc\b|original currency|hauswährung)/i.test(n)) s-=2;
+    if(/(document currency|transaction currency|belegwährung|transaktionswährung|wrbtr|tsl)/i.test(n)) s-=3;
+    if(/(group currency|konzernwährung)/i.test(n)) s-=1;
     if(/(count|qty|quantity|units|hours|days|defects|incidents|requests|tickets|points)/i.test(n)) s+=1;
     if(isRateLike(n)) s-=1;
     return s;
@@ -1087,7 +1133,7 @@ function rankedNumbers(){
 function defaultKpis(){
   const out=[{kind:'rows'}];
   const rn=rankedNumbers(), hasConv=rn.some(c=>/(eur|usd|gbp|chf|€|\$)/i.test(c.name));
-  rn.filter(c=>!(hasConv&&/(local|lc\b|original currency)/i.test(c.name))&&!/(fx|exchange rate)/i.test(c.name)).slice(0,3)
+  rn.filter(c=>!(hasConv&&/(local|lc\b|original currency)/i.test(c.name))&&!/(fx|exchange rate|document currency|transaction currency|belegwährung|wrbtr)/i.test(c.name)).slice(0,3)
     .forEach(c=>out.push({kind:'measure',col:c.name,calc:isRateLike(c.name)?'avg':'sum'}));
   const dc=S.cols.find(c=>c.type==='date'); if(dc) out.push({kind:'daterange',col:dc.name});
   return out;
@@ -1234,6 +1280,7 @@ function chartConfig(spec,labels,values,t,idx,o){
         scales:{x:{ticks:{color:t.ink2,maxRotation:0,autoSkip:true},grid:{display:false},border:{display:false}},y:{beginAtZero:true,ticks:{color:t.ink2,callback:v=>fmtC.format(v)},grid:{color:t.line},border:{display:false}}}}};
     return applyStill(cfg,t,o);
   }
+  if(spec.type==='doughnut'&&values.some(v=>v<0)) spec=Object.assign({},spec,{type:'bar'});   // parts of a whole can't be negative
   const title=titleFor(spec);
   const type=spec.type==='hbar'?'bar':spec.type;
   const color=t.pal[idx%t.pal.length];
@@ -1764,6 +1811,7 @@ function guideRules(){
     '- Email (top bar): send with Gmail (with a PDF and/or CSV attached), save as a Gmail draft, or open in their own email app with a formatted copy to paste.',
     '- "Open another file" loads a new file. Supported: .xlsx, .xlsm, .xls, .xlsb, .ods, .csv, .tsv, .txt, .json. The file stays in the browser.',
     '- Best file layout: one header row, one record per row, no totals rows or merged cells.',
+    '- SAP data: export from Fiori (Export to Spreadsheet) or SAP GUI (List → Export → Spreadsheet, or Local file → Text with tabs). Chartwright reads SAP list exports with | separators, trailing minus signs (1.234,56-), German numbers and dates, and translates common technical field names (for example BUDAT becomes “Posting date (BUDAT)”). It cannot connect to SAP directly.',
     '',
     'Current data summary:',
     dataProfile()
