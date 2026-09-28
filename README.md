@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.2.1** · [Changelog](CHANGELOG.md)
+**Version 1.3.0** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -11,6 +11,7 @@ Everything runs in the browser. Your file is never uploaded to a server.
 ## Features
 
 - **Automatic dashboards**: key-figure tiles, a trend line over time, and breakdown charts chosen from your column types.
+- **Dashboard suggestions**: recognises Jira/agile, incident and finance data and proposes a complete dashboard, including **burnup and burndown** charts for ticket data.
 - **Your own title and key figures**: rename the dashboard and choose what each key-figure tile shows.
 - **Filters**: narrow the whole dashboard by any category column.
 - **Chart builder**: bar, horizontal bar, line and doughnut charts, showing a count, total, average, minimum or maximum.
@@ -45,6 +46,7 @@ Open the app and select **Try it with sample release data**, or upload one of th
 
 | File | What it shows |
 |---|---|
+| `jira-issues-export.csv` | 345 Jira issues across 8 sprints in Jira's CSV export format, for burnup and burndown |
 | `release-data.csv` | Standard comma-separated file |
 | `release-data.json` | Simple JSON: a list of records with one field per column |
 | `release-data-api-style.json` | Nested JSON shaped like a Jira-style API export, to show automatic flattening |

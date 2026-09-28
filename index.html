@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="version" content="1.2.1">
-<meta name="generator" content="Chartwright 1.2.1">
+<meta name="version" content="1.3.0">
+<meta name="generator" content="Chartwright 1.3.0">
 <title>Chartwright: dashboards from spreadsheets</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -196,6 +196,18 @@ input.dash-title:focus{border-color:var(--accent);background:var(--surface);outl
 .kpi-tools{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;margin:-12px 0 16px}
 .kpi-tools .fine{font-size:12px}
 @media (hover:none){.kpi-tools .fine{display:none}}
+.charts,.card,#charts{scroll-margin-top:96px}
+.head-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.suggest-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;background:var(--surface);border:1px solid var(--accent);border-left-width:4px;border-radius:14px;padding:12px 14px 12px 16px;margin-bottom:16px}
+.sb-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.sb-text span{font-size:14px;color:var(--ink-2)}
+.sb-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
+.sugg{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px;background:var(--bg)}
+.sugg h3{margin:0 0 2px;font-size:16px}
+.sugg .why{margin:8px 0;padding-left:18px;font-size:14px}
+.sugg .why li{margin:2px 0}
+.sugg-charts{font-size:13px;color:var(--ink-2);margin:6px 0 10px}
 @media print{
   .no-print,aside,.builder-panel,dialog,.guide,.guide-btn,.kpi-add,.kpi-edit{display:none!important}
   .dash-title{border:none;padding:0;margin:0}
@@ -279,6 +291,7 @@ input.dash-title:focus{border-color:var(--accent);background:var(--surface);outl
     </aside>
 
     <main>
+      <div id="suggestBanner" class="suggest-banner hidden no-print" role="status"></div>
       <div id="kpis" class="kpis" aria-live="polite"></div>
       <div class="kpi-tools no-print"><button id="kpiAdd" class="btn link" type="button">+ Add key figure</button><span class="fine">Click any key figure to change it.</span></div>
 
@@ -291,8 +304,11 @@ input.dash-title:focus{border-color:var(--accent);background:var(--surface);outl
               <option value="hbar">Horizontal bar</option>
               <option value="line">Line</option>
               <option value="doughnut">Doughnut</option>
+              <option value="burnup">Burnup (scope vs done)</option>
+              <option value="burndown">Burndown (work remaining)</option>
             </select></div>
-          <div class="field"><label for="bGroup">Group by</label><select id="bGroup"></select></div>
+          <div class="field"><label for="bGroup" id="bGroupLabel">Group by</label><select id="bGroup"></select></div>
+          <div class="field hidden" id="bDoneField"><label for="bDone">Done date</label><select id="bDone"></select></div>
           <div class="field"><label for="bValue">Measure</label><select id="bValue"></select></div>
           <div class="field"><label for="bAgg">Calculation</label>
             <select id="bAgg">
@@ -305,7 +321,7 @@ input.dash-title:focus{border-color:var(--accent);background:var(--surface);outl
         </div>
       </div>
 
-      <div class="section-head"><h2>Charts</h2><button id="resetCharts" class="btn link no-print" type="button">Restore suggested charts</button></div>
+      <div class="section-head"><h2>Charts</h2><div class="head-actions no-print"><button id="suggestBtn" class="btn" type="button">✨ Suggest a dashboard</button><button id="resetCharts" class="btn link" type="button">Restore suggested charts</button></div></div>
       <div id="charts" class="charts"></div>
 
       <div class="section-head">
@@ -334,6 +350,14 @@ input.dash-title:focus{border-color:var(--accent);background:var(--surface);outl
     <p class="fine">Uses your Claude account. The guide sees a summary of this data and can filter it and add charts for you.</p>
   </div>
 </section>
+
+<dialog id="suggestDialog" aria-labelledby="suggestTitle" class="wide-dlg">
+  <div class="dlg">
+    <div class="dlg-head"><h2 id="suggestTitle" class="dlg-title">Suggested dashboards</h2><button class="remove" type="button" data-close aria-label="Close">×</button></div>
+    <p class="fine" style="margin-bottom:6px">Based on the columns in your file. Using a suggestion replaces your charts and key figures; you can still edit them afterwards.</p>
+    <div id="suggestList"></div>
+  </div>
+</dialog>
 
 <dialog id="kpiDialog" aria-labelledby="kpiTitle">
   <div class="dlg">
@@ -399,7 +423,7 @@ input.dash-title:focus{border-color:var(--accent);background:var(--surface);outl
 <script>
 (function(){
 const $ = s => document.querySelector(s);
-const APP_VERSION = '1.2.1';
+const APP_VERSION = '1.3.0';
 document.querySelectorAll('.app-version').forEach(el=>el.textContent='v'+APP_VERSION);
 const COUNT = '__count';
 const S = {rows:[], cols:[], filters:{}, charts:[], auto:[], sortCol:null, sortDir:1, q:'', fileName:''};
@@ -429,9 +453,17 @@ function parseDate(v){
   if(v instanceof Date) return isNaN(v)?null:v;
   if(typeof v!=='string') return null;
   const s=v.trim(); let m;
-  if((m=s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$/))){
+  if((m=s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{2,4})(?:,?\s+(\d{1,2}):(\d{2})(?::\d{2})?)?$/))){
     let y=+m[3]; if(y<100) y+=2000;
-    const d=new Date(y,+m[2]-1,+m[1]); return isNaN(d)?null:d;
+    const d=new Date(y,+m[2]-1,+m[1],m[4]?+m[4]:0,m[5]?+m[5]:0); return isNaN(d)?null:d;
+  }
+  // Jira-style dates such as 12/Aug/26 9:15 AM
+  if((m=s.match(/^(\d{1,2})[\/\-\s]([A-Za-zäÄ]{3})[\/\-\s](\d{2,4})(?:\s+(\d{1,2}):(\d{2})(?::\d{2})?\s*([AaPp][Mm])?)?$/))){
+    const MON={jan:0,feb:1,mar:2,'mär':2,apr:3,may:4,mai:4,jun:5,jul:6,aug:7,sep:8,oct:9,okt:9,nov:10,dec:11,dez:11};
+    const mo=MON[m[2].toLowerCase()]; if(mo===undefined) return null;
+    let y=+m[3]; if(y<100) y+=2000;
+    let h=m[4]?+m[4]:0; if(m[6]){const pm=/p/i.test(m[6]); if(h===12) h=pm?12:0; else if(pm) h+=12;}
+    const d=new Date(y,mo,+m[1],h,m[5]?+m[5]:0); return isNaN(d)?null:d;
   }
   if(/^\d{4}-\d{1,2}-\d{1,2}$/.test(s)){const [y,mo,d]=s.split('-').map(Number);return new Date(y,mo-1,d);}
   if(/^\d{4}-\d{1,2}-\d{1,2}[T ]\d/.test(s)){const d=new Date(s.replace(' ','T').replace(/([+-]\d{2})(\d{2})$/,'$1:$2'));return isNaN(d)?null:d;}
@@ -465,6 +497,15 @@ function inferColumns(rows,names){
   }).filter(c=>c.type!=='empty');
 }
 
+function addDerivedColumns(cols,rows){
+  const sc=cols.find(c=>c.type==='date'&&/(created|opened|reported|submitted|raised|logged)/i.test(c.name));
+  const ec=cols.find(c=>c.type==='date'&&c!==sc&&/(resolved|resolution|closed|done|completed|finished)/i.test(c.name));
+  if(!sc||!ec||cols.some(c=>/(cycle|lead) ?time|days to resolve|resolution time/i.test(c.name))) return;
+  const name='Days to resolve'; let n=0;
+  rows.forEach(r=>{const a=r[sc.name],b=r[ec.name];const v=(a&&b&&b>=a)?Math.round((b-a)/864e5*10)/10:null;r[name]=v;if(v!==null)n++;});
+  if(n>=3) cols.push({name,type:'number',distinct:0,filled:n,derived:true,from:[sc.name,ec.name]});
+  else rows.forEach(r=>{delete r[name];});
+}
 function prepare(rawRows,names,fileName){
   const cols=inferColumns(rawRows,names);
   const rows=rawRows.map(r=>{
@@ -478,10 +519,12 @@ function prepare(rawRows,names,fileName){
     });
     return o;
   });
+  addDerivedColumns(cols,rows);
   if(S.titleFile!==fileName){S.title='';S.titleFile=fileName;}
   S.rows=rows; S.cols=cols; S.filters={}; S.sortCol=null; S.sortDir=1; S.q=''; S.fileName=fileName;
   $('#q').value='';
   S.auto=suggestCharts(); S.charts=S.auto.slice();
+  S.suggestions=buildSuggestions(); S.bannerDismissed=false;
   const subj=document.getElementById('mSubject'); if(subj) subj.value='';
   showApp();
 }
@@ -685,6 +728,39 @@ function isPeriodCol(col){
   const res=vals.length>=3&&vals.every(v=>periodKey(v)!==null);
   periodCache.set(key,res); return res;
 }
+function isBurn(spec){return spec&&(spec.type==='burnup'||spec.type==='burndown');}
+function chartData(rows,spec){return isBurn(spec)?burnData(rows,spec):aggregate(rows,spec);}
+function bStart(t,g){const d=new Date(t);if(g==='day')return new Date(d.getFullYear(),d.getMonth(),d.getDate());if(g==='week'){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return x;}return new Date(d.getFullYear(),d.getMonth(),1);}
+function bNext(d,g){const x=new Date(d);if(g==='day')x.setDate(x.getDate()+1);else if(g==='week')x.setDate(x.getDate()+7);else x.setMonth(x.getMonth()+1);return x;}
+function burnData(rows,spec){
+  const empty={labels:[],values:[]};
+  const sc=colByName(spec.group), dc=colByName(spec.done);
+  if(!sc||!dc||sc.type!=='date'||dc.type!=='date') return empty;
+  const items=rows.filter(r=>r[sc.name]).map(r=>({s:r[sc.name].getTime(),e:r[dc.name]?r[dc.name].getTime():null,v:spec.value===COUNT?1:(typeof r[spec.value]==='number'?r[spec.value]:0)}));
+  if(!items.length) return empty;
+  const minS=Math.min(...items.map(i=>i.s));
+  const ends=items.filter(i=>i.e!==null).map(i=>i.e);
+  const maxT=Math.max(...items.map(i=>Math.max(i.s,i.e||0)));
+  // Start the axis just before the first completed item, so a sprint filter gives a sprint-length chart
+  let from=ends.length?Math.max(minS,Math.min(...ends)-864e5):minS;
+  const spanDays=(maxT-from)/864e5;
+  const g=spanDays<=45?'day':spanDays<=400?'week':'month';
+  const buckets=[]; let d=bStart(from,g);
+  while(d.getTime()<=maxT&&buckets.length<500){const n=bNext(d,g);buckets.push({start:d,end:n.getTime()-1});d=n;}
+  const lab=b=>g==='month'?fmtM.format(b.start):fmtD.format(b.start);
+  const scope=[],done=[];
+  buckets.forEach(b=>{
+    let sv=0,dv=0;
+    for(const i of items){ if(i.s<=b.end) sv+=i.v; if(i.e!==null&&i.e<=b.end) dv+=i.v; }
+    scope.push(Math.round(sv*100)/100); done.push(Math.round(dv*100)/100);
+  });
+  const labels=buckets.map(lab);
+  if(spec.type==='burnup') return {labels,values:done,series:[{name:'Scope',values:scope,color:1},{name:'Done',values:done,color:0,fill:true}],unit:g};
+  const remaining=scope.map((v,i)=>Math.round((v-done[i])*100)/100);
+  const r0=remaining[0], n=remaining.length;
+  const ideal=remaining.map((_,i)=>n>1?Math.round(r0*(1-i/(n-1))*100)/100:0);
+  return {labels,values:remaining,series:[{name:'Remaining',values:remaining,color:3,fill:true},{name:'Ideal',values:ideal,color:5,dashed:true}],unit:g};
+}
 function aggregate(rows,spec){
   const col=colByName(spec.group); if(!col) return {labels:[],values:[]};
   const agg=spec.value===COUNT?'count':spec.agg;
@@ -704,8 +780,9 @@ function aggregate(rows,spec){
     entries.sort((a,b)=>a[0]<b[0]?-1:1);
     return {labels:entries.map(e=>dateLabel(e[0],g)),values:entries.map(e=>aggFn(e[1],agg))};
   }
-  if(isPeriodCol(col)){
-    entries.sort((a,b)=>(periodKey(a[0])||a[0])<(periodKey(b[0])||b[0])?-1:1);
+  if(isPeriodCol(col)||(spec.type!=='doughnut'&&/(sprint|iteration|increment|\bpi\b|wave|phase|stage|version)/i.test(col.name))){
+    if(isPeriodCol(col)) entries.sort((a,b)=>(periodKey(a[0])||a[0])<(periodKey(b[0])||b[0])?-1:1);
+    else entries.sort((a,b)=>String(a[0]).localeCompare(String(b[0]),undefined,{numeric:true}));
     return {labels:entries.map(e=>e[0]),values:entries.map(e=>aggFn(e[1],agg))};
   }
   entries=entries.map(([k,a])=>[k,a,aggFn(a,agg)]).sort((a,b)=>b[2]-a[2]);
@@ -717,6 +794,9 @@ function aggregate(rows,spec){
   return {labels:entries.map(e=>e[0]),values:entries.map(e=>e[2])};
 }
 function titleFor(spec){
+  const what=spec.value===COUNT?'items':spec.value;
+  if(spec.type==='burnup') return 'Burnup: '+what+' (scope vs done)';
+  if(spec.type==='burndown') return 'Burndown: '+what+' remaining';
   if(spec.value===COUNT) return 'Rows by '+spec.group;
   const n={sum:'Total',avg:'Average',min:'Minimum',max:'Maximum'}[spec.agg];
   return n+' '+spec.value+' by '+spec.group;
@@ -779,6 +859,7 @@ function showApp(){
   $('#landing').classList.add('hidden'); $('#app').classList.remove('hidden');
   S.kpis=defaultKpis();
   syncTitle();
+  renderSuggestBanner();
   firstPaint=true;
   renderColumns(); renderFilters(); renderBuilder(); renderData();
   if(typeof guideReset==='function') guideReset();
@@ -817,11 +898,116 @@ function syncTitle(){
   $('#fname').textContent='Source: '+S.fileName;
   document.title=dashName()+' | Chartwright';
 }
+function colBy(re,types){return S.cols.find(c=>(!types||types.includes(c.type))&&re.test(c.name));}
+function detectProfile(){
+  const P={};
+  P.key=S.cols.find(c=>/(^|\s)(issue )?key$|issue id|ticket (id|number)/i.test(c.name))||S.cols.find(c=>{const v=S.rows.slice(0,60).map(r=>r[c.name]).filter(x=>x!==null);return v.length>=3&&v.every(x=>/^[A-Z][A-Z0-9]+-\d+$/.test(String(x)));});
+  P.status=colBy(/^(status|state)$|status category|workflow/i,['category','text'])||colBy(/status/i,['category']);
+  P.created=colBy(/(created|opened|reported|submitted|raised|logged)/i,['date']);
+  P.done=colBy(/(resolved|resolution ?date|closed|done|completed|finished)/i,['date']);
+  P.points=colBy(/story ?points?|story point estimate/i,['number'])||colBy(/(^|\s)points$/i,['number']);
+  P.sprint=colBy(/sprint|iteration/i,['category','text']);
+  P.itype=colBy(/(issue|work ?item|ticket|request) ?type/i,['category'])||colBy(/^type$/i,['category']);
+  P.assignee=colBy(/assignee|assigned|owner/i,['category','text']);
+  P.priority=colBy(/priority/i,['category']);
+  P.cycle=colBy(/days to resolve|cycle time|lead time|resolution time/i,['number']);
+  P.severity=colBy(/severity|impact|urgency/i,['category']);
+  P.sla=colBy(/sla/i,['category']);
+  P.area=colBy(/category|service|component|application|module/i,['category']);
+  P.money=rankedNumbers().find(c=>/(eur|usd|gbp|chf|€|\$|revenue|sales|cost|amount|spend|budget|actual)/i.test(c.name));
+  P.acct=colBy(/account type/i,['category'])||colBy(/account|category/i,['category']);
+  P.costcenter=colBy(/cost ?cent(er|re) name/i,['category'])||colBy(/cost ?cent(er|re)/i,['category'])||colBy(/department/i,['category']);
+  P.entity=colBy(/entity/i,['category'])||colBy(/region|country/i,['category'])||colBy(/company/i,['category']);
+  P.date=S.cols.find(c=>c.type==='date'); P.period=S.cols.find(isPeriodCol);
+  P.agileScore=(P.key?2:0)+(P.status?1:0)+(P.created?1:0)+(P.done?1:0)+(P.points?1:0)+(P.sprint?1:0)+(P.itype?0.5:0);
+  return P;
+}
+function dedupeSpecs(list){const seen=new Set();return list.filter(o=>{const k=o.type+'|'+o.group+'|'+o.value+'|'+o.agg+'|'+(o.done||'');if(seen.has(k))return false;seen.add(k);return true;});}
+function buildSuggestions(){
+  const P=detectProfile(), out=[];
+  const agile=P.agileScore>=3.5&&P.created&&(P.done||P.points||P.sprint)&&!(P.severity&&!P.points&&!P.sprint);
+  if(agile){
+    const val=P.points?P.points.name:COUNT, charts=[], why=[], kpis=[{kind:'rows',label:P.key?'Issues':'Items'}];
+    if(P.key){const ex=S.rows.find(r=>r[P.key.name]);why.push('Keys such as '+(ex?ex[P.key.name]:'ABC-123')+' look like a Jira (or similar) ticket export.');}
+    if(P.done){
+      charts.push({type:'burnup',group:P.created.name,done:P.done.name,value:val,agg:'sum'});
+      charts.push({type:'burndown',group:P.created.name,done:P.done.name,value:val,agg:'sum'});
+      why.push('“'+P.created.name+'” and “'+P.done.name+'” let a burnup compare total scope with completed work, and a burndown show the work still open.');
+    }else{
+      charts.push({type:'line',group:P.created.name,value:COUNT,agg:'sum'});
+      why.push('There is no resolved or done date, so burnup and burndown can’t be drawn. Export the “Resolved” field from Jira to get them.');
+    }
+    if(P.status) charts.push({type:P.status.distinct<=6?'doughnut':'bar',group:P.status.name,value:COUNT,agg:'sum'});
+    if(P.sprint&&P.sprint.type==='category') charts.push({type:'bar',group:P.sprint.name,value:val,agg:'sum'});
+    if(P.itype) charts.push({type:'bar',group:P.itype.name,value:val,agg:'sum'});
+    if(P.assignee&&P.assignee.distinct<=60) charts.push({type:'hbar',group:P.assignee.name,value:val,agg:'sum'});
+    if(P.cycle&&(P.itype||P.priority)) charts.push({type:'bar',group:(P.itype||P.priority).name,value:P.cycle.name,agg:'avg'});
+    if(P.points){kpis.push({kind:'measure',col:P.points.name,calc:'sum',label:'Total '+P.points.name});why.push('“'+P.points.name+'” is used as the measure, so charts show effort rather than ticket counts.');}
+    if(P.cycle){kpis.push({kind:'measure',col:P.cycle.name,calc:'avg',label:'Average '+P.cycle.name.toLowerCase()});why.push('“'+P.cycle.name+'” ('+(colByName(P.cycle.name).derived?'calculated from the two dates':'from your file')+') shows how long items take from start to done.');}
+    if(P.assignee) kpis.push({kind:'distinct',col:P.assignee.name,label:'People assigned'});
+    kpis.push({kind:'daterange',col:P.created.name});
+    if(P.sprint) why.push('Tip: filter by “'+P.sprint.name+'” to turn the burndown into a sprint burndown.');
+    out.push({id:'agile',name:'Agile delivery dashboard',desc:(P.done?'Burnup and burndown, ':'')+'status, workload and '+(P.cycle?'cycle time':'work mix')+'.',why,charts:dedupeSpecs(charts).slice(0,7),kpis:kpis.slice(0,6)});
+  }
+  if(P.severity&&(P.created||P.date)&&!agile){
+    const d=P.created||P.date, rt=colBy(/resolution|hours|duration|time to/i,['number']), charts=[], kpis=[{kind:'rows',label:'Tickets'}];
+    charts.push({type:'line',group:d.name,value:COUNT,agg:'sum'});
+    charts.push({type:P.severity.distinct<=6?'doughnut':'bar',group:P.severity.name,value:COUNT,agg:'sum'});
+    if(rt) charts.push({type:'bar',group:P.severity.name,value:rt.name,agg:'avg'});
+    if(P.area) charts.push({type:'hbar',group:P.area.name,value:COUNT,agg:'sum'});
+    if(P.sla) charts.push({type:'doughnut',group:P.sla.name,value:COUNT,agg:'sum'});
+    if(P.status) charts.push({type:'bar',group:P.status.name,value:COUNT,agg:'sum'});
+    if(rt) kpis.push({kind:'measure',col:rt.name,calc:'avg'});
+    if(P.area) kpis.push({kind:'distinct',col:P.area.name});
+    kpis.push({kind:'daterange',col:d.name});
+    out.push({id:'service',name:'Service and incident dashboard',desc:'Ticket trend, severity mix'+(rt?', resolution time':'')+(P.sla?' and SLA performance':'')+'.',why:['“'+P.severity.name+'” and “'+d.name+'” look like incident or service-desk data.'].concat(P.sla?['“'+P.sla.name+'” shows how often targets were met.']:[]),charts:dedupeSpecs(charts).slice(0,6),kpis});
+  }
+  if(P.money&&(P.date||P.period)&&(P.acct||P.costcenter)){
+    const t=P.period||P.date, charts=[], kpis=[{kind:'rows'},{kind:'measure',col:P.money.name,calc:'sum'},{kind:'measure',col:P.money.name,calc:'avg'}], why=['“'+P.money.name+'” over “'+t.name+'” looks like financial data.'];
+    charts.push({type:'line',group:t.name,value:P.money.name,agg:'sum'});
+    if(P.acct) charts.push({type:'bar',group:P.acct.name,value:P.money.name,agg:'sum'});
+    if(P.costcenter) charts.push({type:'hbar',group:P.costcenter.name,value:P.money.name,agg:'sum'});
+    if(P.entity) charts.push({type:'doughnut',group:P.entity.name,value:P.money.name,agg:'sum'});
+    if(P.status) charts.push({type:'bar',group:P.status.name,value:P.money.name,agg:'sum'});
+    if(P.acct&&P.acct.distinct<=12) why.push('Tip: filter by “'+P.acct.name+'” so revenue and costs are not added together.');
+    if(P.date) kpis.push({kind:'daterange',col:P.date.name});
+    out.push({id:'finance',name:'Finance dashboard',desc:'Spend or revenue over time, by account, cost center and entity.',why,charts:dedupeSpecs(charts).slice(0,6),kpis});
+  }
+  out.push({id:'overview',name:'General overview',desc:'The automatic selection based on your column types.',why:['Chooses the clearest categories and number columns in the file.'],charts:S.auto.slice(),kpis:defaultKpis()});
+  return out;
+}
+function applySuggestion(id,mode){
+  const tpl=(S.suggestions||[]).find(x=>x.id===id); if(!tpl) return null;
+  if(mode==='add'){S.charts=dedupeSpecs(S.charts.concat(tpl.charts));}
+  else{S.charts=tpl.charts.slice();S.kpis=tpl.kpis.map(k=>Object.assign({},k));}
+  S.bannerDismissed=true; renderSuggestBanner(); renderData();
+  return tpl;
+}
+function renderSuggestBanner(){
+  const b=$('#suggestBanner'), top=(S.suggestions||[])[0];
+  if(!top||top.id==='overview'||S.bannerDismissed){b.classList.add('hidden');return;}
+  b.innerHTML='<div class="sb-text"><strong>✨ Suggested for this data: '+esc(top.name)+'</strong><span>'+esc(top.desc)+'</span></div>'
+    +'<div class="sb-actions"><button class="btn primary" type="button" id="sbApply">Apply suggestion</button><button class="btn" type="button" id="sbMore">Why, and other options</button><button class="remove" type="button" id="sbClose" aria-label="Dismiss suggestion">×</button></div>';
+  b.classList.remove('hidden');
+  $('#sbApply').addEventListener('click',()=>applySuggestion(top.id,'replace'));
+  $('#sbMore').addEventListener('click',openSuggestDialog);
+  $('#sbClose').addEventListener('click',()=>{S.bannerDismissed=true;b.classList.add('hidden');});
+}
+function openSuggestDialog(){
+  const list=$('#suggestList');
+  list.innerHTML=(S.suggestions||[]).map(t=>'<section class="sugg"><h3>'+esc(t.name)+'</h3><p class="fine">'+esc(t.desc)+'</p>'
+    +'<ul class="why">'+t.why.map(w=>'<li>'+esc(w)+'</li>').join('')+'</ul>'
+    +'<p class="sugg-charts"><b>Charts:</b> '+t.charts.map(c=>esc(titleFor(c))).join(' · ')+'</p>'
+    +'<div class="dlg-actions"><button class="btn primary" type="button" data-apply="'+t.id+'">Use this dashboard</button><button class="btn" type="button" data-add="'+t.id+'">Add its charts to mine</button></div></section>').join('');
+  list.querySelectorAll('[data-apply]').forEach(x=>x.addEventListener('click',()=>{$('#suggestDialog').close();applySuggestion(x.dataset.apply,'replace');$('#charts').scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'});}));
+  list.querySelectorAll('[data-add]').forEach(x=>x.addEventListener('click',()=>{$('#suggestDialog').close();applySuggestion(x.dataset.add,'add');$('#charts').scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'});}));
+  $('#suggestDialog').showModal();
+}
 function renderData(){renderKPIs();renderCharts();renderTable();}
 
 function renderColumns(){
   const label={number:'Number',date:'Date',category:'Category',text:'Text'};
-  $('#cols').innerHTML=S.cols.map(c=>'<li><span title="'+esc(c.name)+'">'+esc(c.name)+'</span><span class="tag">'+label[c.type]+'</span></li>').join('');
+  $('#cols').innerHTML=S.cols.map(c=>'<li><span title="'+esc(c.name)+'">'+esc(c.name)+'</span><span class="tag">'+label[c.type]+(c.derived?' (calculated)':'')+'</span></li>').join('');
 }
 
 function renderFilters(){
@@ -845,13 +1031,37 @@ function updateFilterNote(){
   $('#clear').classList.toggle('hidden',!n);
 }
 
+function updateBuilder(){
+  const burn=['burnup','burndown'].includes($('#bType').value);
+  const dates=S.cols.filter(c=>c.type==='date');
+  if(burn){
+    const P=detectProfile();
+    $('#bGroupLabel').textContent='Start date (e.g. Created)';
+    $('#bGroup').innerHTML=dates.map(c=>'<option>'+esc(c.name)+'</option>').join('');
+    $('#bDone').innerHTML=dates.map(c=>'<option>'+esc(c.name)+'</option>').join('');
+    if(P.created) $('#bGroup').value=P.created.name;
+    if(P.done) $('#bDone').value=P.done.name; else if(dates[1]) $('#bDone').value=dates[1].name;
+    $('#bAgg').disabled=true;
+  }else{
+    const groups=S.cols.filter(c=>c.type==='category'||c.type==='date'||(c.type==='text'&&c.distinct<=100));
+    $('#bGroupLabel').textContent='Group by';
+    $('#bGroup').innerHTML=groups.map(c=>'<option>'+esc(c.name)+'</option>').join('');
+    $('#bAgg').disabled=$('#bValue').value===COUNT;
+  }
+  $('#bDoneField').classList.toggle('hidden',!burn);
+  $('#bAdd').disabled=!$('#bGroup').options.length||(burn&&dates.length<2);
+}
 function renderBuilder(){
   const groups=S.cols.filter(c=>c.type==='category'||c.type==='date'||(c.type==='text'&&c.distinct<=100));
   $('#bGroup').innerHTML=groups.map(c=>'<option>'+esc(c.name)+'</option>').join('');
+  const nd=S.cols.filter(c=>c.type==='date').length;
+  [...$('#bType').options].forEach(o=>{if(o.value==='burnup'||o.value==='burndown') o.disabled=nd<2;});
+  if(nd<2&&['burnup','burndown'].includes($('#bType').value)) $('#bType').value='bar';
   const nums=S.cols.filter(c=>c.type==='number');
   $('#bValue').innerHTML='<option value="'+COUNT+'">Number of rows</option>'+nums.map(c=>'<option>'+esc(c.name)+'</option>').join('');
   $('#bAgg').disabled=true;
   $('#bAdd').disabled=!groups.length;
+  updateBuilder();
 }
 
 function renderKPIs(){
@@ -988,19 +1198,19 @@ function renderCharts(){
 
   S.charts.forEach((spec,idx)=>{
     const card=document.createElement('section');
-    card.className='card'+(spec.type==='line'?' wide':'');
+    card.className='card'+(spec.type==='line'||isBurn(spec)?' wide':'');
     const title=titleFor(spec);
     card.innerHTML='<div class="card-head"><h3>'+esc(title)+'</h3><button class="remove no-print" type="button" aria-label="Remove chart: '+esc(title)+'">×</button></div><div class="chart-wrap"></div>';
     card.querySelector('.remove').addEventListener('click',()=>{S.charts.splice(idx,1);renderCharts();});
     grid.appendChild(card);
     const wrap=card.querySelector('.chart-wrap');
-    const {labels,values}=aggregate(rows,spec);
-    if(!labels.length){wrap.innerHTML='<p class="empty">No data for the current filters.</p>';return;}
+    const cd=chartData(rows,spec), labels=cd.labels, values=cd.values;
+    if(!labels.length){wrap.innerHTML='<p class="empty">'+(isBurn(spec)?'No items with a start date for the current filters.':'No data for the current filters.')+'</p>';return;}
     const canvas=document.createElement('canvas');
     canvas.setAttribute('role','img'); canvas.setAttribute('aria-label',title);
     wrap.appendChild(canvas);
     try{
-      chartObjs.push({title,chart:new Chart(canvas,chartConfig(spec,labels,values,t,idx,{narrow}))});
+      chartObjs.push({title,chart:new Chart(canvas,chartConfig(spec,labels,values,t,idx,{narrow,series:cd.series}))});
     }catch(err){
       console.error('Chart failed:',title,err);
       wrap.innerHTML='<p class="empty">This chart couldn’t be drawn. Try removing it and adding it again.</p>';
@@ -1008,8 +1218,22 @@ function renderCharts(){
   });
 }
 
+function applyStill(cfg,t,o){
+  if(o.still){
+    cfg.options.responsive=false; cfg.options.animation=false; cfg.options.devicePixelRatio=2;
+    cfg.plugins=[{id:'paper',afterDraw(c){const x=c.ctx;x.save();x.globalCompositeOperation='destination-over';x.fillStyle=t.surface;x.fillRect(0,0,c.width,c.height);x.restore();}}];
+  }
+  return cfg;
+}
 function chartConfig(spec,labels,values,t,idx,o){
   o=o||{};
+  if(o.series){
+    const cfg={type:'line',data:{labels,datasets:o.series.map((sr,i)=>{const col=t.pal[(sr.color!==undefined?sr.color:i)%t.pal.length];return {label:sr.name,data:sr.values,borderColor:col,backgroundColor:hexA(col,.12),fill:!!sr.fill,borderDash:sr.dashed?[6,4]:[],borderWidth:2,tension:.15,pointRadius:labels.length>40?0:2,pointBackgroundColor:col};})},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:true,position:'top',align:'end',labels:{color:t.ink2,boxWidth:12,boxHeight:12}},tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+fmt.format(ctx.parsed.y)}}},
+        scales:{x:{ticks:{color:t.ink2,maxRotation:0,autoSkip:true},grid:{display:false},border:{display:false}},y:{beginAtZero:true,ticks:{color:t.ink2,callback:v=>fmtC.format(v)},grid:{color:t.line},border:{display:false}}}}};
+    return applyStill(cfg,t,o);
+  }
   const title=titleFor(spec);
   const type=spec.type==='hbar'?'bar':spec.type;
   const color=t.pal[idx%t.pal.length];
@@ -1039,11 +1263,7 @@ function chartConfig(spec,labels,values,t,idx,o){
       scales
     }
   };
-  if(o.still){
-    cfg.options.responsive=false; cfg.options.animation=false; cfg.options.devicePixelRatio=2;
-    cfg.plugins=[{id:'paper',afterDraw(c){const x=c.ctx;x.save();x.globalCompositeOperation='destination-over';x.fillStyle=t.surface;x.fillRect(0,0,c.width,c.height);x.restore();}}];
-  }
-  return cfg;
+  return applyStill(cfg,t,o);
 }
 
 function cell(v,type){
@@ -1098,10 +1318,13 @@ $('#homeBtn').addEventListener('click',goHome);
 $('#resumeBtn').addEventListener('click',resumeDashboard);
 $('#clear').addEventListener('click',()=>{S.filters={};$('#filters').querySelectorAll('select').forEach(s=>s.value='');updateFilterNote();renderData();});
 $('#resetCharts').addEventListener('click',()=>{S.charts=S.auto.slice();renderCharts();});
-$('#bValue').addEventListener('change',e=>{$('#bAgg').disabled=e.target.value===COUNT;});
+$('#suggestBtn').addEventListener('click',openSuggestDialog);
+$('#bValue').addEventListener('change',e=>{$('#bAgg').disabled=e.target.value===COUNT||['burnup','burndown'].includes($('#bType').value);});
+$('#bType').addEventListener('change',updateBuilder);
 $('#bAdd').addEventListener('click',()=>{
   const spec={type:$('#bType').value,group:$('#bGroup').value,value:$('#bValue').value,agg:$('#bAgg').value};
   if(!spec.group) return;
+  if(isBurn(spec)){spec.done=$('#bDone').value;spec.agg='sum';if(spec.done===spec.group){alert('Choose a different column for the done date.');return;}}
   S.charts.push(spec); renderCharts();
   const cards=$('#charts').querySelectorAll('.card'); if(cards.length) cards[cards.length-1].scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'nearest'});
 });
@@ -1152,7 +1375,8 @@ function chartPNG(ch){
 function chartSummaries(){
   const rows=filtered();
   return S.charts.map(spec=>{
-    const {labels,values}=aggregate(rows,spec);
+    const cd=chartData(rows,spec), labels=cd.labels, values=cd.values;
+    if(cd.series){const last=labels.length-1;return {title:titleFor(spec),note:'Latest, '+(labels[last]||''),pairs:last<0?[]:cd.series.filter(x=>!x.dashed).map(x=>[x.name,x.values[last]])};}
     const col=colByName(spec.group), isDate=col&&col.type==='date';
     let pairs=labels.map((l,i)=>[l,values[i]]);
     pairs=isDate?pairs.slice(-6):pairs.slice(0,5);
@@ -1208,11 +1432,11 @@ function emailChartImages(){
   if(typeof Chart==='undefined') return [];
   const rows=filtered(), out=[];
   S.charts.forEach((spec,idx)=>{
-    const {labels,values}=aggregate(rows,spec); if(!labels.length) return;
-    const c=document.createElement('canvas'); c.width=560; c.height=spec.type==='line'?240:260;
+    const cd=chartData(rows,spec), labels=cd.labels, values=cd.values; if(!labels.length) return;
+    const c=document.createElement('canvas'); c.width=560; c.height=spec.type==='line'||isBurn(spec)?240:260;
     c.style.width=c.width+'px'; c.style.height=c.height+'px';
     let ch;
-    try{ ch=new Chart(c,chartConfig(spec,labels,values,LIGHT,idx,{still:true})); out.push({title:titleFor(spec),src:ch.toBase64Image('image/png'),w:560,h:c.height/1}); }
+    try{ ch=new Chart(c,chartConfig(spec,labels,values,LIGHT,idx,{still:true,series:cd.series})); out.push({title:titleFor(spec),src:ch.toBase64Image('image/png'),w:560,h:c.height/1}); }
     catch(e){}
     finally{ if(ch) ch.destroy(); }
   });
@@ -1527,10 +1751,12 @@ function guideRules(){
     '- Refer to columns by their exact names. If the data cannot answer a question, say so and say what data would be needed.',
     G.tools?'- When the person asks to show, filter, focus on, compare or chart something, make the change with the action tools, then say in one sentence what you changed. Only change the dashboard when they ask for it or clearly agree.':'- You cannot change the dashboard yourself here, so explain the steps instead.',
     '- Point out notable patterns or outliers when asked for insight, and suggest a next step (a filter or chart) where useful.',
+    G.tools?'- When asked which dashboard or charts fit the data, call suggest_dashboards, recommend the best option in a sentence or two with the reason, and apply it with apply_dashboard only if they agree.':'- When asked which dashboard fits the data, point them to the “Suggest a dashboard” button.',
     '',
     'How the app works (for how-to questions):',
     '- Filters (left panel): narrow the whole dashboard to one value per category column. "Clear filters" removes them.',
-    '- Add a chart (above the charts): choose Chart type (Bar, Horizontal bar, Line, Doughnut), Group by, Measure (Number of rows or a number column) and Calculation (Total, Average, Minimum, Maximum), then "Add chart". Remove a chart with the × on its card; "Restore suggested charts" brings back the automatic set.',
+    '- Suggest a dashboard (button above the charts, and a banner when the data type is recognised): Chartwright detects Jira/agile, incident and finance data and proposes a complete dashboard with reasons. For ticket data with created and resolved dates it proposes burnup (cumulative scope vs done) and burndown (open work with an ideal line) charts; filtering by Sprint turns the burndown into a sprint burndown. When Chartwright finds created and resolved dates it adds a calculated "Days to resolve" column.',
+    '- Add a chart (above the charts): choose Chart type (Bar, Horizontal bar, Line, Doughnut, Burnup, Burndown), Group by, Measure (Number of rows or a number column) and Calculation (Total, Average, Minimum, Maximum), then "Add chart". Remove a chart with the × on its card; "Restore suggested charts" brings back the automatic set.',
     '- Dashboard name (top bar): click it or the Rename button to rename the dashboard; the name is used in the PDF, reports and emails.',
     '- Key figures (top row): click any tile (or its pencil) to change what it shows (a number column with Total, Average, Minimum or Maximum; a count of different values; a date range; or the number of rows), rename or remove it. "+ Add key figure" adds one, up to 6.',
     '- Data table (bottom): search rows and sort by clicking a column heading.',
@@ -1629,13 +1855,23 @@ function guideTools(){
     {name:'add_chart',
      description:'Add a chart to the dashboard. Returns the chart title.',
      inputSchema:{type:'object',properties:{
-       type:{type:'string',enum:['bar','hbar','line','doughnut'],description:'bar, hbar (horizontal bar, good for many or long labels), line (for dates), doughnut (for 2 to 7 parts of a whole).'},
-       group_by:{type:'string',description:'Column for the categories or time axis.'},
+       type:{type:'string',enum:['bar','hbar','line','doughnut','burnup','burndown'],description:'bar, hbar (horizontal bar, good for many or long labels), line (for dates), doughnut (for 2 to 7 parts of a whole), burnup (cumulative scope vs done over time) or burndown (open work over time with an ideal line). Burnup and burndown need a start date column as group_by and a done date column as done_date.'},
+       group_by:{type:'string',description:'Column for the categories or time axis; for burnup/burndown the start or created date column.'},
+       done_date:{type:'string',description:'Burnup/burndown only: the date column when an item was finished (e.g. Resolved).'},
        measure:{type:'string',description:'Number column; omit to count rows.'},
        calc:{type:'string',enum:['sum','avg','min','max'],description:'Default sum.'}
      },required:['type','group_by']},
      execute(i){
        const g=needCol(i.group_by,'grouping');
+       if(i.type==='burnup'||i.type==='burndown'){
+         if(g.type!=='date') throw new Error('"'+g.name+'" is not a date column. Burnup and burndown need a start date column.');
+         const dn=needCol(i.done_date||(detectProfile().done||{}).name,'done date');
+         if(dn.type!=='date'||dn.name===g.name) throw new Error('Choose a different date column for when items were done.');
+         const bm=i.measure?needCol(i.measure,'measure'):null; if(bm&&bm.type!=='number') throw new Error('"'+bm.name+'" is not a number column.');
+         const bs={type:i.type,group:g.name,done:dn.name,value:bm?bm.name:COUNT,agg:'sum'};
+         S.charts.push(bs); renderCharts(); addAction('Added chart: '+titleFor(bs));
+         return {added:titleFor(bs),chart_number:S.charts.length};
+       }
        if(!(g.type==='category'||g.type==='date'||(g.type==='text'&&g.distinct<=100))) throw new Error('"'+g.name+'" has too many different values to chart.');
        const m=i.measure?needCol(i.measure,'measure'):null;
        if(m&&m.type!=='number') throw new Error('"'+m.name+'" is not a number column.');
@@ -1654,6 +1890,13 @@ function guideTools(){
        const t=titleFor(S.charts[n-1]); S.charts.splice(n-1,1); renderCharts(); addAction('Removed chart: '+t);
        return {remaining:S.charts.map((c,k)=>(k+1)+'. '+titleFor(c))};
      }},
+    {name:'suggest_dashboards',
+     description:'Get dashboard suggestions that Chartwright derived from the columns of this file (for example an agile dashboard with burnup and burndown for Jira data). Returns each option with id, name, reasons and charts. Use it when the person asks what dashboard or charts would suit their data.',
+     execute(){return (S.suggestions||[]).map(t=>({id:t.id,name:t.name,description:t.desc,reasons:t.why,charts:t.charts.map(titleFor),key_figures:t.kpis.map(kpiAutoLabel)}));}},
+    {name:'apply_dashboard',
+     description:'Apply one suggested dashboard by id. mode "replace" (default) swaps in its charts and key figures; "add" appends its charts to the current ones. Only use when the person asks for it or agrees.',
+     inputSchema:{type:'object',properties:{id:{type:'string'},mode:{type:'string',enum:['replace','add']}},required:['id']},
+     execute(i){const t=applySuggestion(i.id,i.mode==='add'?'add':'replace'); if(!t) throw new Error('No suggestion with id "'+i.id+'". Call suggest_dashboards first.'); addAction((i.mode==='add'?'Added charts from: ':'Applied: ')+t.name); return {applied:t.name,charts:S.charts.map(titleFor)};}},
     {name:'restore_suggested_charts',
      description:'Replace the current charts with the automatically suggested set.',
      execute(){S.charts=S.auto.slice();renderCharts();addAction('Restored the suggested charts');return {charts:S.charts.map(titleFor)};}},

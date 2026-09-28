@@ -3,6 +3,19 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.3.0] - 2026-09-28
+
+### Added
+- **Suggest a dashboard**: Chartwright recognises the type of data and proposes a complete dashboard with the reasons behind it. A banner appears when a specific type is detected, and the "✨ Suggest a dashboard" button lists all options. Recognised types: Jira and agile ticket data, service and incident data, and finance data, plus a general overview for anything else.
+- **Burnup and burndown charts**: burnup compares cumulative scope with completed work; burndown shows open work against an ideal line. Available in "Add a chart" and suggested automatically for ticket data with created and resolved dates. Filtering by sprint turns the burndown into a sprint burndown.
+- **Days to resolve**: a calculated column added automatically when a file has created and resolved (or closed) dates.
+- Jira date formats such as `12/Aug/26 9:15 AM`, and German date-times such as `23.07.2026 14:30`.
+- The guide can suggest and apply dashboards, and add burnup and burndown charts.
+- Sample file `jira-issues-export.csv`: 345 issues across 8 sprints in Jira's CSV export format.
+
+### Changed
+- Sprints, iterations, phases and versions are shown in their natural order (Sprint 1, 2, 3 …) instead of by size.
+
 ## [1.2.1] - 2026-09-25
 
 ### Changed
