@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.5.0** · [Changelog](CHANGELOG.md)
+**Version 1.6.0** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -60,7 +60,7 @@ Open the app and select **Try it with sample release data**, or upload one of th
 
 ## Plans and waitlist
 
-`plans.html` shows the Free plan (available now) and the upcoming Pro and Enterprise plans, with a waitlist form.
+The home page (`index.html`) shows the Free plan (available now) and the upcoming Pro and Enterprise plans, with a waitlist form. The app itself is `app.html`.
 
 The form uses **Netlify Forms**: when the site is deployed on Netlify, Netlify detects the form automatically and stores submissions under **Site → Forms → waitlist**, where you can also turn on email notifications. On other hosts (or when opening the file locally) the form can't submit and shows a message instead.
 
@@ -68,9 +68,9 @@ Before collecting emails, add an `impressum.html` and `privacy.html` (linked in 
 
 ## Run it yourself
 
-Chartwright is a single `index.html` file with no build step.
+The site has no build step: `index.html` is the home and plans page, `app.html` is the app, and `_redirects` sends old `/plans` links to the home page.
 
-- **Locally**: download `index.html` and open it in your browser.
+- **Locally**: download `app.html` and open it in your browser to use the app.
 - **GitHub Pages**: in this repository go to **Settings → Pages**, set **Source** to *Deploy from a branch*, choose the `main` branch and the `/ (root)` folder, and select **Save**. The site appears at `https://<your-username>.github.io/<repository-name>/` after a minute or two.
 
 An internet connection is needed on first load, because the libraries below are loaded from a CDN.
@@ -95,7 +95,7 @@ Chartwright uses [Semantic Versioning](https://semver.org/). The current version
 
 To release a new version:
 
-1. Update `APP_VERSION` near the top of the script in `index.html` (and the `version` meta tag).
+1. Update `APP_VERSION` near the top of the script in `app.html` (and the `version` meta tag).
 2. Add an entry at the top of `CHANGELOG.md`.
 3. Commit, then create a GitHub release with a tag such as `v1.1.0`.
 

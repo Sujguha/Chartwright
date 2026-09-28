@@ -3,6 +3,14 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.6.0] - 2026-09-28
+
+### Changed
+- **The plans page is now the home page** (`index.html`), with Plans and Waitlist links in the top bar.
+- **The app moved to `app.html`** (served at `/app` on Netlify). Every "Open Chartwright" button leads there.
+- Old `/plans` and `/plans.html` addresses redirect to the home page through a Netlify `_redirects` file, so shared waitlist links keep working.
+- The app's start page links back to the home page and waitlist.
+
 ## [1.5.0] - 2026-09-28
 
 ### Added
