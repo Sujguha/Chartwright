@@ -3,6 +3,11 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.6.1] - 2026-09-28
+
+### Changed
+- Home page wording is now general rather than release-specific: "Dashboards from your Excel, Jira and SAP exports." The Pro plan describes "one combined view across all three tools".
+
 ## [1.6.0] - 2026-09-28
 
 ### Changed
