@@ -1,0 +1,18 @@
+{
+  // Cloudflare Worker for chartwright.de: website files + waitlist API
+  "name": "chartwright",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "chartwright-waitlist",
+      // D1 database "chartwright-waitlist"
+      "database_id": "b5cdacbd-0370-443b-8849-0d5213b8f67a"
+    }
+  ]
+}

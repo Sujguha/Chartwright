@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.7.1** · [Changelog](CHANGELOG.md)
+**Version 1.8.0** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -61,17 +61,38 @@ Open the app and select **Try it with sample release data**, or upload one of th
 
 ## Plans and waitlist
 
-The home page (`index.html`) shows the Free plan (available now) and the upcoming Pro and Enterprise plans, with a waitlist form. The app itself is `app.html`.
+The home page (`index.html`) shows the Free plan (available now), the Pro preview and the upcoming Enterprise plan, with a waitlist form. The app itself is `app.html`.
 
-Live site: **https://chartwright.de** (Cloudflare Pages).
+Waitlist sign-ups are sent to `POST /api/waitlist`, handled by `worker.js` and stored in a Cloudflare **D1** database.
 
-The form currently uses **Netlify Forms**, which does not work on Cloudflare Pages and is being replaced: when the site is deployed on Netlify, Netlify detects the form automatically and stores submissions under **Site → Forms → waitlist**, where you can also turn on email notifications. On other hosts (or when opening the file locally) the form can't submit and shows a message instead.
+## Hosting on Cloudflare
 
-Before collecting emails, add an `impressum.html` and `privacy.html` (linked in the page footer). The privacy page should explain that waitlist emails are stored with Netlify and used only for launch updates.
+The site runs as a **Cloudflare Worker with static assets**, deployed automatically from this repository.
+
+| File | Purpose |
+|---|---|
+| `wrangler.jsonc` | Cloudflare configuration: website files, the Worker and the D1 database binding |
+| `worker.js` | Serves the website and handles waitlist sign-ups |
+| `schema.sql` | Creates the `waitlist` table |
+| `.assetsignore` | Keeps configuration and documentation files from being served publicly |
+| `_redirects` | Sends old `/plans` links to the home page |
+
+### One-time setup
+
+1. **Create the database.** In the Cloudflare dashboard, go to **Storage & databases → D1 SQL database → Create**. Name it `chartwright-waitlist`. If a data location or jurisdiction option is offered, choose the EU.
+2. **Create the table.** Open the database's **Console**, paste the contents of `schema.sql` and run it.
+3. **Connect it.** Copy the database's **Database ID** and paste it into `wrangler.jsonc` in place of `PASTE-YOUR-DATABASE-ID-HERE`. Commit the change; Cloudflare redeploys automatically.
+4. **Test.** Sign up on the home page with your own email, then run this in the D1 console:
+
+   ```sql
+   SELECT email, plan, tools, created_at FROM waitlist ORDER BY created_at DESC;
+   ```
+
+To export sign-ups, run the query above and download the results, or use the **Explore data** view.
 
 ## Run it yourself
 
-The site has no build step: `index.html` is the home and plans page, `app.html` is the app, and `_redirects` sends old `/plans` links to the home page.
+The site has no build step: `index.html` is the home and plans page, `app.html` is the app, and `worker.js` adds the waitlist endpoint on Cloudflare.
 
 - **Locally**: download `app.html` and open it in your browser to use the app.
 - **GitHub Pages**: in this repository go to **Settings → Pages**, set **Source** to *Deploy from a branch*, choose the `main` branch and the `/ (root)` folder, and select **Save**. The site appears at `https://<your-username>.github.io/<repository-name>/` after a minute or two.

@@ -3,6 +3,15 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.8.0] - 2026-09-29
+
+### Changed
+- **Hosting on Cloudflare** (Workers with static assets) at **chartwright.de**, replacing Netlify.
+- **Waitlist sign-ups are stored in Cloudflare D1** through a small Worker endpoint (`POST /api/waitlist`) instead of Netlify Forms. It validates the email and consent, ignores spam-bot submissions, accepts only known plans and tools, and updates an existing entry when the same email signs up again.
+
+### Added
+- `worker.js` (serves the site and the waitlist endpoint), `wrangler.jsonc` (Cloudflare configuration), `schema.sql` (waitlist table) and `.assetsignore` (keeps these files from being served as web pages).
+
 ## [1.7.1] - 2026-09-28
 
 ### Changed

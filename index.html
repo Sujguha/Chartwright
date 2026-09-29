@@ -236,8 +236,7 @@ footer a{color:var(--ink-2)}
     </div>
 
     <div>
-      <form name="waitlist" method="POST" data-netlify="true" netlify-honeypot="company-website" id="waitlistForm" novalidate>
-        <input type="hidden" name="form-name" value="waitlist">
+      <form name="waitlist" method="POST" action="/api/waitlist" id="waitlistForm" novalidate>
         <p class="hidden"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off"></label></p>
 
         <div class="field">
@@ -291,7 +290,7 @@ footer a{color:var(--ink-2)}
     </details>
     <details>
       <summary>Does my data leave my browser?</summary>
-      <p>Not in the free version or the Pro preview: files are read on your device and never uploaded, and saved dashboards stay in your browser. Live connections will need secure, read-only access to your tools, hosted in the EU, and will be explained in full before launch.</p>
+      <p>Not in the free version or the Pro preview: files are read on your device and never uploaded, and saved dashboards stay in your browser. The only data we store is what you enter in the waitlist form (email, plan and tools). Live connections will need secure, read-only access to your tools, hosted in the EU, and will be explained in full before launch.</p>
     </details>
     <details>
       <summary>Can I use it with company data?</summary>
@@ -325,16 +324,15 @@ footer a{color:var(--ink-2)}
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){say('Enter a valid email address, for example name@company.com.','bad');form.email.focus();return;}
     if(!form.consent.checked){say('Tick the consent box so we can email you about the launch.','bad');return;}
     const data=new FormData(form);
-    const body=new URLSearchParams();
-    for(const [k,v] of data) body.append(k,v);
-    body.set('tools',data.getAll('tools').join(', '));
+    const payload={email,plan:data.get('plan'),tools:data.getAll('tools'),consent:true,'company-website':data.get('company-website')||''};
     btn.disabled=true; say('Joining…');
     try{
-      const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()});
-      if(!r.ok) throw new Error(String(r.status));
+      const r=await fetch('/api/waitlist',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      let res={}; try{res=await r.json();}catch(_){}
+      if(!r.ok||!res.ok) throw new Error(res.error||'The waitlist couldn’t be reached. Please try again in a moment.');
       form.classList.add('hidden'); thanks.classList.remove('hidden'); thanks.focus();
     }catch(err){
-      say('The waitlist couldn’t be reached. Check your connection and try again.','bad');
+      say(err&&err.message&&!/fetch|network/i.test(err.message)?err.message:'The waitlist couldn’t be reached. Check your connection and try again.','bad');
     }finally{btn.disabled=false;}
   });
 })();
