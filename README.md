@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.8.2** · [Changelog](CHANGELOG.md)
+**Version 1.10.0** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -63,7 +63,7 @@ Open the app and select **Try it with sample release data**, or upload one of th
 
 The home page (`index.html`) shows the Free plan (available now), the Pro preview and the upcoming Enterprise plan, with a waitlist form. The app itself is `app.html`.
 
-Waitlist sign-ups are sent to `POST /api/waitlist`, handled by `worker.js` and stored in a Cloudflare **D1** database.
+Waitlist sign-ups are sent to `POST /api/waitlist`, handled by the Worker in `src/` and stored in a Cloudflare **D1** database.
 
 ## Hosting on Cloudflare
 
@@ -72,8 +72,10 @@ The site runs as a **Cloudflare Worker with static assets**, deployed automatica
 | File | Purpose |
 |---|---|
 | `wrangler.jsonc` | Cloudflare configuration: website files, the Worker and the D1 database binding |
-| `worker.js` | Serves the website and handles waitlist sign-ups |
-| `schema.sql` | Creates the `waitlist` table |
+| `src/` | The Worker: website, waitlist and Pro API (`index.js`), login and roles (`auth.js`), waitlist (`waitlist.js`) |
+| `migrations/` | Database tables for the waitlist, login and workspaces, and shared dashboards |
+| `tests/e2e.mjs` | End-to-end test (`npm test`) |
+| `package.json` | Dependencies (Better Auth, Hono, Wrangler) |
 | `.assetsignore` | Keeps configuration and documentation files from being served publicly |
 | `_redirects` | Sends old `/plans` links to the home page |
 | `privacy.html` | Privacy policy (Datenschutzerklärung), at `/privacy` |
@@ -82,7 +84,7 @@ The site runs as a **Cloudflare Worker with static assets**, deployed automatica
 ### One-time setup
 
 1. **Create the database.** In the Cloudflare dashboard, go to **Storage & databases → D1 SQL database → Create**. Name it `chartwright-waitlist`. If a data location or jurisdiction option is offered, choose the EU.
-2. **Create the table.** Open the database's **Console**, paste the contents of `schema.sql` and run it.
+2. **Create the table.** Open the database's **Console**, paste the contents of `migrations/0000_waitlist.sql` and run it.
 3. **Connect it.** Copy the database's **Database ID** and paste it into `wrangler.jsonc` in place of `PASTE-YOUR-DATABASE-ID-HERE`. Commit the change; Cloudflare redeploys automatically.
 4. **Test.** Sign up on the home page with your own email, then run this in the D1 console:
 
@@ -92,9 +94,85 @@ The site runs as a **Cloudflare Worker with static assets**, deployed automatica
 
 To export sign-ups, run the query above and download the results, or use the **Explore data** view.
 
+## Chartwright Pro (in development)
+
+The Worker contains the Pro backend: accounts, workspaces with Admin, Editor and Viewer roles, invitations, shared dashboards and an audit log. It is **switched off in production** (`PRO_ENABLED` is `"false"`) and **on in staging**.
+
+### Architecture
+
+```
+src/
+  index.js            entry point: rate limits, waitlist, Pro switch, /api/v1, website files
+  config.js           all limits and role rights in one place
+  routes/             HTTP only: v1.js (Pro API), waitlist.js
+  services/           business rules: access.js, dashboards.js, audit.js
+  storage/            data access: db.js (D1 database), blobs.js (R2 file storage)
+  middleware/         rateLimit.js, proGate.js
+  lib/                auth.js (Better Auth: login, workspaces, roles), errors.js
+migrations/           numbered database changes, applied in order
+tests/e2e.mjs         end-to-end test on a temporary local database and bucket
+```
+
+| Data | Where | Why |
+|---|---|---|
+| Users, sessions, workspaces, members, invitations | D1 | Small records, fast queries |
+| Dashboard names, permissions, versions, audit log | D1 | Small records, keyed by workspace |
+| Dashboard contents (data, charts, settings) | R2 | Can be larger than a database row (up to 10 MB) |
+
+### API (version 1)
+
+| Method and address | Who |
+|---|---|
+| `/api/v1/auth/*` | Sign-up, log-in, sessions, workspaces, members, invitations (Better Auth) |
+| `GET /api/v1/me` | Logged-in user |
+| `GET /api/v1/workspaces/:ws/dashboards` | Any member |
+| `POST /api/v1/workspaces/:ws/dashboards` | Admin, editor |
+| `GET /api/v1/workspaces/:ws/dashboards/:id` | Any member |
+| `PUT /api/v1/workspaces/:ws/dashboards/:id` | Admin, editor (send `version` to detect edit conflicts) |
+| `DELETE /api/v1/workspaces/:ws/dashboards/:id` | Admin, editor |
+| `GET /api/v1/workspaces/:ws/audit` | Admin |
+
+### Environments
+
+| | Production | Staging |
+|---|---|---|
+| Worker | `chartwright` | `chartwright-staging` |
+| Address | chartwright.de | chartwright-staging.sujoy-guha2.workers.dev |
+| Database (D1) | `chartwright-waitlist` | `chartwright-staging` |
+| Files (R2) | `chartwright-blobs` | `chartwright-blobs-staging` |
+| Pro | Off | On |
+| Deploys | Cloudflare builds from `main` | GitHub Actions from the `staging` branch |
+
+### One-time setup
+
+**Production**
+1. **Create the R2 bucket** `chartwright-blobs` (Cloudflare → Storage & databases → R2 → Create bucket). The Worker won't deploy without it.
+2. In the production D1 **Console**, run `migrations/0003_dashboard_r2.sql` (after `0001` and `0002`, if not done yet).
+3. Add the secret `BETTER_AUTH_SECRET` (Worker → Settings → Variables and Secrets → Secret).
+
+**Staging**
+1. Create a D1 database `chartwright-staging` and paste its Database ID into `wrangler.jsonc` (replacing `PASTE-STAGING-DATABASE-ID`).
+2. Create an R2 bucket `chartwright-blobs-staging`.
+3. Create a Cloudflare **API token** (My Profile → API Tokens → Create Token → template **Edit Cloudflare Workers**, and add **D1: Edit**). In GitHub, add repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` (Settings → Secrets and variables → Actions).
+4. Create a branch named `staging` and push to it. GitHub Actions tests, applies the database changes and deploys.
+5. Add the staging secret: `npx wrangler secret put BETTER_AUTH_SECRET --env staging`, or in the dashboard under the `chartwright-staging` Worker.
+
+**Billing protection**
+- Cloudflare → **Notifications → Add**: set up usage and billing alerts (available once on the paid Workers plan).
+- Rate limits are built in; keep an eye on D1 and R2 usage under each product's **Metrics**.
+
+### Testing
+
+```
+npm install
+npm test
+```
+
+GitHub runs the same tests on every push.
+
 ## Run it yourself
 
-The site has no build step: `index.html` is the home and plans page, `app.html` is the app, and `worker.js` adds the waitlist endpoint on Cloudflare.
+The site has no build step: `index.html` is the home and plans page, `app.html` is the app, and the Worker in `src/` adds the waitlist and Pro API on Cloudflare (bundled automatically by Cloudflare when deploying).
 
 - **Locally**: download `app.html` and open it in your browser to use the app.
 - **GitHub Pages**: in this repository go to **Settings → Pages**, set **Source** to *Deploy from a branch*, choose the `main` branch and the `/ (root)` folder, and select **Save**. The site appears at `https://<your-username>.github.io/<repository-name>/` after a minute or two.

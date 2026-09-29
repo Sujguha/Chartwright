@@ -3,6 +3,38 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.10.0] - 2026-09-29
+
+### Phase 1: foundation for scaling
+- **Layered backend:** `routes/` (HTTP), `services/` (business rules), `storage/` (D1 database and R2 files), plus `middleware/`, `lib/` and one `config.js` for all limits. The database or file storage can be replaced by changing one layer.
+- **Versioned API:** all Pro addresses are under `/api/v1/` (login at `/api/v1/auth/…`, dashboards at `/api/v1/workspaces/:id/dashboards`). The waitlist keeps `/api/waitlist` and is also available at `/api/v1/waitlist`.
+- **Dashboard contents in R2:** names, permissions and versions stay in D1, contents move to the R2 bucket `chartwright-blobs`. Dashboards can now be up to 10 MB (D1 rows are limited to 2 MB). Content is written before the database is updated, old versions are cleaned up, and deleting a dashboard deletes its content.
+- **Edit conflicts detected:** saving with an outdated version returns a clear "someone else changed this dashboard" message instead of overwriting.
+- **Rate limits** with Cloudflare's rate-limit bindings: 10 log-in, sign-up, password-reset or waitlist attempts per minute per visitor, and 300 other API requests per minute.
+- **Staging environment** (`chartwright-staging`) with its own database, storage and rate limits, and Pro switched on for testing.
+- **Automated tests on GitHub** for every push and pull request (`.github/workflows/test.yml`), and automatic staging deploys from the `staging` branch (`deploy-staging.yml`).
+- **Tests:** 46 end-to-end checks, including R2 storage, size limits, version conflicts and rate limits.
+- **Database change** `migrations/0003_dashboard_r2.sql` replaces the (empty) dashboard table.
+
+## [1.9.0] - 2026-09-29
+
+### Added: Chartwright Pro backend (switched off until the Pro pages are ready)
+- **Accounts:** sign-up and log-in with email and password (minimum 10 characters), secure session cookies, powered by Better Auth running inside the Cloudflare Worker.
+- **Workspaces, roles and invitations:** Admin, Editor and Viewer roles; admins invite people and change roles, editors manage dashboards, viewers only read.
+- **Shared dashboards API:** list, open, create, update and delete dashboards in a workspace, stored in D1 in the same format as `.chartwright.json` files. Every request checks the user's role on the server; people outside a workspace can't see it exists.
+- **Audit log** of dashboard changes, visible to admins.
+- **Database migrations** in `migrations/` and an **end-to-end test** (`npm test`, 35 checks) that runs on a temporary local D1 database.
+- **On/off switch:** the Pro API only answers when the variable `PRO_ENABLED` is `"true"`. It is `"false"`, so the live site behaves exactly as before.
+
+### Changed
+- The Worker code moved from `worker.js` to `src/` (Hono web framework); the waitlist logic is unchanged. `schema.sql` is now `migrations/0000_waitlist.sql`.
+
+## [1.8.3] - 2026-09-29
+
+### Changed
+- The privacy policy has a new section **6. Visitor statistics** for Cloudflare Web Analytics (cookie-free, aggregated, no cross-site tracking), and the summary, overview table and service-provider list reflect it. Later sections are renumbered.
+- The home page FAQ mentions the anonymous visit statistics.
+
 ## [1.8.2] - 2026-09-29
 
 ### Changed
