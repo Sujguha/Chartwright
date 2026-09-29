@@ -1,0 +1,5045 @@
+{
+  "total": 180,
+  "issues": [
+    {
+      "key": "REL-1099",
+      "fields": {
+        "created": "2025-10-01T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 0,
+        "leadTimeDays": 19,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1015",
+      "fields": {
+        "created": "2025-10-04T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 2,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1097",
+      "fields": {
+        "created": "2025-10-06T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 3,
+        "leadTimeDays": 17,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1027",
+      "fields": {
+        "created": "2025-10-08T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 2,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1160",
+      "fields": {
+        "created": "2025-10-08T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 2,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1169",
+      "fields": {
+        "created": "2025-10-11T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 3,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1092",
+      "fields": {
+        "created": "2025-10-16T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 25,
+        "defects": 6,
+        "leadTimeDays": 23,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1061",
+      "fields": {
+        "created": "2025-10-17T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 0,
+        "leadTimeDays": 16,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1073",
+      "fields": {
+        "created": "2025-10-21T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 1,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1141",
+      "fields": {
+        "created": "2025-10-24T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 3,
+        "leadTimeDays": 4,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1142",
+      "fields": {
+        "created": "2025-10-28T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 2,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1109",
+      "fields": {
+        "created": "2025-11-05T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 1,
+        "leadTimeDays": 16,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1161",
+      "fields": {
+        "created": "2025-11-05T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 0,
+        "leadTimeDays": 20,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1176",
+      "fields": {
+        "created": "2025-11-12T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 1,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1028",
+      "fields": {
+        "created": "2025-11-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 15,
+        "defects": 7,
+        "leadTimeDays": 34,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1022",
+      "fields": {
+        "created": "2025-11-26T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 1,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1117",
+      "fields": {
+        "created": "2025-12-01T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 16,
+        "defects": 9,
+        "leadTimeDays": 39,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1170",
+      "fields": {
+        "created": "2025-12-03T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 2,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1060",
+      "fields": {
+        "created": "2025-12-06T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 21,
+        "defects": 11,
+        "leadTimeDays": 23,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1016",
+      "fields": {
+        "created": "2025-12-07T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 1,
+        "leadTimeDays": 1,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1154",
+      "fields": {
+        "created": "2025-12-07T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 1,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1132",
+      "fields": {
+        "created": "2025-12-11T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 12,
+        "defects": 4,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1148",
+      "fields": {
+        "created": "2025-12-12T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 3,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1036",
+      "fields": {
+        "created": "2025-12-14T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 4,
+        "leadTimeDays": 15,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1056",
+      "fields": {
+        "created": "2025-12-14T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 2,
+        "leadTimeDays": 6,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1051",
+      "fields": {
+        "created": "2025-12-15T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 2,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1102",
+      "fields": {
+        "created": "2025-12-15T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 4,
+        "leadTimeDays": 15,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1179",
+      "fields": {
+        "created": "2025-12-16T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 2,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1017",
+      "fields": {
+        "created": "2025-12-20T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 2,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1136",
+      "fields": {
+        "created": "2025-12-20T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 4,
+        "leadTimeDays": 20,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1105",
+      "fields": {
+        "created": "2025-12-21T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 2,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1101",
+      "fields": {
+        "created": "2025-12-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 4,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1178",
+      "fields": {
+        "created": "2025-12-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 1,
+        "leadTimeDays": 6,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1153",
+      "fields": {
+        "created": "2025-12-26T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 3,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1150",
+      "fields": {
+        "created": "2025-12-27T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 5,
+        "leadTimeDays": 38,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1005",
+      "fields": {
+        "created": "2025-12-29T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 2,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1149",
+      "fields": {
+        "created": "2026-01-01T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 2,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1094",
+      "fields": {
+        "created": "2026-01-05T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 0,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1003",
+      "fields": {
+        "created": "2026-01-06T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 2,
+        "defects": 1,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1130",
+      "fields": {
+        "created": "2026-01-08T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 7,
+        "leadTimeDays": 34,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1046",
+      "fields": {
+        "created": "2026-01-10T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 20,
+        "defects": 1,
+        "leadTimeDays": 36,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1006",
+      "fields": {
+        "created": "2026-01-12T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 23,
+        "defects": 11,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1113",
+      "fields": {
+        "created": "2026-01-18T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 1,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1090",
+      "fields": {
+        "created": "2026-01-27T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 28,
+        "defects": 3,
+        "leadTimeDays": 29,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1053",
+      "fields": {
+        "created": "2026-01-28T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 1,
+        "leadTimeDays": 15,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1127",
+      "fields": {
+        "created": "2026-01-29T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 25,
+        "defects": 3,
+        "leadTimeDays": 6,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1143",
+      "fields": {
+        "created": "2026-01-30T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 2,
+        "leadTimeDays": 20,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1010",
+      "fields": {
+        "created": "2026-01-31T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 3,
+        "leadTimeDays": 15,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1137",
+      "fields": {
+        "created": "2026-02-03T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 12,
+        "defects": 2,
+        "leadTimeDays": 28,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1110",
+      "fields": {
+        "created": "2026-02-07T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 1,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1111",
+      "fields": {
+        "created": "2026-02-12T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 3,
+        "leadTimeDays": 7,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1135",
+      "fields": {
+        "created": "2026-02-14T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 1,
+        "leadTimeDays": 15,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1049",
+      "fields": {
+        "created": "2026-02-15T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 9,
+        "leadTimeDays": 22,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1087",
+      "fields": {
+        "created": "2026-02-15T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 10,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1093",
+      "fields": {
+        "created": "2026-02-16T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 1,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1083",
+      "fields": {
+        "created": "2026-02-17T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 1,
+        "leadTimeDays": 23,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1163",
+      "fields": {
+        "created": "2026-02-17T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 5,
+        "leadTimeDays": 43,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1039",
+      "fields": {
+        "created": "2026-02-19T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 2,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1116",
+      "fields": {
+        "created": "2026-02-19T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 2,
+        "defects": 1,
+        "leadTimeDays": 16,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1125",
+      "fields": {
+        "created": "2026-02-19T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 1,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1018",
+      "fields": {
+        "created": "2026-02-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 4,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1164",
+      "fields": {
+        "created": "2026-02-25T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 12,
+        "defects": 2,
+        "leadTimeDays": 7,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1139",
+      "fields": {
+        "created": "2026-02-28T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 27,
+        "defects": 4,
+        "leadTimeDays": 41,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1165",
+      "fields": {
+        "created": "2026-02-28T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 4,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1030",
+      "fields": {
+        "created": "2026-03-05T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 6,
+        "leadTimeDays": 27,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1166",
+      "fields": {
+        "created": "2026-03-06T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 22,
+        "defects": 11,
+        "leadTimeDays": 20,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1032",
+      "fields": {
+        "created": "2026-03-07T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 1,
+        "leadTimeDays": 16,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1147",
+      "fields": {
+        "created": "2026-03-08T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 1,
+        "leadTimeDays": 19,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1146",
+      "fields": {
+        "created": "2026-03-13T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 2,
+        "defects": 1,
+        "leadTimeDays": 4,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1096",
+      "fields": {
+        "created": "2026-03-14T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 2,
+        "leadTimeDays": 11,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1171",
+      "fields": {
+        "created": "2026-03-14T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 31,
+        "defects": 3,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1082",
+      "fields": {
+        "created": "2026-03-16T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 0,
+        "leadTimeDays": 16,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1042",
+      "fields": {
+        "created": "2026-03-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 2,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1126",
+      "fields": {
+        "created": "2026-03-23T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 2,
+        "leadTimeDays": 7,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1063",
+      "fields": {
+        "created": "2026-03-27T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 4,
+        "leadTimeDays": 20,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1004",
+      "fields": {
+        "created": "2026-03-28T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 2,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1065",
+      "fields": {
+        "created": "2026-03-29T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 2,
+        "leadTimeDays": 19,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1091",
+      "fields": {
+        "created": "2026-03-29T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 12,
+        "defects": 1,
+        "leadTimeDays": 11,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1019",
+      "fields": {
+        "created": "2026-03-30T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 1,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1128",
+      "fields": {
+        "created": "2026-04-01T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 2,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1054",
+      "fields": {
+        "created": "2026-04-04T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 32,
+        "defects": 3,
+        "leadTimeDays": 24,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1055",
+      "fields": {
+        "created": "2026-04-04T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 12,
+        "defects": 3,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1059",
+      "fields": {
+        "created": "2026-04-06T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 0,
+        "leadTimeDays": 15,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1009",
+      "fields": {
+        "created": "2026-04-08T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 2,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1034",
+      "fields": {
+        "created": "2026-04-11T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 8,
+        "leadTimeDays": 32,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1173",
+      "fields": {
+        "created": "2026-04-13T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 4,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1088",
+      "fields": {
+        "created": "2026-04-14T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 2,
+        "leadTimeDays": 19,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1144",
+      "fields": {
+        "created": "2026-04-14T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 1,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1038",
+      "fields": {
+        "created": "2026-04-18T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 3,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1159",
+      "fields": {
+        "created": "2026-04-21T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 1,
+        "leadTimeDays": 6,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1106",
+      "fields": {
+        "created": "2026-04-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 0,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1035",
+      "fields": {
+        "created": "2026-04-23T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 3,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1152",
+      "fields": {
+        "created": "2026-04-23T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 2,
+        "leadTimeDays": 11,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1033",
+      "fields": {
+        "created": "2026-04-24T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 2,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1037",
+      "fields": {
+        "created": "2026-04-26T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 3,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1123",
+      "fields": {
+        "created": "2026-04-26T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 1,
+        "leadTimeDays": 20,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1095",
+      "fields": {
+        "created": "2026-04-28T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 1,
+        "leadTimeDays": 16,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1021",
+      "fields": {
+        "created": "2026-04-29T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 29,
+        "defects": 10,
+        "leadTimeDays": 23,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1162",
+      "fields": {
+        "created": "2026-04-29T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 3,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1075",
+      "fields": {
+        "created": "2026-05-03T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 3,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1062",
+      "fields": {
+        "created": "2026-05-06T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 0,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1000",
+      "fields": {
+        "created": "2026-05-08T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 1,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1157",
+      "fields": {
+        "created": "2026-05-09T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 2,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1008",
+      "fields": {
+        "created": "2026-05-12T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 3,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1085",
+      "fields": {
+        "created": "2026-05-13T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 4,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1040",
+      "fields": {
+        "created": "2026-05-14T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 12,
+        "defects": 2,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1067",
+      "fields": {
+        "created": "2026-05-15T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 26,
+        "defects": 9,
+        "leadTimeDays": 6,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1045",
+      "fields": {
+        "created": "2026-05-17T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 1,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1120",
+      "fields": {
+        "created": "2026-05-17T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 12,
+        "defects": 3,
+        "leadTimeDays": 6,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1014",
+      "fields": {
+        "created": "2026-05-18T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 3,
+        "leadTimeDays": 11,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1041",
+      "fields": {
+        "created": "2026-05-19T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 4,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1069",
+      "fields": {
+        "created": "2026-05-19T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 7,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1070",
+      "fields": {
+        "created": "2026-05-24T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 2,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1115",
+      "fields": {
+        "created": "2026-05-24T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 2,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1031",
+      "fields": {
+        "created": "2026-05-25T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 0,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1107",
+      "fields": {
+        "created": "2026-05-26T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 1,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1108",
+      "fields": {
+        "created": "2026-05-27T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 4,
+        "leadTimeDays": 19,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1066",
+      "fields": {
+        "created": "2026-05-28T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 2,
+        "leadTimeDays": 15,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1104",
+      "fields": {
+        "created": "2026-05-29T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 2,
+        "leadTimeDays": 17,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1124",
+      "fields": {
+        "created": "2026-05-30T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 29,
+        "defects": 12,
+        "leadTimeDays": 31,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1151",
+      "fields": {
+        "created": "2026-05-30T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 3,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1175",
+      "fields": {
+        "created": "2026-05-30T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 0,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1020",
+      "fields": {
+        "created": "2026-06-02T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 4,
+        "leadTimeDays": 7,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1100",
+      "fields": {
+        "created": "2026-06-03T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 0,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1026",
+      "fields": {
+        "created": "2026-06-06T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 27,
+        "defects": 2,
+        "leadTimeDays": 20,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1068",
+      "fields": {
+        "created": "2026-06-07T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 2,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1002",
+      "fields": {
+        "created": "2026-06-08T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 2,
+        "leadTimeDays": 5,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1047",
+      "fields": {
+        "created": "2026-06-09T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 1,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1077",
+      "fields": {
+        "created": "2026-06-11T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 2,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1084",
+      "fields": {
+        "created": "2026-06-13T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 1,
+        "leadTimeDays": 6,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1013",
+      "fields": {
+        "created": "2026-06-16T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 1,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1043",
+      "fields": {
+        "created": "2026-06-19T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 2,
+        "leadTimeDays": 17,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1172",
+      "fields": {
+        "created": "2026-06-21T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 4,
+        "leadTimeDays": 19,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1131",
+      "fields": {
+        "created": "2026-06-25T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 3,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1158",
+      "fields": {
+        "created": "2026-06-25T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 1,
+        "leadTimeDays": 17,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1024",
+      "fields": {
+        "created": "2026-06-29T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 3,
+        "leadTimeDays": 16,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1074",
+      "fields": {
+        "created": "2026-06-29T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 2,
+        "leadTimeDays": 11,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1177",
+      "fields": {
+        "created": "2026-07-01T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 12,
+        "defects": 10,
+        "leadTimeDays": 27,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1134",
+      "fields": {
+        "created": "2026-07-05T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 2,
+        "leadTimeDays": 19,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1103",
+      "fields": {
+        "created": "2026-07-08T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 2,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1072",
+      "fields": {
+        "created": "2026-07-09T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Rolled back",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 2,
+        "defects": 0,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1012",
+      "fields": {
+        "created": "2026-07-14T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 4,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1029",
+      "fields": {
+        "created": "2026-07-17T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 2,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1112",
+      "fields": {
+        "created": "2026-07-19T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 3,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1023",
+      "fields": {
+        "created": "2026-07-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 17,
+        "defects": 10,
+        "leadTimeDays": 39,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1118",
+      "fields": {
+        "created": "2026-07-23T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 4,
+        "defects": 9,
+        "leadTimeDays": 35,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1025",
+      "fields": {
+        "created": "2026-07-25T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 2,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1044",
+      "fields": {
+        "created": "2026-08-02T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 1,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1129",
+      "fields": {
+        "created": "2026-08-03T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 2,
+        "leadTimeDays": 6,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1057",
+      "fields": {
+        "created": "2026-08-11T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 8,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1001",
+      "fields": {
+        "created": "2026-08-12T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 1,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1122",
+      "fields": {
+        "created": "2026-08-13T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 4,
+        "leadTimeDays": 19,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1050",
+      "fields": {
+        "created": "2026-08-14T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 2,
+        "leadTimeDays": 15,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1155",
+      "fields": {
+        "created": "2026-08-15T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 24,
+        "defects": 0,
+        "leadTimeDays": 26,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1121",
+      "fields": {
+        "created": "2026-08-16T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 2,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1089",
+      "fields": {
+        "created": "2026-08-19T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 2,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1119",
+      "fields": {
+        "created": "2026-08-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 5,
+        "defects": 4,
+        "leadTimeDays": 17,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1138",
+      "fields": {
+        "created": "2026-08-24T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 1,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1058",
+      "fields": {
+        "created": "2026-08-25T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 2,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1081",
+      "fields": {
+        "created": "2026-08-25T00:00:00.000+0000",
+        "tribe": {
+          "name": "Analytics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 2,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "analytics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1156",
+      "fields": {
+        "created": "2026-09-01T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 10,
+        "leadTimeDays": 39,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1052",
+      "fields": {
+        "created": "2026-09-02T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "QA",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 1,
+        "leadTimeDays": 6,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1076",
+      "fields": {
+        "created": "2026-09-03T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 9,
+        "defects": 4,
+        "leadTimeDays": 18,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1167",
+      "fields": {
+        "created": "2026-09-08T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 14,
+        "defects": 4,
+        "leadTimeDays": 25,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1007",
+      "fields": {
+        "created": "2026-09-10T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 2,
+        "defects": 1,
+        "leadTimeDays": 12,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1080",
+      "fields": {
+        "created": "2026-09-10T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 6,
+        "defects": 1,
+        "leadTimeDays": 14,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1140",
+      "fields": {
+        "created": "2026-09-11T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 2,
+        "leadTimeDays": 17,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1086",
+      "fields": {
+        "created": "2026-09-13T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Delayed",
+          "statusCategory": {
+            "name": "In progress"
+          }
+        },
+        "changeRequests": 10,
+        "defects": 4,
+        "leadTimeDays": 11,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1079",
+      "fields": {
+        "created": "2026-09-17T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 14,
+        "defects": 3,
+        "leadTimeDays": 17,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1064",
+      "fields": {
+        "created": "2026-09-19T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 4,
+        "leadTimeDays": 6,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1168",
+      "fields": {
+        "created": "2026-09-21T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 3,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1071",
+      "fields": {
+        "created": "2026-09-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "Procurement",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 18,
+        "defects": 8,
+        "leadTimeDays": 41,
+        "labels": [
+          "release",
+          "procurement"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1098",
+      "fields": {
+        "created": "2026-09-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 7,
+        "defects": 3,
+        "leadTimeDays": 8,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1133",
+      "fields": {
+        "created": "2026-09-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 17,
+        "defects": 8,
+        "leadTimeDays": 45,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1145",
+      "fields": {
+        "created": "2026-09-22T00:00:00.000+0000",
+        "tribe": {
+          "name": "Logistics",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 14,
+        "defects": 4,
+        "leadTimeDays": 26,
+        "labels": [
+          "release",
+          "logistics"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1078",
+      "fields": {
+        "created": "2026-09-24T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 8,
+        "defects": 4,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1114",
+      "fields": {
+        "created": "2026-09-24T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Major"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 22,
+        "defects": 4,
+        "leadTimeDays": 13,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1174",
+      "fields": {
+        "created": "2026-09-26T00:00:00.000+0000",
+        "tribe": {
+          "name": "Payments",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Hotfix"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 11,
+        "defects": 2,
+        "leadTimeDays": 9,
+        "labels": [
+          "release",
+          "payments"
+        ],
+        "hotfix": true
+      }
+    },
+    {
+      "key": "REL-1048",
+      "fields": {
+        "created": "2026-09-27T00:00:00.000+0000",
+        "tribe": {
+          "name": "Finance",
+          "self": "https://x"
+        },
+        "environment": "Pre-production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 2,
+        "defects": 3,
+        "leadTimeDays": 17,
+        "labels": [
+          "release",
+          "finance"
+        ],
+        "hotfix": false
+      }
+    },
+    {
+      "key": "REL-1011",
+      "fields": {
+        "created": "2026-09-28T00:00:00.000+0000",
+        "tribe": {
+          "name": "HR",
+          "self": "https://x"
+        },
+        "environment": "Production",
+        "type": {
+          "name": "Minor"
+        },
+        "status": {
+          "name": "Deployed",
+          "statusCategory": {
+            "name": "Done"
+          }
+        },
+        "changeRequests": 3,
+        "defects": 3,
+        "leadTimeDays": 10,
+        "labels": [
+          "release",
+          "hr"
+        ],
+        "hotfix": false
+      }
+    }
+  ]
+}

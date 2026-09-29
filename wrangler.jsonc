@@ -1,11 +1,11 @@
 {
-  // Cloudflare Worker for chartwright.de: website files, waitlist and the Pro API.
+  // Cloudflare Worker for chartwright.de: website files (public/), waitlist and the Pro API (src/).
   // Production is the top level; the staging environment is under "env.staging".
   "name": "chartwright",
   "main": "src/index.js",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
-  "assets": { "directory": ".", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
+  "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
   "d1_databases": [
     { "binding": "DB", "database_name": "chartwright-waitlist", "database_id": "b5cdacbd-0370-443b-8849-0d5213b8f67a", "migrations_dir": "migrations" }
   ],
@@ -28,7 +28,7 @@
   "env": {
     "staging": {
       "name": "chartwright-staging",
-      "assets": { "directory": ".", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
+      "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
       "d1_databases": [
         { "binding": "DB", "database_name": "chartwright-staging", "database_id": "PASTE-STAGING-DATABASE-ID", "migrations_dir": "migrations" }
       ],

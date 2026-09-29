@@ -1,11 +1,11 @@
 {
   "name": "chartwright",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "private": true,
   "type": "module",
   "scripts": {
     "test": "node tests/e2e.mjs",
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy --env=\"\"",
     "db:migrate": "wrangler d1 migrations apply chartwright-waitlist --remote",
     "deploy:staging": "wrangler deploy --env staging",
     "db:migrate:staging": "wrangler d1 migrations apply chartwright-staging --remote --env staging"

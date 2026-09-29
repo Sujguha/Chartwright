@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.10.0** · [Changelog](CHANGELOG.md)
+**Version 1.10.1** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -44,7 +44,7 @@ Power BI files (`.pbix`) can't be read directly. Export the data from Power BI t
 
 ## Try it
 
-Open the app and select **Try it with sample release data**, or upload one of the files in [`samples/`](samples/). The small samples hold the same 180 fictional release records in different formats; the large ones are for testing performance. All data is fictional:
+Open the app and select **Try it with sample release data**, or upload one of the files in [`public/samples/`](public/samples/). The small samples hold the same 180 fictional release records in different formats; the large ones are for testing performance. All data is fictional:
 
 | File | What it shows |
 |---|---|
@@ -76,10 +76,7 @@ The site runs as a **Cloudflare Worker with static assets**, deployed automatica
 | `migrations/` | Database tables for the waitlist, login and workspaces, and shared dashboards |
 | `tests/e2e.mjs` | End-to-end test (`npm test`) |
 | `package.json` | Dependencies (Better Auth, Hono, Wrangler) |
-| `.assetsignore` | Keeps configuration and documentation files from being served publicly |
-| `_redirects` | Sends old `/plans` links to the home page |
-| `privacy.html` | Privacy policy (Datenschutzerklärung), at `/privacy` |
-| `fonts/` | The Instrument Sans font, self-hosted so no data goes to Google |
+| `public/` | Everything published as the website: `index.html` (home), `app.html` (app), `privacy.html`, `fonts/`, `samples/`, `_redirects` |
 
 ### One-time setup
 
@@ -101,6 +98,7 @@ The Worker contains the Pro backend: accounts, workspaces with Admin, Editor and
 ### Architecture
 
 ```
+public/               website files (only this folder is published)
 src/
   index.js            entry point: rate limits, waitlist, Pro switch, /api/v1, website files
   config.js           all limits and role rights in one place
@@ -174,7 +172,7 @@ GitHub runs the same tests on every push.
 
 The site has no build step: `index.html` is the home and plans page, `app.html` is the app, and the Worker in `src/` adds the waitlist and Pro API on Cloudflare (bundled automatically by Cloudflare when deploying).
 
-- **Locally**: download `app.html` and open it in your browser to use the app.
+- **Locally**: download `public/app.html` and open it in your browser to use the app.
 - **GitHub Pages**: in this repository go to **Settings → Pages**, set **Source** to *Deploy from a branch*, choose the `main` branch and the `/ (root)` folder, and select **Save**. The site appears at `https://<your-username>.github.io/<repository-name>/` after a minute or two.
 
 An internet connection is needed on first load, because the libraries below are loaded from a CDN.
@@ -199,7 +197,7 @@ Chartwright uses [Semantic Versioning](https://semver.org/). The current version
 
 To release a new version:
 
-1. Update `APP_VERSION` near the top of the script in `app.html` (and the `version` meta tag).
+1. Update `APP_VERSION` near the top of the script in `public/app.html` (and the `version` meta tag).
 2. Add an entry at the top of `CHANGELOG.md`.
 3. Commit, then create a GitHub release with a tag such as `v1.1.0`.
 

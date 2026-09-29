@@ -3,6 +3,14 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.10.1] - 2026-09-29
+
+### Fixed
+- **Deploy failed with "Asset too large":** Cloudflare published the whole repository, including the `node_modules` folder installed during the build. The website files now live in **`public/`**, and only that folder is published (`assets.directory` is `./public`). The `.assetsignore` file is no longer needed.
+
+### Changed
+- `npm run deploy` targets production explicitly (`--env=""`), which removes Wrangler's multiple-environments warning.
+
 ## [1.10.0] - 2026-09-29
 
 ### Phase 1: foundation for scaling
