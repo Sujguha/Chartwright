@@ -3,6 +3,14 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.10.2] - 2026-09-29
+
+### Added
+- **Error logs** (Cloudflare Workers Logs) for production and staging, set in `wrangler.jsonc` so deploys keep them on. Only runs of the Worker code (API and waitlist) are logged, not website files.
+
+### Changed
+- **Privacy policy:** the "Visitor statistics" section is removed because Cloudflare Web Analytics isn't switched on; a short "Error logs" paragraph is added under hosting. The home page FAQ is back to its previous wording.
+
 ## [1.10.1] - 2026-09-29
 
 ### Fixed
