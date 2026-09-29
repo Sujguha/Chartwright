@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.8.0** · [Changelog](CHANGELOG.md)
+**Version 1.8.2** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -76,6 +76,8 @@ The site runs as a **Cloudflare Worker with static assets**, deployed automatica
 | `schema.sql` | Creates the `waitlist` table |
 | `.assetsignore` | Keeps configuration and documentation files from being served publicly |
 | `_redirects` | Sends old `/plans` links to the home page |
+| `privacy.html` | Privacy policy (Datenschutzerklärung), at `/privacy` |
+| `fonts/` | The Instrument Sans font, self-hosted so no data goes to Google |
 
 ### One-time setup
 
@@ -104,7 +106,7 @@ An internet connection is needed on first load, because the libraries below are 
 - [SheetJS](https://sheetjs.com/) for reading spreadsheet files
 - [Chart.js](https://www.chartjs.org/) for charts
 - [jsPDF](https://github.com/parallax/jsPDF) and [jsPDF-AutoTable](https://github.com/simonbengtsson/jsPDF-AutoTable) for PDF reports
-- [Instrument Sans](https://fonts.google.com/specimen/Instrument+Sans) from Google Fonts
+- [Instrument Sans](https://fonts.google.com/specimen/Instrument+Sans), self-hosted under the SIL Open Font License
 
 ## Limitations
 

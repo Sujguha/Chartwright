@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Chartwright privacy policy (Datenschutzerklärung): what data we process, why, and your rights under the GDPR.">
+<title>Privacy policy | Chartwright</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --bg:#EDF0F3;--surface:#FFFFFF;--sunk:#E4E9EF;--ink:#18202C;--ink-2:#556274;--line:#D3DAE3;
+  --accent:#0E6B6B;--accent-ink:#FFFFFF;--accent-text:#0B5454;--focus:#3D4FB0;--warn-bg:#FBEFD5;--warn-ink:#7A4E00;
+  --c1:#0E6B6B;--c2:#3D4FB0;--c3:#C98A12;--c4:#8B3F76;
+  --font:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12171E;--surface:#1A212B;--sunk:#212A36;--ink:#E6EBF1;--ink-2:#98A4B3;--line:#2C3542;
+    --accent:#3FB5AE;--accent-ink:#0B1A1A;--accent-text:#7DD3CD;--focus:#8C9BFF;--warn-bg:#3A2E14;--warn-ink:#F2CB7A;
+    --c1:#3FB5AE;--c2:#8C9BFF;--c3:#E8B044;--c4:#D983BE;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12171E;--surface:#1A212B;--sunk:#212A36;--ink:#E6EBF1;--ink-2:#98A4B3;--line:#2C3542;
+  --accent:#3FB5AE;--accent-ink:#0B1A1A;--accent-text:#7DD3CD;--focus:#8C9BFF;--warn-bg:#3A2E14;--warn-ink:#F2CB7A;
+  --c1:#3FB5AE;--c2:#8C9BFF;--c3:#E8B044;--c4:#D983BE;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 84px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-text)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 clamp(18px,4vw,40px)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--ink);text-decoration:none}
+.mark{display:grid;grid-template-columns:repeat(2,8px);gap:2px}
+.mark i{display:block;width:8px;height:8px;border-radius:2px}
+.mark i:nth-child(1){background:var(--c1)}.mark i:nth-child(2){background:var(--c2)}.mark i:nth-child(3){background:var(--c3)}.mark i:nth-child(4){background:var(--c4)}
+.spacer{flex:1}
+.btn{display:inline-flex;align-items:center;border-radius:10px;padding:10px 16px;font-weight:600;text-decoration:none;background:var(--accent);color:var(--accent-ink);white-space:nowrap}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:48px;padding:48px 0 72px}
+@media (max-width:860px){.layout{grid-template-columns:minmax(0,1fr);gap:24px;padding-top:32px}}
+.toc{position:sticky;top:100px;align-self:start;font-size:14px}
+.toc p{margin:0 0 8px;font-weight:700}
+.toc ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.toc a{color:var(--ink-2);text-decoration:none}
+.toc a:hover{color:var(--ink)}
+@media (max-width:860px){.toc{position:static;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}}
+article{max-width:72ch}
+h1{margin:0 0 6px;font-size:clamp(34px,5vw,52px);line-height:1.05;letter-spacing:-.03em}
+.sub{margin:0 0 28px;color:var(--ink-2)}
+h2{margin:40px 0 10px;font-size:22px;letter-spacing:-.01em;line-height:1.25}
+h3{margin:22px 0 6px;font-size:17px}
+p{margin:0 0 12px}
+ul{margin:0 0 12px;padding-left:22px}
+li{margin:4px 0}
+.summary{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:18px 22px;margin:0 0 8px}
+.summary p{margin:0 0 8px}.summary ul{margin:0}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:8px 0 14px}
+.box p{margin:0}
+.ph{background:var(--warn-bg);color:var(--warn-ink);border-radius:6px;padding:1px 6px;font-weight:600}
+table{border-collapse:collapse;width:100%;font-size:15px;margin:6px 0 14px}
+th,td{text-align:left;vertical-align:top;padding:9px 10px;border-bottom:1px solid var(--line)}
+th{font-weight:600;color:var(--ink-2);font-size:14px}
+.tablewrap{overflow-x:auto}
+footer{border-top:1px solid var(--line);padding:24px 0 32px;color:var(--ink-2);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
+footer a{color:var(--ink-2)}
+@media print{.top,.toc,footer{display:none}.layout{display:block;padding:0}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Chartwright home"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Chartwright</a>
+    <span class="spacer"></span>
+    <a class="btn" href="/app">Open the app</a>
+  </div>
+</header>
+
+<main class="wrap layout">
+  <nav class="toc" aria-label="Contents">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#controller">Who is responsible</a></li>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#hosting">Hosting and connection data</a></li>
+      <li><a href="#app">Using the app</a></li>
+      <li><a href="#storage">Storage on your device</a></li>
+      <li><a href="#waitlist">Waitlist</a></li>
+      <li><a href="#contact">Contacting us</a></li>
+      <li><a href="#processors">Service providers</a></li>
+      <li><a href="#transfers">Transfers outside the EU</a></li>
+      <li><a href="#rights">Your rights</a></li>
+      <li><a href="#other">Other information</a></li>
+    </ol>
+  </nav>
+
+  <article>
+    <h1>Privacy policy</h1>
+    <p class="sub">Datenschutzerklärung · Last updated: 29 September 2026</p>
+
+    <div class="summary">
+      <p><strong>In short</strong></p>
+      <ul>
+        <li>Files you open in Chartwright are processed <strong>only in your browser</strong>. They are never uploaded to us.</li>
+        <li>We use <strong>no cookies, no analytics and no advertising trackers</strong>.</li>
+        <li>We only store personal data if you <strong>join the waitlist</strong>: your email address, chosen plan and tools, with your consent.</li>
+        <li>Our website is hosted by <strong>Cloudflare</strong>, which processes technical connection data such as your IP address to deliver and protect the site.</li>
+      </ul>
+    </div>
+
+    <h2 id="controller">1. Who is responsible</h2>
+    <p>The controller responsible for processing personal data on this website under the General Data Protection Regulation (GDPR) is:</p>
+    <div class="box">
+      <p>Sujoy Guha<br>
+      <span class="ph">[Street and number]</span><br>
+      <span class="ph">[Postcode]</span> Munich, Germany<br>
+      Email: <a href="mailto:privacy@chartwright.de">privacy@chartwright.de</a></p>
+    </div>
+    <p>We are not required to appoint a data protection officer.</p>
+
+    <h2 id="overview">2. Overview of the data we process</h2>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>What</th><th>Why</th><th>Legal basis</th><th>How long</th></tr></thead>
+      <tbody>
+        <tr><td>Connection data (IP address, time, requested page, browser details)</td><td>Deliver the website securely and protect it against attacks</td><td>Art. 6(1)(f) GDPR (legitimate interest)</td><td>Short term, by our hosting provider (see section 3)</td></tr>
+        <tr><td>Files you open in the app</td><td>Create your dashboard</td><td>Not processed by us: they stay in your browser</td><td>Until you close or delete them</td></tr>
+        <tr><td>Saved dashboards (only when you click Save)</td><td>Let you reopen dashboards later</td><td>Stored only on your device (see section 5)</td><td>Until you delete them</td></tr>
+        <tr><td>Waitlist: email, plan, tools, time of consent</td><td>Inform you about the launch of paid features</td><td>Art. 6(1)(a) GDPR (consent)</td><td>Until you withdraw consent, at the latest 24 months after sign-up</td></tr>
+        <tr><td>Emails you send us</td><td>Answer your request</td><td>Art. 6(1)(b) or (f) GDPR</td><td>Until your request is resolved, unless retention is required by law</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>We do not sell personal data, do not use it for advertising, and do not make automated decisions or create profiles about you.</p>
+
+    <h2 id="hosting">3. Hosting and connection data</h2>
+    <p>This website is hosted by <strong>Cloudflare, Inc.</strong>, 101 Townsend St, San Francisco, CA 94107, USA (“Cloudflare”). When you visit the site, your browser necessarily transmits technical data to Cloudflare’s servers, in particular your IP address, the date and time of access, the page requested, the referring page and your browser and operating system.</p>
+    <p>Cloudflare processes this data to deliver the website, to keep it available and to protect it against attacks and misuse, for example through automated security filtering. Our legitimate interest (Art. 6(1)(f) GDPR) lies in the secure and reliable operation of the website. We do not keep our own access logs and do not combine this data with other sources.</p>
+    <p>Cloudflare acts as our processor under a data processing agreement (Art. 28 GDPR). For transfers to the USA, see section 9.</p>
+
+    <h3>Program libraries</h3>
+    <p>The app loads program libraries (for reading spreadsheets, drawing charts and creating PDFs) from <strong>cdnjs</strong>, a service also operated by Cloudflare. Your browser downloads these files directly, which transmits your IP address to Cloudflare, on the same legal basis as above. The font used on this website is hosted on our own website; no data is sent to Google or other font providers.</p>
+
+    <h2 id="app">4. Using the app</h2>
+    <p>When you open a file (for example Excel, CSV or JSON) in Chartwright, it is read and processed <strong>entirely in your web browser on your device</strong>. The file and its contents are <strong>not uploaded</strong> to our servers or anyone else’s, and we cannot see them.</p>
+    <p>Downloads you create, such as PDF reports or data files, are generated in your browser and saved directly to your device.</p>
+    <p>If you use “Open in my email app”, your own email program opens with a prepared message. Nothing is sent through our servers; the email is sent by you, through your email provider.</p>
+    <p>Please check your organisation’s rules before opening company data in any external tool, including Chartwright.</p>
+
+    <h2 id="storage">5. Storage on your device</h2>
+    <p>We use <strong>no cookies</strong>. When you click <strong>Save</strong> in the app, the dashboard (its data, charts and settings) is stored in your browser’s local storage (IndexedDB) on your device. This data is not transmitted to us.</p>
+    <p>This storage only happens when you explicitly ask for it and is strictly necessary to provide the function you requested (§ 25(2) no. 2 of the German Telecommunications Digital Services Data Protection Act, TDDDG). You can delete saved dashboards at any time with the <strong>Delete</strong> button on the app’s start page, or by clearing your browser’s website data.</p>
+    <p>Dashboard files you download (<em>.chartwright.json</em>) contain the data of your dashboard. You decide whether and with whom to share them.</p>
+
+    <h2 id="waitlist">6. Waitlist</h2>
+    <p>You can join our waitlist to hear about the launch of paid features. We process:</p>
+    <ul>
+      <li>your email address (required),</li>
+      <li>the plan you are interested in, and the tools you select (optional),</li>
+      <li>the date and time you gave your consent.</li>
+    </ul>
+    <p><strong>Purpose:</strong> to inform you by email about the waitlist and the launch of paid features, and to prioritise which connections we build first. We will not send you unrelated newsletters.</p>
+    <p><strong>Legal basis:</strong> your consent (Art. 6(1)(a) GDPR). You can withdraw it at any time with effect for the future, for example by emailing <a href="mailto:privacy@chartwright.de">privacy@chartwright.de</a> or by using the unsubscribe link in our emails. Withdrawal does not affect the lawfulness of processing before it.</p>
+    <p><strong>Storage:</strong> the data is stored in a database operated by Cloudflare (Cloudflare D1) as our processor. We delete it when you withdraw your consent, when the waitlist is no longer needed, or at the latest 24 months after your sign-up if you have not become a customer.</p>
+    <p>Providing this data is voluntary. Without an email address we cannot add you to the waitlist.</p>
+
+    <h2 id="contact">7. Contacting us</h2>
+    <p>If you email us, we process your email address, name and the content of your message to answer your request. The legal basis is Art. 6(1)(b) GDPR if your request relates to a contract or pre-contractual steps, and otherwise our legitimate interest in answering enquiries (Art. 6(1)(f) GDPR). We delete this data once your request is resolved, unless statutory retention periods apply.</p>
+
+    <h2 id="processors">8. Service providers</h2>
+    <p>We only share personal data with service providers who process it on our behalf and under our instructions:</p>
+    <ul>
+      <li><strong>Cloudflare, Inc.</strong> (USA): website hosting, security, program libraries (cdnjs) and the waitlist database.</li>
+    </ul>
+    <p>We will update this list before using additional providers, for example for sending emails or for the paid version of Chartwright.</p>
+
+    <h2 id="transfers">9. Transfers outside the EU</h2>
+    <p>Cloudflare is based in the USA and may process data in countries outside the European Union. Cloudflare is certified under the <strong>EU-US Data Privacy Framework</strong>, for which the European Commission has adopted an adequacy decision (Art. 45 GDPR). In addition, our data processing agreement with Cloudflare includes the EU <strong>Standard Contractual Clauses</strong> (Art. 46 GDPR).</p>
+
+    <h2 id="rights">10. Your rights</h2>
+    <p>Under the GDPR you have the right to:</p>
+    <ul>
+      <li><strong>access</strong> the personal data we hold about you (Art. 15),</li>
+      <li>have inaccurate data <strong>corrected</strong> (Art. 16),</li>
+      <li>have your data <strong>deleted</strong> (Art. 17),</li>
+      <li><strong>restrict</strong> its processing (Art. 18),</li>
+      <li>receive your data in a portable format (<strong>data portability</strong>, Art. 20),</li>
+      <li><strong>object</strong> to processing based on our legitimate interests, on grounds relating to your particular situation (Art. 21),</li>
+      <li><strong>withdraw your consent</strong> at any time with effect for the future (Art. 7(3)).</li>
+    </ul>
+    <p>To exercise these rights, email us at <a href="mailto:privacy@chartwright.de">privacy@chartwright.de</a>.</p>
+    <p>You also have the right to lodge a complaint with a data protection supervisory authority (Art. 77 GDPR). The authority responsible for us is:</p>
+    <div class="box">
+      <p>Bayerisches Landesamt für Datenschutzaufsicht (BayLDA)<br>Promenade 18, 91522 Ansbach, Germany<br><a href="https://www.lda.bayern.de" rel="noopener">www.lda.bayern.de</a></p>
+    </div>
+
+    <h2 id="other">11. Other information</h2>
+    <h3>Security</h3>
+    <p>This website is only available through an encrypted connection (HTTPS). Access to the waitlist database is limited to the controller.</p>
+    <h3>Children</h3>
+    <p>Chartwright is a tool for professional use and is not aimed at children under 16. We do not knowingly collect their data.</p>
+    <h3>Changes to this policy</h3>
+    <p>We update this policy when our website or the law changes, for example when we launch paid features with user accounts. The date at the top shows the latest version.</p>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Chartwright</span>
+    <a href="/app">App</a>
+    <a href="/impressum">Impressum</a>
+    <a href="/privacy" aria-current="page">Privacy</a>
+  </div>
+</footer>
+</body>
+</html>

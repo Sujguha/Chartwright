@@ -3,6 +3,20 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.8.2] - 2026-09-29
+
+### Changed
+- The privacy policy lists **privacy@chartwright.de** as the contact address (forwarded by Cloudflare Email Routing) for questions, data requests and withdrawing waitlist consent.
+
+## [1.8.1] - 2026-09-29
+
+### Added
+- **Privacy policy** (`privacy.html`, at `/privacy`): a GDPR-based Datenschutzerklärung covering hosting by Cloudflare, local processing of files in the browser, saved dashboards in browser storage, the waitlist (consent, storage, deletion after at most 24 months), service providers, transfers outside the EU, your rights, and the Bavarian supervisory authority. Contact details are placeholders until the Impressum details are final.
+- The waitlist consent checkbox links to the privacy policy.
+
+### Changed
+- **The Instrument Sans font is now hosted on chartwright.de** (`fonts/`) instead of Google Fonts, so no visitor data is sent to Google. The font's licence (SIL Open Font License) is included.
+
 ## [1.8.0] - 2026-09-29
 
 ### Changed
