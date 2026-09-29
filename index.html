@@ -79,6 +79,13 @@ button,input,select{font:inherit;color:inherit}
 .plan.soon{background:transparent;border:2px dashed var(--line)}
 .plan.soon .tag{background:var(--sunk);color:var(--ink-2)}
 .plan.soon .price{color:var(--ink-2);font-size:28px;line-height:1.43}
+.plan.preview{border-style:solid;border-color:var(--c2)}
+.plan.preview .tag{background:color-mix(in srgb,var(--c2) 14%,transparent);color:var(--c2)}
+.plan.preview .price{color:var(--ink)}
+.plan .group{margin:0 0 -8px;font-size:14px;font-weight:700}
+.plan ul.later{color:var(--ink-2)}
+.plan .actions{display:flex;gap:10px;flex-wrap:wrap}
+.plan .actions .btn{flex:1}
 
 /* Connections */
 .connects{margin:40px 0 0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:20px 40px;align-items:start;padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -144,7 +151,7 @@ footer a{color:var(--ink-2)}
 <main class="wrap">
   <section class="hero">
     <h1>Dashboards from your Excel, Jira and SAP exports.</h1>
-    <p>Chartwright is free to use today, right in your browser. Live connections to Jira, ServiceNow and SAP Cloud ALM are on the way for teams that report every week.</p>
+    <p>Chartwright is free to use today, right in your browser. Pro features such as saved dashboards and automatic insights are in preview now, and live connections to Jira, ServiceNow and SAP Cloud ALM are on the way.</p>
   </section>
 
   <section class="plans" id="plans" aria-label="Plans">
@@ -165,21 +172,29 @@ footer a{color:var(--ink-2)}
       <a class="btn primary" href="app.html">Open Chartwright</a>
     </article>
 
-    <article class="plan soon">
+    <article class="plan soon preview">
       <div class="plan-head">
         <div><h2>Pro</h2><p class="for">For teams that report every week.</p></div>
-        <span class="tag">Coming soon</span>
+        <span class="tag">Preview</span>
       </div>
-      <p class="price">Price to follow</p>
+      <p class="price">Free during beta</p>
+      <p class="group">Try it now</p>
       <ul>
-        <li>Everything in Free</li>
+        <li>Save dashboards in your browser and reopen them any time</li>
+        <li>Share a dashboard as a file your colleagues open in Chartwright</li>
+        <li>Automatic insights: overdue items, blockers, budget overruns, unusual values</li>
+      </ul>
+      <p class="group">Coming soon</p>
+      <ul class="later">
         <li>Live connections to Jira Cloud, Jira Service Management, ServiceNow and SAP Cloud ALM</li>
-        <li>One combined view across all three tools, with risks flagged automatically</li>
-        <li>Scheduled refresh, saved and shared dashboards</li>
-        <li>Weekly PDF reports by email</li>
+        <li>One combined view across all three tools</li>
+        <li>Scheduled refresh and weekly PDF reports by email</li>
       </ul>
       <span class="grow"></span>
-      <a class="btn" href="#waitlist" data-plan="Pro">Join the Pro waitlist</a>
+      <div class="actions">
+        <a class="btn primary" href="app.html">Try the preview</a>
+        <a class="btn" href="#waitlist" data-plan="Pro">Join the waitlist</a>
+      </div>
     </article>
 
     <article class="plan soon">
@@ -272,11 +287,11 @@ footer a{color:var(--ink-2)}
     </details>
     <details>
       <summary>When will Pro be available?</summary>
-      <p>It’s being built now. Waitlist members hear first and can try it before the public launch.</p>
+      <p>Part of Pro is available now as a free preview: saved dashboards, shareable dashboard files and automatic insights. Live connections are being built; waitlist members hear first and can try them before the public launch.</p>
     </details>
     <details>
       <summary>Does my data leave my browser?</summary>
-      <p>Not in the free version: files are read on your device and never uploaded. Live connections will need secure, read-only access to your tools, hosted in the EU, and will be explained in full before launch.</p>
+      <p>Not in the free version or the Pro preview: files are read on your device and never uploaded, and saved dashboards stay in your browser. Live connections will need secure, read-only access to your tools, hosted in the EU, and will be explained in full before launch.</p>
     </details>
     <details>
       <summary>Can I use it with company data?</summary>

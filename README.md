@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.6.1** · [Changelog](CHANGELOG.md)
+**Version 1.7.1** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -20,6 +20,7 @@ Everything runs in the browser. Your file is never uploaded to a server.
 - **Email**: opens a new email in your mail app with the recipients and subject filled in, and copies a formatted version of the dashboard (with charts) to paste into it.
 - **German formats**: understands numbers such as `1.234,5` and dates such as `23.07.2026`.
 - **Light and dark mode**: follows your system setting.
+- **Pro preview (free during beta)**: save dashboards in the browser, share them as `.chartwright.json` dashboard files, and get automatic insights such as overdue items, blockers, budget overruns and unusual values.
 - **Guide (inside Claude only)**: an AI assistant that answers questions about the data with exact figures, explains how to use the app, and can apply filters, add or remove charts, and open the Download or Email panel on request.
 
 ## Supported file formats
@@ -62,7 +63,9 @@ Open the app and select **Try it with sample release data**, or upload one of th
 
 The home page (`index.html`) shows the Free plan (available now) and the upcoming Pro and Enterprise plans, with a waitlist form. The app itself is `app.html`.
 
-The form uses **Netlify Forms**: when the site is deployed on Netlify, Netlify detects the form automatically and stores submissions under **Site → Forms → waitlist**, where you can also turn on email notifications. On other hosts (or when opening the file locally) the form can't submit and shows a message instead.
+Live site: **https://chartwright.de** (Cloudflare Pages).
+
+The form currently uses **Netlify Forms**, which does not work on Cloudflare Pages and is being replaced: when the site is deployed on Netlify, Netlify detects the form automatically and stores submissions under **Site → Forms → waitlist**, where you can also turn on email notifications. On other hosts (or when opening the file locally) the form can't submit and shows a message instead.
 
 Before collecting emails, add an `impressum.html` and `privacy.html` (linked in the page footer). The privacy page should explain that waitlist emails are stored with Netlify and used only for launch updates.
 

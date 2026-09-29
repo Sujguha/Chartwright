@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="version" content="1.6.1">
-<meta name="generator" content="Chartwright 1.6.1">
+<meta name="version" content="1.7.1">
+<meta name="generator" content="Chartwright 1.7.1">
 <title>Chartwright: dashboards from spreadsheets</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -215,8 +215,30 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
 .soon-link{display:flex;align-items:center;gap:8px}
 .soon-tag{font-size:12px;font-weight:700;color:var(--ink-2);background:var(--sunk);border-radius:999px;padding:3px 9px}
 @media (max-width:640px){.soon-link{display:none}}
+.pro-tag{display:inline-block;font-size:11px;font-weight:700;color:var(--c2);border:1px solid color-mix(in srgb,var(--c2) 45%,transparent);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.saved{margin-top:36px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.saved-head{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.saved-head h2{margin:0;color:var(--ink);font-size:18px}
+.saved-list{list-style:none;margin:12px 0 0;padding:0}
+.saved-list li{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 0;border-top:1px solid var(--line)}
+.saved-list .sname{font-weight:600}
+.saved-list .smeta{font-size:13px;color:var(--ink-2)}
+.saved-list .sinfo{flex:1;min-width:200px;display:flex;flex-direction:column}
+.insights{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:-4px 0 18px}
+.ins-head{display:flex;align-items:center;gap:10px}
+.ins-head h2{margin:0;color:var(--ink);font-size:16px}
+.ins-list{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:10px}
+.ins{border:1px solid var(--line);border-left:4px solid var(--c2);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;background:var(--bg)}
+.ins.risk{border-left-color:var(--danger)}
+.ins.watch{border-left-color:var(--c3)}
+.ins .ititle{font-weight:600;font-size:14px;line-height:1.35}
+.ins .idetail{font-size:13px;color:var(--ink-2)}
+.ins .ilevel{font-size:11px;font-weight:700;color:var(--ink-2)}
+.ins .btn.link{align-self:flex-start;padding:2px 0;font-size:13px}
+.insights.collapsed .ins-list{display:none}
 @media print{
   .no-print,aside,.builder-panel,dialog,.guide,.guide-btn,.kpi-add,.kpi-edit{display:none!important}
+  .insights.collapsed{display:none!important}
   .dash-title{border:none;padding:0;margin:0}
   body.guide-open .layout{margin-right:0}
   .topbar{position:static}
@@ -235,8 +257,8 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
   <div class="landing-top">
     <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Chartwright</div>
     <nav class="landing-nav" aria-label="Main">
-      <a href="https://chartwright.netlify.app/#waitlist" class="soon-link">Live Jira, ServiceNow and SAP connections <span class="soon-tag">Coming soon</span></a>
-      <a href="https://chartwright.netlify.app/">Home and plans</a>
+      <a href="https://chartwright.de/#waitlist" class="soon-link">Live Jira, ServiceNow and SAP connections <span class="soon-tag">Coming soon</span></a>
+      <a href="https://chartwright.de/">Home and plans</a>
     </nav>
   </div>
   <div id="resume" class="resume resume-top hidden">
@@ -262,6 +284,11 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
     <li><b>Review</b><br>Key totals and charts appear automatically, based on your column types.</li>
     <li><b>Refine</b><br>Filter by any category, add your own charts, and print or save as PDF.</li>
   </ol>
+  <section id="savedSection" class="saved hidden" aria-labelledby="savedTitle">
+    <div class="saved-head"><h2 id="savedTitle">Your saved dashboards</h2><span class="pro-tag">Pro preview</span></div>
+    <p class="fine">Stored in this browser on this device only. To use one elsewhere, open it and download it as a dashboard file.</p>
+    <ul id="savedList" class="saved-list"></ul>
+  </section>
   <p class="fine version-line">Chartwright <span class="app-version"></span></p>
 </div>
 
@@ -282,6 +309,7 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
       <select id="sheet"></select>
     </div>
     <span class="spacer"></span>
+    <button id="openSave" class="btn no-print" type="button">Save</button>
     <button id="openDl" class="btn no-print" type="button">Download</button>
     <button id="openMail" class="btn no-print" type="button">Email</button>
     <button id="another" class="btn primary no-print" type="button">Open another file</button>
@@ -307,6 +335,10 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
       <div id="suggestBanner" class="suggest-banner hidden no-print" role="status"></div>
       <div id="kpis" class="kpis" aria-live="polite"></div>
       <div class="kpi-tools no-print"><button id="kpiAdd" class="btn link" type="button">+ Add key figure</button><span class="fine">Click any key figure to change it.</span></div>
+      <section id="insights" class="insights hidden" aria-labelledby="insTitle">
+        <div class="ins-head"><h2 id="insTitle">Insights</h2><span class="pro-tag">Pro preview</span><span class="spacer"></span><button id="insToggle" class="btn link no-print" type="button" aria-expanded="true">Hide</button></div>
+        <ul id="insList" class="ins-list"></ul>
+      </section>
 
       <div class="panel builder-panel">
         <h2>Add a chart</h2>
@@ -369,6 +401,19 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
     <div class="dlg-head"><h2 id="suggestTitle" class="dlg-title">Suggested dashboards</h2><button class="remove" type="button" data-close aria-label="Close">×</button></div>
     <p class="fine" style="margin-bottom:6px">Based on the columns in your file. Using a suggestion replaces your charts and key figures; you can still edit them afterwards.</p>
     <div id="suggestList"></div>
+  </div>
+</dialog>
+
+<dialog id="saveDialog" aria-labelledby="saveTitle">
+  <div class="dlg">
+    <div class="dlg-head"><h2 id="saveTitle" class="dlg-title">Save dashboard</h2><button class="remove" type="button" data-close aria-label="Close">×</button></div>
+    <p class="fine" style="margin-bottom:14px"><span class="pro-tag">Pro preview</span> Free while in beta.</p>
+    <div class="field"><label for="saveName">Name</label><input id="saveName" type="text" maxlength="80"></div>
+    <div class="opts">
+      <button class="opt" id="saveLocal" type="button"><b id="saveLocalLabel">Save in this browser</b><span>Reopen it any time from the start page. Data, charts, key figures and filters stay on this device.</span></button>
+      <button class="opt" id="saveFileBtn" type="button"><b>Download dashboard file</b><span>A .chartwright.json file anyone can open in Chartwright to see this exact dashboard. It contains your data, so only share it with people allowed to see it.</span></button>
+    </div>
+    <p id="saveStatus" class="status" role="status"></p>
   </div>
 </dialog>
 
@@ -436,7 +481,7 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
 <script>
 (function(){
 const $ = s => document.querySelector(s);
-const APP_VERSION = '1.6.1';
+const APP_VERSION = '1.7.1';
 document.querySelectorAll('.app-version').forEach(el=>el.textContent='v'+APP_VERSION);
 const COUNT = '__count';
 const S = {rows:[], cols:[], filters:{}, charts:[], auto:[], sortCol:null, sortDir:1, q:'', fileName:''};
@@ -543,7 +588,7 @@ function prepare(rawRows,names,fileName){
   S.rows=rows; S.cols=cols; S.filters={}; S.sortCol=null; S.sortDir=1; S.q=''; S.fileName=fileName;
   $('#q').value='';
   S.auto=suggestCharts(); S.charts=S.auto.slice();
-  S.suggestions=buildSuggestions(); S.bannerDismissed=false;
+  S.suggestions=buildSuggestions(); S.bannerDismissed=false; S.savedId=null;
   const subj=document.getElementById('mSubject'); if(subj) subj.value='';
   showApp();
 }
@@ -646,6 +691,7 @@ function loadJSON(text){
     try{ data=lines.map(l=>JSON.parse(l)); }
     catch(e2){ throw new Error('This JSON file couldn’t be read. Check that it’s valid JSON.'); }
   }
+  if(data&&data.app==='chartwright'&&data.kind==='dashboard'){restoreSnapshot(data);return;}
   const recs=findRecords(data,0);
   if(!recs||!recs.length) throw new Error('No list of records found in this JSON. Chartwright needs a list of objects, for example [{"team": "Payments", "defects": 3}, …].');
   const flat=recs.map(r=>{const o={};flatten(r,'',o,0);return o;});
@@ -908,6 +954,7 @@ function goHome(){
   if(typeof closeGuide==='function'&&!$('#guide').classList.contains('hidden')) closeGuide();
   document.querySelectorAll('dialog[open]').forEach(d=>d.close());
   $('#app').classList.add('hidden'); $('#landing').classList.remove('hidden');
+  renderSavedList();
   const has=S.rows.length>0;
   $('#resume').classList.toggle('hidden',!has);
   if(has){
@@ -1047,7 +1094,202 @@ function openSuggestDialog(){
   list.querySelectorAll('[data-add]').forEach(x=>x.addEventListener('click',()=>{$('#suggestDialog').close();applySuggestion(x.dataset.add,'add');$('#charts').scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'});}));
   $('#suggestDialog').showModal();
 }
-function renderData(){renderKPIs();renderCharts();renderTable();}
+function renderData(){renderKPIs();renderInsights();renderCharts();renderTable();}
+
+/* ---------- Saved dashboards and dashboard files (Pro preview) ---------- */
+const DBX={
+  open(){return new Promise((res,rej)=>{let r;try{r=indexedDB.open('chartwright',1);}catch(e){rej(e);return;}
+    r.onupgradeneeded=()=>{r.result.createObjectStore('dashboards',{keyPath:'id'});};
+    r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error);});},
+  async run(mode,fn){const db=await this.open();return new Promise((res,rej)=>{const t=db.transaction('dashboards',mode);const req=fn(t.objectStore('dashboards'));t.oncomplete=()=>{db.close();res(req?req.result:undefined);};t.onerror=()=>{db.close();rej(t.error);};t.onabort=()=>{db.close();rej(t.error);};});},
+  put(o){return this.run('readwrite',st=>st.put(o));},
+  get(id){return this.run('readonly',st=>st.get(id));},
+  del(id){return this.run('readwrite',st=>st.delete(id));},
+  all(){return this.run('readonly',st=>st.getAll());}
+};
+function snapshot(name){
+  return {app:'chartwright',kind:'dashboard',format:1,savedWith:APP_VERSION,
+    id:S.savedId||('d'+Date.now()+Math.random().toString(36).slice(2,7)),
+    name:name||dashName(),title:S.title||'',fileName:S.fileName,savedAt:new Date().toISOString(),
+    cols:S.cols.map(c=>Object.assign({},c)),
+    rows:S.rows.map(r=>S.cols.map(c=>{const v=r[c.name];return v instanceof Date?v.toISOString():(v===undefined?null:v);})),
+    charts:S.charts,kpis:S.kpis,filters:Object.fromEntries(Object.entries(S.filters).filter(([,v])=>v!==undefined))};
+}
+function restoreSnapshot(o){
+  if(!o||o.app!=='chartwright'||o.kind!=='dashboard'||!Array.isArray(o.cols)||!Array.isArray(o.rows)) throw new Error('This isn’t a Chartwright dashboard file.');
+  const cols=o.cols.map(c=>({name:String(c.name),type:c.type,distinct:c.distinct||0,filled:c.filled||0,derived:!!c.derived}));
+  const rows=o.rows.map(a=>{const r={};cols.forEach((c,i)=>{let v=a[i];if(v===undefined)v=null;if(v!==null&&c.type==='date'){const d=new Date(v);v=isNaN(d)?null:d;}r[c.name]=v;});return r;});
+  wb=null; $('#sheetField').classList.add('hidden');
+  S.rows=rows; S.cols=cols; S.filters={}; S.sortCol=null; S.sortDir=1; S.q=''; S.fileName=o.fileName||'Dashboard';
+  S.titleFile=S.fileName; S.title=o.title||'';
+  S.auto=suggestCharts(); S.suggestions=buildSuggestions(); S.bannerDismissed=true; S.savedId=o.id||null;
+  $('#q').value=''; const subj=document.getElementById('mSubject'); if(subj) subj.value='';
+  S.charts=Array.isArray(o.charts)&&o.charts.length?o.charts.filter(c=>colByName(c.group)):S.auto.slice();
+  showApp();
+  if(Array.isArray(o.kpis)&&o.kpis.length) S.kpis=o.kpis.filter(k=>k.kind==='rows'||colByName(k.col));
+  const f=o.filters||{};
+  $('#filters').querySelectorAll('select').forEach(sel=>{const v=f[sel.dataset.col];if(v!==undefined&&[...sel.options].some(op=>op.value===v)){sel.value=v;S.filters[sel.dataset.col]=v;}});
+  updateFilterNote(); renderData();
+}
+function fmtWhen(iso){const d=new Date(iso);return isNaN(d)?'':new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(d);}
+async function renderSavedList(){
+  const sec=$('#savedSection'), list=$('#savedList');
+  let items=[];
+  try{items=(await DBX.all())||[];}catch(e){sec.classList.add('hidden');return;}
+  items.sort((a,b)=>String(b.savedAt).localeCompare(String(a.savedAt)));
+  sec.classList.toggle('hidden',!items.length);
+  list.innerHTML=items.map(d=>'<li><div class="sinfo"><span class="sname">'+esc(d.name||'Dashboard')+'</span><span class="smeta">'+esc(d.fileName||'')+', '+fmt.format((d.rows||[]).length)+' rows, saved '+esc(fmtWhen(d.savedAt))+'</span></div>'
+    +'<button class="btn primary" type="button" data-open="'+esc(d.id)+'">Open</button><button class="btn" type="button" data-del="'+esc(d.id)+'">Delete</button></li>').join('');
+  list.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',async()=>{try{const d=await DBX.get(b.dataset.open);restoreSnapshot(d);}catch(e){showError('That dashboard couldn’t be opened: '+(e.message||e));}}));
+  list.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',async()=>{
+    if(b.dataset.confirm!=='1'){b.dataset.confirm='1';b.textContent='Confirm delete';return;}
+    try{await DBX.del(b.dataset.del);}catch(e){}
+    renderSavedList();
+  }));
+}
+function openSaveDialog(){
+  $('#saveName').value=dashName(); $('#saveStatus').textContent=''; $('#saveStatus').className='status';
+  $('#saveLocalLabel').textContent=S.savedId?'Update saved dashboard':'Save in this browser';
+  $('#saveDialog').showModal();
+}
+$('#openSave').addEventListener('click',openSaveDialog);
+$('#saveLocal').addEventListener('click',async()=>{
+  const st=$('#saveStatus'); const name=$('#saveName').value.trim()||dashName();
+  try{
+    const snap=snapshot(name); await DBX.put(snap); S.savedId=snap.id;
+    if(!S.title&&name!==defaultTitle()){S.title=name;syncTitle();}
+    st.className='status good'; st.textContent='Saved. You’ll find it on the start page under “Your saved dashboards”.';
+    $('#saveLocalLabel').textContent='Update saved dashboard';
+  }catch(e){
+    st.className='status bad';
+    st.textContent=(e&&e.name==='QuotaExceededError')?'Your browser is out of storage space for saved dashboards. Delete an older one and try again.':'Saving isn’t available in this browser (it may be in private mode). Download a dashboard file instead.';
+  }
+});
+$('#saveFileBtn').addEventListener('click',()=>{
+  const name=$('#saveName').value.trim()||dashName();
+  const snap=snapshot(name); const prev=$('#dlStatus');
+  saveFile(baseName()+'.chartwright.json',JSON.stringify(snap)).then(()=>{const st=$('#saveStatus');st.className=prev.className;st.textContent=prev.textContent;});
+});
+renderSavedList();
+
+/* ---------- Automatic insights (Pro preview) ---------- */
+function applyFilterValue(col,val){
+  const sel=[...$('#filters').querySelectorAll('select')].find(x=>x.dataset.col===col);
+  if(!sel||![...sel.options].some(o=>o.value===val)) return false;
+  sel.value=val; S.filters[col]=val; updateFilterNote(); renderData(); return true;
+}
+function pct(x){return (Math.round(x*1000)/10).toLocaleString(undefined,{maximumFractionDigits:1})+'%';}
+const DONE_RE=/(^|\b)(done|closed|resolved|complete|completed|paid|deployed|cancel+ed|cancelled|erledigt|abgeschlossen|geschlossen|bezahlt|released|passed|yes)(\b|$)/i;
+function computeInsights(){
+  const rows=filtered(), out=[]; if(rows.length<3) return out;
+  const P=detectProfile();
+  const main=rankedNumbers().find(c=>!isRateLike(c.name)&&!/(document currency|transaction currency|belegwährung|wrbtr|local)/i.test(c.name));
+  const status=P.status;
+  const isOpen=r=>!status||r[status.name]===null||!DONE_RE.test(String(r[status.name]));
+
+  // 1. Overdue items
+  const due=S.cols.find(c=>c.type==='date'&&/(due|deadline|target|planned|fällig|end date|finish)/i.test(c.name));
+  if(due&&status){
+    const today=new Date(); today.setHours(0,0,0,0);
+    const od=rows.filter(r=>r[due.name]&&r[due.name]<today&&isOpen(r));
+    if(od.length) out.push({level:'risk',title:fmt.format(od.length)+' '+(od.length===1?'item is':'items are')+' past “'+due.name+'” and not finished',detail:'Based on “'+status.name+'”. Sort the data table by “'+due.name+'” to see them.',sort:due.name});
+  }
+  // 2. Open blockers
+  const textCols=S.cols.filter(c=>c.type==='category'||c.type==='text');
+  const blockers=rows.filter(r=>isOpen(r)&&textCols.some(c=>{const v=r[c.name];return v!==null&&/\bblock(er|ed|ing)?\b|highest|critical|kritisch/i.test(String(v))&&!/(priority|severity|risk)/i.test('')&&(/(label|status|priority|severity|risk|flag|type)/i.test(c.name));}));
+  if(blockers.length&&(P.key||P.status)){
+    const keyCol=P.key?P.key.name:null;
+    const names=keyCol?blockers.slice(0,3).map(r=>r[keyCol]).filter(Boolean).join(', '):'';
+    out.push({level:'risk',title:fmt.format(blockers.length)+' open '+(blockers.length===1?'item is':'items are')+' marked as blocker or critical',detail:(names?names+(blockers.length>3?' and more. ':'. '):'')+'These usually need a decision before go-live.'});
+  }
+  // 3. Budget vs actual
+  const bud=S.cols.find(c=>c.type==='number'&&/budget|plan(ned)? (cost|amount)|soll/i.test(c.name)), act=S.cols.find(c=>c.type==='number'&&/actual|ist\b|spent/i.test(c.name));
+  if(bud&&act){
+    const pairs=rows.filter(r=>typeof r[bud.name]==='number'&&typeof r[act.name]==='number');
+    const b=pairs.reduce((a,r)=>a+r[bud.name],0), a=pairs.reduce((x,r)=>x+r[act.name],0);
+    if(b>0&&pairs.length){const d=(a-b)/b;
+      if(d>0.02) out.push({level:'risk',title:'“'+act.name+'” is '+pct(d)+' over “'+bud.name+'”',detail:fmt.format(a)+' against '+fmt.format(b)+'.'});
+      else if(d<-0.1) out.push({level:'info',title:'“'+act.name+'” is '+pct(-d)+' under “'+bud.name+'”',detail:fmt.format(a)+' against '+fmt.format(b)+'.'});
+      const gcol=S.cols.filter(c=>c.type==='category'&&c.distinct>=2&&c.distinct<=60&&!isPeriodCol(c)).sort((x,y)=>{const sc=c=>(/name|bezeichnung/i.test(c.name)?2:0)+(/department|team|center|centre|project|area|kostenstelle/i.test(c.name)?1:0);return sc(y)-sc(x);})[0];
+      if(gcol){
+        const g=new Map(); pairs.forEach(r=>{const k=r[gcol.name];if(k===null)return;const e=g.get(k)||{b:0,a:0};e.b+=r[bud.name];e.a+=r[act.name];g.set(k,e);});
+        let worst=null; g.forEach((e,k)=>{if(e.b>0){const dv=(e.a-e.b)/e.b;if(dv>0.05&&(!worst||dv>worst.dv))worst={k,dv,e};}});
+        if(worst) out.push({level:'watch',title:'“'+worst.k+'” is '+pct(worst.dv)+' over budget',detail:'The largest overrun in “'+gcol.name+'”: '+fmt.format(worst.e.a)+' against '+fmt.format(worst.e.b)+'.',filter:[gcol.name,String(worst.k)]});
+      }
+    }
+  }
+  // 4. Agile progress and scope growth
+  if(P.created&&P.done){
+    const spec={type:'burnup',group:P.created.name,done:P.done.name,value:P.points?P.points.name:COUNT,agg:'sum'};
+    const bd=burnData(rows,spec);
+    if(bd.series&&bd.labels.length>1){
+      const sc=bd.series[0].values, dn=bd.series[1].values, L=sc.length-1, unit=P.points?P.points.name:'items';
+      if(sc[L]>0){const share=dn[L]/sc[L];
+        out.push({level:share<0.8?'watch':'info',title:pct(share)+' of scope is done',detail:fmt.format(dn[L])+' of '+fmt.format(sc[L])+' '+unit+' finished'+(P.sprint?'. Filter by “'+P.sprint.name+'” to check one sprint.':'.')});}
+      if(bd.unit==='day'&&sc[0]>0&&sc[L]/sc[0]-1>=0.2) out.push({level:'watch',title:'Scope grew '+pct(sc[L]/sc[0]-1)+' since '+bd.labels[0],detail:'From '+fmt.format(sc[0])+' to '+fmt.format(sc[L])+' '+unit+'. Late additions often push dates.'});
+    }
+  }
+  // 5. Problem outcomes (rolled back, failed, rejected, SLA missed)
+  if(status){
+    const bad=new Map(); rows.forEach(r=>{const v=r[status.name];if(v!==null&&/(roll(ed)? ?back|fail|reject|abort|breach|delayed|late|overdue|on hold|abgelehnt)/i.test(String(v)))bad.set(String(v),(bad.get(String(v))||0)+1);});
+    bad.forEach((n,v)=>{const sh=n/rows.length;if(sh>=0.03) out.push({level:sh>=0.1?'risk':'watch',title:'“'+v+'” in '+pct(sh)+' of rows ('+fmt.format(n)+')',detail:'Filter to see what they have in common.',filter:[status.name,v]});});
+  }
+  const sla=S.cols.find(c=>c.type==='category'&&/sla/i.test(c.name));
+  if(sla){const vals=rows.map(r=>r[sla.name]).filter(v=>v!==null);const no=vals.filter(v=>/^(no|nein|false|missed|breached)$/i.test(String(v)));
+    if(vals.length&&no.length/vals.length>=0.05){const nv=String(no[0]);out.push({level:no.length/vals.length>=0.15?'risk':'watch',title:'Target missed in '+pct(no.length/vals.length)+' of cases (“'+sla.name+'”)',detail:fmt.format(no.length)+' of '+fmt.format(vals.length)+'.',filter:[sla.name,nv]});}}
+
+  // 6. Trend of the main measure
+  const dc=S.cols.find(c=>c.type==='date');
+  if(dc){
+    const spec={type:'line',group:dc.name,value:main?main.name:COUNT,agg:'sum'};
+    const ag=aggregate(rows,spec); let n=ag.values.length;
+    if(dateGran(dc.name)==='month'&&n){
+      // Leave out the last month if the data stops well before its end: it is still incomplete
+      const ts=rows.map(r=>r[dc.name]).filter(Boolean).map(d=>d.getTime()), mx=new Date(Math.max(...ts));
+      const monthEnd=new Date(mx.getFullYear(),mx.getMonth()+1,0);
+      if((monthEnd-mx)/864e5>3) n-=1;
+      if(n>=3){const a=ag.values[n-2], b=ag.values[n-1];
+        if(a>0&&b>=0){const ch=(b-a)/a;
+          if(Math.abs(ch)>=0.15) out.push({level:'info',title:(main?'“'+main.name+'”':'Number of rows')+' '+(ch>0?'rose':'fell')+' '+pct(Math.abs(ch))+' in '+ag.labels[n-1],detail:'Compared with '+ag.labels[n-2]+' ('+fmt.format(a)+' to '+fmt.format(b)+'), the last complete month.'});}}
+    }
+  }
+  // 7. Concentration
+  const cats=S.cols.filter(c=>c.type==='category'&&c.distinct>=3&&c.distinct<=40&&!isPeriodCol(c)&&c!==status);
+  const pick=cats.find(c=>/(team|tribe|program|department|cost ?cent|customer|vendor|account|category|service|component|entity|assignee|region)/i.test(c.name))||cats[0];
+  if(pick){
+    const ag=aggregate(rows,{type:'bar',group:pick.name,value:main?main.name:COUNT,agg:'sum'});
+    const tot=ag.values.reduce((x,y)=>x+Math.max(0,y),0);
+    if(tot>0&&ag.values.length&&ag.labels[0]!=='Other'){const sh=ag.values[0]/tot;
+      if(sh>=0.35) out.push({level:'info',title:'“'+ag.labels[0]+'” accounts for '+pct(sh)+' of '+(main?'“'+main.name+'”':'all rows'),detail:'Largest share in “'+pick.name+'”.',filter:[pick.name,ag.labels[0]]});}
+  }
+  // 8. Unusual values
+  if(main){
+    const v=rows.map(r=>r[main.name]).filter(x=>typeof x==='number').sort((a,b)=>a-b);
+    if(v.length>=20){const q=p=>v[Math.floor(p*(v.length-1))];const q1=q(.25),q3=q(.75),iqr=q3-q1;
+      if(iqr>0){const hi=q3+3*iqr, n=v.filter(x=>x>hi).length;
+        if(n>0&&n<=v.length*0.05) out.push({level:'watch',title:fmt.format(n)+' unusually high '+(n===1?'value':'values')+' in “'+main.name+'”',detail:'Up to '+fmt.format(v[v.length-1])+', far above the typical range. Sort the data table to check them.',sort:main.name,desc:true});}}
+  }
+  // 9. Missing data
+  const gaps=S.cols.filter(c=>!c.derived&&(c.type==='category'||c.type==='number')).map(c=>({c,share:rows.filter(r=>r[c.name]===null).length/rows.length})).filter(x=>x.share>=0.2&&x.share<1).sort((a,b)=>b.share-a.share);
+  if(gaps.length) out.push({level:'info',title:'“'+gaps[0].c.name+'” is empty in '+pct(gaps[0].share)+' of rows',detail:gaps.length>1?'Also incomplete: '+gaps.slice(1,3).map(g=>'“'+g.c.name+'”').join(', ')+'.':'Charts using it show these as “(blank)”.'});
+
+  const rank={risk:0,watch:1,info:2};
+  return out.sort((a,b)=>rank[a.level]-rank[b.level]).slice(0,6);
+}
+function renderInsights(){
+  const box=$('#insights'), list=$('#insList');
+  let items=[]; try{items=computeInsights();}catch(e){console.error('Insights failed',e);items=[];}
+  box.classList.toggle('hidden',!items.length);
+  const lvl={risk:'Risk',watch:'Watch',info:'Insight'};
+  list.innerHTML=items.map((it,i)=>'<li class="ins '+it.level+'"><span class="ilevel">'+lvl[it.level]+'</span><span class="ititle">'+esc(it.title)+'</span><span class="idetail">'+esc(it.detail||'')+'</span>'
+    +(it.filter?'<button class="btn link no-print" type="button" data-ins="'+i+'">Show me</button>':it.sort?'<button class="btn link no-print" type="button" data-ins="'+i+'">Sort the table</button>':'')+'</li>').join('');
+  list.querySelectorAll('[data-ins]').forEach(b=>b.addEventListener('click',()=>{
+    const it=items[+b.dataset.ins];
+    if(it.filter){ if(!applyFilterValue(it.filter[0],it.filter[1])) return; $('#charts').scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'}); }
+    else if(it.sort){ S.sortCol=it.sort; S.sortDir=it.desc?-1:1; renderTable(); $('#table').scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'}); }
+  }));
+}
+$('#insToggle').addEventListener('click',()=>{const c=$('#insights').classList.toggle('collapsed');$('#insToggle').textContent=c?'Show':'Hide';$('#insToggle').setAttribute('aria-expanded',String(!c));});
 
 function renderColumns(){
   const label={number:'Number',date:'Date',category:'Category',text:'Text'};
@@ -1807,6 +2049,8 @@ function guideRules(){
     '- Dashboard name (top bar): click it or the Rename button to rename the dashboard; the name is used in the PDF, reports and emails.',
     '- Key figures (top row): click any tile (or its pencil) to change what it shows (a number column with Total, Average, Minimum or Maximum; a count of different values; a date range; or the number of rows), rename or remove it. "+ Add key figure" adds one, up to 6.',
     '- Data table (bottom): search rows and sort by clicking a column heading.',
+    '- Insights (below the key figures, Pro preview): automatic flags such as overdue items, open blockers, budget overruns, scope growth, unusual values, concentration and missing data, each with a Show me button.',
+    '- Save (top bar, Pro preview): save the dashboard in this browser (reopen from the start page) or download a .chartwright.json dashboard file that others can open in Chartwright to see the same dashboard; the file contains the data.',
     '- Download (top bar): PDF report, HTML report, filtered data as Excel or CSV, or print the page.',
     '- Email (top bar): send with Gmail (with a PDF and/or CSV attached), save as a Gmail draft, or open in their own email app with a formatted copy to paste.',
     '- "Open another file" loads a new file. Supported: .xlsx, .xlsm, .xls, .xlsb, .ods, .csv, .tsv, .txt, .json. The file stays in the browser.',

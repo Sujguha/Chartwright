@@ -3,6 +3,23 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.7.1] - 2026-09-28
+
+### Changed
+- The app's links to the home page and waitlist now point to the new domain, **chartwright.de**.
+- Hosting moves from Netlify to Cloudflare Pages. The same `_redirects` file works there.
+
+## [1.7.0] - 2026-09-28
+
+### Added (Pro preview, free during beta)
+- **Saved dashboards**: "Save" in the top bar stores the dashboard (data, charts, key figures, filters and name) in the browser. Saved dashboards are listed on the app's start page to reopen or delete. Nothing leaves the device.
+- **Dashboard files**: download a `.chartwright.json` file that opens in Chartwright with exactly the same dashboard, a way to share without a server. The file contains the data.
+- **Automatic insights**: a panel below the key figures flags overdue items, open blockers and critical items, budget overruns (overall and the largest overrun by area), scope completion and scope growth in sprint-length periods, problem outcomes such as "Rolled back" or missed SLAs, trends between the last two complete months, concentration in one category, unusually high values and missing data. "Show me" applies the matching filter or sorts the table.
+- The guide knows about saving, dashboard files and insights.
+
+### Changed
+- The home page shows Pro as a preview you can try now, with live connections, the combined cross-tool view, scheduled refresh and weekly emails still marked as coming soon.
+
 ## [1.6.1] - 2026-09-28
 
 ### Changed
