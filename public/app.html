@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="version" content="1.10.2">
-<meta name="generator" content="Chartwright 1.10.2">
+<meta name="version" content="1.11.0">
+<meta name="generator" content="Chartwright 1.11.0">
 <title>Chartwright: dashboards from spreadsheets</title>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <style>
@@ -234,6 +234,9 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
 .ins .ilevel{font-size:11px;font-weight:700;color:var(--ink-2)}
 .ins .btn.link{align-self:flex-start;padding:2px 0;font-size:13px}
 .insights.collapsed .ins-list{display:none}
+.cloud{border-top:1px solid var(--line);margin-top:16px;padding-top:14px}
+.cloud-title{margin:0 0 8px;font-size:16px}
+.cloud-banner{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:14px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c2);border-radius:12px;padding:8px 14px;margin-bottom:14px}
 @media print{
   .no-print,aside,.builder-panel,dialog,.guide,.guide-btn,.kpi-add,.kpi-edit{display:none!important}
   .insights.collapsed{display:none!important}
@@ -257,6 +260,7 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
     <nav class="landing-nav" aria-label="Main">
       <a href="https://chartwright.de/#waitlist" class="soon-link">Live Jira, ServiceNow and SAP connections <span class="soon-tag">Coming soon</span></a>
       <a href="https://chartwright.de/">Home and plans</a>
+      <a href="/pro/" id="proNavLink" class="hidden">Pro workspaces</a>
     </nav>
   </div>
   <div id="resume" class="resume resume-top hidden">
@@ -330,6 +334,7 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
     </aside>
 
     <main>
+      <div id="cloudBanner" class="cloud-banner hidden no-print" role="status"></div>
       <div id="suggestBanner" class="suggest-banner hidden no-print" role="status"></div>
       <div id="kpis" class="kpis" aria-live="polite"></div>
       <div class="kpi-tools no-print"><button id="kpiAdd" class="btn link" type="button">+ Add key figure</button><span class="fine">Click any key figure to change it.</span></div>
@@ -411,6 +416,18 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
       <button class="opt" id="saveLocal" type="button"><b id="saveLocalLabel">Save in this browser</b><span>Reopen it any time from the start page. Data, charts, key figures and filters stay on this device.</span></button>
       <button class="opt" id="saveFileBtn" type="button"><b>Download dashboard file</b><span>A .chartwright.json file anyone can open in Chartwright to see this exact dashboard. It contains your data, so only share it with people allowed to see it.</span></button>
     </div>
+    <section id="cloudBox" class="cloud hidden" aria-labelledby="cloudTitle">
+      <h3 id="cloudTitle" class="cloud-title">Share with your team</h3>
+      <div id="cloudLoggedOut" class="hidden"><p class="fine">Log in to Chartwright Pro to save dashboards to a shared workspace. <a href="/pro/" target="_blank" rel="noopener">Log in or create an account</a></p></div>
+      <div id="cloudLoggedIn" class="hidden">
+        <div class="field" id="cloudWsField"><label for="cloudWs">Workspace</label><select id="cloudWs"></select></div>
+        <div class="dlg-actions">
+          <button id="cloudSave" class="btn primary" type="button">Save to workspace</button>
+          <button id="cloudUpdate" class="btn hidden" type="button">Update shared version</button>
+        </div>
+        <p id="cloudNote" class="fine"></p>
+      </div>
+    </section>
     <p id="saveStatus" class="status" role="status"></p>
   </div>
 </dialog>
@@ -479,7 +496,7 @@ dialog.wide-dlg{width:min(720px,calc(100% - 24px))}
 <script>
 (function(){
 const $ = s => document.querySelector(s);
-const APP_VERSION = '1.10.2';
+const APP_VERSION = '1.11.0';
 document.querySelectorAll('.app-version').forEach(el=>el.textContent='v'+APP_VERSION);
 const COUNT = '__count';
 const S = {rows:[], cols:[], filters:{}, charts:[], auto:[], sortCol:null, sortDir:1, q:'', fileName:''};
@@ -586,7 +603,7 @@ function prepare(rawRows,names,fileName){
   S.rows=rows; S.cols=cols; S.filters={}; S.sortCol=null; S.sortDir=1; S.q=''; S.fileName=fileName;
   $('#q').value='';
   S.auto=suggestCharts(); S.charts=S.auto.slice();
-  S.suggestions=buildSuggestions(); S.bannerDismissed=false; S.savedId=null;
+  S.suggestions=buildSuggestions(); S.bannerDismissed=false; S.savedId=null; S.cloud=null; if(typeof renderCloudBanner==='function') renderCloudBanner();
   const subj=document.getElementById('mSubject'); if(subj) subj.value='';
   showApp();
 }
@@ -1169,6 +1186,94 @@ $('#saveFileBtn').addEventListener('click',()=>{
   saveFile(baseName()+'.chartwright.json',JSON.stringify(snap)).then(()=>{const st=$('#saveStatus');st.className=prev.className;st.textContent=prev.textContent;});
 });
 renderSavedList();
+/* ---------- Chartwright Pro: shared workspaces ---------- */
+const PRO={on:false,user:null,workspaces:[]};
+async function proFetch(method,path,body){
+  const opt={method,credentials:'same-origin',headers:{}};
+  if(body!==undefined){opt.headers['Content-Type']='application/json';opt.body=JSON.stringify(body);}
+  const r=await fetch(path,opt); let d={}; try{d=await r.json();}catch(e){}
+  return {ok:r.ok,status:r.status,data:d,error:r.ok?null:(d.error||d.message||'Something went wrong ('+r.status+').')};
+}
+async function initPro(){
+  try{
+    const r=await proFetch('GET','/api/v1/me');
+    if(r.ok){PRO.on=true;PRO.user=r.data.user;PRO.workspaces=r.data.workspaces||[];}
+    else if(r.status===401){PRO.on=true;}
+  }catch(e){PRO.on=false;}
+  $('#proNavLink').classList.toggle('hidden',!PRO.on);
+  const q=new URLSearchParams(location.search);
+  if(PRO.on&&q.get('ws')&&q.get('d')) openCloudDashboard(q.get('ws'),q.get('d'));
+}
+function cloudWorkspaceName(id){const w=PRO.workspaces.find(x=>x.id===id);return w?w.name:'your workspace';}
+function renderCloudBanner(){
+  const b=$('#cloudBanner');
+  if(!S.cloud){b.classList.add('hidden');b.innerHTML='';return;}
+  const viewer=S.cloud.role==='viewer';
+  b.innerHTML='<span>Shared dashboard in <strong>'+esc(cloudWorkspaceName(S.cloud.ws))+'</strong>, version '+S.cloud.version+'. '
+    +(viewer?'You’re a viewer: you can explore and filter, but changes aren’t saved to the workspace.':'Use Save → Update shared version to share your changes.')+'</span>'
+    +'<a href="/pro/#/w/'+encodeURIComponent(S.cloud.ws)+'">Back to workspace</a>';
+  b.classList.remove('hidden');
+}
+async function openCloudDashboard(ws,id){
+  showError('');
+  const r=await proFetch('GET','/api/v1/workspaces/'+encodeURIComponent(ws)+'/dashboards/'+encodeURIComponent(id));
+  if(!r.ok){
+    showError(r.status===401?'Log in to Chartwright Pro (at /pro) to open this shared dashboard.':'This shared dashboard couldn’t be opened: '+r.error);
+    return;
+  }
+  const d=r.data.dashboard;
+  try{ restoreSnapshot(Object.assign({},d.config,{title:d.name,id:null})); }
+  catch(e){ showError('This shared dashboard couldn’t be opened: '+(e.message||e)); return; }
+  S.cloud={ws,id:d.id,version:d.version,role:r.data.role,name:d.name};
+  S.savedId=null;
+  renderCloudBanner();
+}
+function renderCloudBox(){
+  const box=$('#cloudBox');
+  box.classList.toggle('hidden',!PRO.on);
+  if(!PRO.on) return;
+  const loggedIn=!!PRO.user;
+  $('#cloudLoggedOut').classList.toggle('hidden',loggedIn);
+  $('#cloudLoggedIn').classList.toggle('hidden',!loggedIn);
+  if(!loggedIn) return;
+  const editable=PRO.workspaces.filter(w=>w.role==='admin'||w.role==='editor');
+  $('#cloudWs').innerHTML=editable.map(w=>'<option value="'+esc(w.id)+'">'+esc(w.name)+'</option>').join('');
+  const canUpdate=!!S.cloud&&S.cloud.role!=='viewer';
+  // Set the button styles first, then show or hide them (setting className would otherwise undo "hidden")
+  if(canUpdate){ $('#cloudSave').textContent='Save as a new shared dashboard'; $('#cloudUpdate').className='btn primary'; $('#cloudSave').className='btn'; }
+  else { $('#cloudSave').textContent='Save to workspace'; $('#cloudSave').className='btn primary'; $('#cloudUpdate').className='btn'; }
+  $('#cloudWsField').classList.toggle('hidden',!editable.length);
+  $('#cloudSave').classList.toggle('hidden',!editable.length);
+  $('#cloudUpdate').classList.toggle('hidden',!canUpdate);
+  if(canUpdate&&editable.some(w=>w.id===S.cloud.ws)) $('#cloudWs').value=S.cloud.ws;
+  $('#cloudNote').innerHTML=!PRO.workspaces.length?'You’re not in a workspace yet. <a href="/pro/" target="_blank" rel="noopener">Create one in Chartwright Pro</a>.'
+    :!editable.length?'You’re a viewer in your workspaces, so you can’t save dashboards there. Ask an admin to make you an editor.'
+    :'Saved dashboards are visible to everyone in the workspace.';
+}
+async function cloudSave(update){
+  const st=$('#saveStatus'); st.className='status'; st.textContent='Saving to workspace…';
+  const name=$('#saveName').value.trim()||dashName();
+  const snap=snapshot(name);
+  const ws=update?S.cloud.ws:$('#cloudWs').value;
+  const url='/api/v1/workspaces/'+encodeURIComponent(ws)+'/dashboards'+(update?'/'+encodeURIComponent(S.cloud.id):'');
+  $('#cloudSave').disabled=$('#cloudUpdate').disabled=true;
+  try{
+    const r=await proFetch(update?'PUT':'POST',url,update?{name,config:snap,version:S.cloud.version}:{name,config:snap});
+    if(!r.ok){st.className='status bad';st.textContent=r.error;return;}
+    const role=(PRO.workspaces.find(w=>w.id===ws)||{}).role||'editor';
+    S.cloud={ws,id:update?S.cloud.id:r.data.id,version:r.data.version,role,name};
+    if(!S.title&&name!==defaultTitle()){S.title=name;syncTitle();}
+    st.className='status good';
+    st.innerHTML=(update?'Shared version updated':'Saved to '+esc(cloudWorkspaceName(ws)))+'. <a href="/pro/#/w/'+encodeURIComponent(ws)+'">Open the workspace</a>';
+    renderCloudBanner(); renderCloudBox();
+  }catch(e){st.className='status bad';st.textContent='Chartwright couldn’t be reached. Check your connection and try again.';}
+  finally{$('#cloudSave').disabled=$('#cloudUpdate').disabled=false;}
+}
+$('#cloudSave').addEventListener('click',()=>cloudSave(false));
+$('#cloudUpdate').addEventListener('click',()=>cloudSave(true));
+$('#openSave').addEventListener('click',renderCloudBox);
+initPro();
+
 
 /* ---------- Automatic insights (Pro preview) ---------- */
 function applyFilterValue(col,val){

@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.10.2** · [Changelog](CHANGELOG.md)
+**Version 1.11.0** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -93,7 +93,7 @@ To export sign-ups, run the query above and download the results, or use the **E
 
 ## Chartwright Pro (in development)
 
-The Worker contains the Pro backend: accounts, workspaces with Admin, Editor and Viewer roles, invitations, shared dashboards and an audit log. It is **switched off in production** (`PRO_ENABLED` is `"false"`) and **on in staging**.
+The Worker contains the Pro backend: accounts, workspaces with Admin, Editor and Viewer roles, invitations, shared dashboards and an audit log. The Pro pages live at **`/pro`** (`public/pro/index.html`), and the app's Save dialog offers **Save to workspace** when you're logged in. Pro is **switched off in production** (`PRO_ENABLED` is `"false"`) and **on in staging**.
 
 ### Architecture
 
@@ -163,7 +163,8 @@ tests/e2e.mjs         end-to-end test on a temporary local database and bucket
 
 ```
 npm install
-npm test
+npm test              # API end-to-end test
+npm run serve:local   # run the site and Worker locally at http://localhost:8899 with a temporary database
 ```
 
 GitHub runs the same tests on every push.
