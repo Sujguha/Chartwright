@@ -3,6 +3,26 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.11.0] - 2026-10-01
+
+### Added: Chartwright Pro pages (Phase 2, step 1). Live on staging; production keeps Pro switched off.
+- **Pro area at `/pro`:** sign-up and log-in (passwords of at least 10 characters), log-out, and a list of your workspaces with your role in each.
+- **Workspaces:** create a workspace (you become its admin); a workspace page lists its shared dashboards with who updated them, size and version, and lets admins and editors delete them.
+- **Team page:** members with their roles; admins change roles, remove members, create invitations and copy the invitation link to send. The last admin can't be demoted. A table explains what each role can do.
+- **Invitations:** the invited person opens the link, signs up or logs in with the invited email address, and joins. Links expire after 7 days; someone with a different email address can't use them.
+- **In the app:** Save now offers **Save to workspace** when you're logged in to Pro, and **Update shared version** for dashboards opened from a workspace. Updates are rejected with a clear message if someone else changed the dashboard in the meantime. Shared dashboards open from the workspace page straight into the app, with a banner showing the workspace, version and your role; viewers can explore but not save to the workspace.
+- **While Pro is switched off** (production today), `/pro` shows "coming soon" with a waitlist link, and the app shows no Pro options.
+- `tests/server.mjs` runs the real Worker and website locally with a temporary database (`npm run serve:local`), used for browser testing (33 checks covering admins, editors, viewers, outsiders, invitations and edit conflicts).
+
+### Known limitation
+- Pending invitations are only listed on a person's home page once their email address is verified, which arrives with emails in step 2. Until then, people join through the invitation link.
+
+## [1.10.3] - 2026-10-01
+
+### Changed
+- GitHub workflows use `actions/checkout@v5` and `actions/setup-node@v5`, which run on Node.js 24 (removes GitHub's Node.js 20 deprecation warning).
+- Staging is live at chartwright-staging.sujoy-guha2.workers.dev with its own database, storage and secret; Phase 1 (foundation) is complete.
+
 ## [1.10.2] - 2026-09-29
 
 ### Added

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Chartwright Pro</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --bg:#EDF0F3;--surface:#FFFFFF;--sunk:#E4E9EF;--ink:#18202C;--ink-2:#556274;--line:#D3DAE3;
+  --accent:#0E6B6B;--accent-ink:#FFFFFF;--accent-soft:#DCEFEF;--accent-text:#0B5454;--focus:#3D4FB0;
+  --danger:#B3261E;--danger-soft:#F9E3E1;--warn-soft:#FBEFD5;--warn-ink:#7A4E00;--blue-soft:#E1E5F7;--blue-ink:#2F3E8F;
+  --c1:#0E6B6B;--c2:#3D4FB0;--c3:#C98A12;--c4:#8B3F76;
+  --font:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12171E;--surface:#1A212B;--sunk:#212A36;--ink:#E6EBF1;--ink-2:#98A4B3;--line:#2C3542;
+    --accent:#3FB5AE;--accent-ink:#0B1A1A;--accent-soft:#16302F;--accent-text:#7DD3CD;--focus:#8C9BFF;
+    --danger:#F2877E;--danger-soft:#3A1F1D;--warn-soft:#3A2E14;--warn-ink:#F2CB7A;--blue-soft:#232B4A;--blue-ink:#B4BFFF;
+    --c1:#3FB5AE;--c2:#8C9BFF;--c3:#E8B044;--c4:#D983BE;
+  }
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-text)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.hidden{display:none!important}
+button,input,select{font:inherit;color:inherit}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .in{max-width:1100px;margin:0 auto;padding:0 clamp(16px,4vw,32px);height:64px;display:flex;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--ink);text-decoration:none}
+.mark{display:grid;grid-template-columns:repeat(2,8px);gap:2px}
+.mark i{display:block;width:8px;height:8px;border-radius:2px}
+.mark i:nth-child(1){background:var(--c1)}.mark i:nth-child(2){background:var(--c2)}.mark i:nth-child(3){background:var(--c3)}.mark i:nth-child(4){background:var(--c4)}
+.pro{font-size:11px;font-weight:700;color:var(--accent-text);background:var(--accent-soft);padding:2px 7px;border-radius:999px}
+.spacer{flex:1}
+.who{font-size:14px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:40vw}
+
+main{max-width:1100px;margin:0 auto;padding:32px clamp(16px,4vw,32px) 64px}
+h1{margin:0 0 6px;font-size:clamp(28px,4vw,38px);letter-spacing:-.02em;line-height:1.1}
+h2{margin:0 0 12px;font-size:19px}
+.lead{margin:0 0 24px;color:var(--ink-2)}
+.crumbs{font-size:14px;color:var(--ink-2);margin-bottom:8px}
+.crumbs a{color:var(--ink-2)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-bottom:20px}
+.grid2{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:20px;align-items:start}
+@media (max-width:860px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.auth{max-width:440px;margin:24px auto}
+
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+label{font-size:14px;font-weight:600}
+input[type=text],input[type=email],input[type=password],select{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px 12px}
+.hint{font-size:13px;color:var(--ink-2);margin:0}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:10px 16px;font-weight:600;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;white-space:nowrap}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.small{padding:6px 12px;font-size:14px}
+.btn.danger{border-color:var(--danger);color:var(--danger)}
+.btn.link{border:none;padding:4px 2px;color:var(--accent-text);text-decoration:underline;text-underline-offset:3px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+.msg{border-radius:10px;padding:10px 14px;margin:0 0 14px;font-size:15px}
+.msg.bad{background:var(--danger-soft);color:var(--danger)}
+.msg.good{background:var(--accent-soft);color:var(--accent-text)}
+.msg.info{background:var(--blue-soft);color:var(--blue-ink)}
+
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 0;border-top:1px solid var(--line)}
+.list li:first-child{border-top:none}
+.grow{flex:1;min-width:180px;display:flex;flex-direction:column}
+.name{font-weight:600}
+.meta{font-size:13px;color:var(--ink-2)}
+.tag{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap;background:var(--sunk);color:var(--ink-2)}
+.tag.admin{background:var(--blue-soft);color:var(--blue-ink)}
+.tag.editor{background:var(--accent-soft);color:var(--accent-text)}
+.tag.pending{background:var(--warn-soft);color:var(--warn-ink)}
+.list select{width:auto;min-width:130px}
+.empty{color:var(--ink-2);margin:4px 0 0}
+.copybox{display:flex;gap:8px;margin-top:8px}
+.copybox input{font-size:13px}
+table.perm{border-collapse:collapse;width:100%;font-size:14px}
+table.perm th,table.perm td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+table.perm td.c,table.perm th.c{text-align:center}
+.center{text-align:center}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="in">
+    <a class="brand" href="#/"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Chartwright <span class="pro">PRO</span></a>
+    <span class="spacer"></span>
+    <a class="btn small" href="/app">Open the app</a>
+    <span id="who" class="who hidden"></span>
+    <button id="logout" class="btn small hidden" type="button">Log out</button>
+  </div>
+</header>
+
+<main id="view" aria-live="polite">
+  <p class="center lead">Loading…</p>
+</main>
+
+<script>
+(function(){
+'use strict';
+const API='/api/v1', AUTH=API+'/auth';
+const view=document.getElementById('view');
+const state={user:null,workspaces:[]};
+
+/* ---------- helpers ---------- */
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtDate=iso=>{const d=new Date(iso);return isNaN(d)?'':new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(d);};
+const fmtSize=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
+const ROLE_LABEL={admin:'Admin',editor:'Editor',viewer:'Viewer'};
+
+async function call(method,path,body){
+  const opt={method,credentials:'same-origin',headers:{}};
+  if(body!==undefined){opt.headers['Content-Type']='application/json';opt.body=JSON.stringify(body);}
+  let r;
+  try{r=await fetch(path,opt);}catch(e){return {ok:false,status:0,error:'Chartwright couldn’t be reached. Check your connection.'};}
+  let data=null;try{data=await r.json();}catch(e){}
+  const error=data&&(data.error||data.message)||(r.status===429?'Too many attempts. Please wait a minute.':r.status===404&&path.startsWith(API)?'Not found.':'Something went wrong ('+r.status+').');
+  return {ok:r.ok,status:r.status,data,error:r.ok?null:error};
+}
+function msg(kind,text){return '<p class="msg '+kind+'" role="'+(kind==='bad'?'alert':'status')+'">'+esc(text)+'</p>';}
+function go(hash){if(location.hash===hash) route(); else location.hash=hash;}
+function slugify(name){return (name.toLowerCase().normalize('NFKD').replace(/[^\w\s-]/g,'').trim().replace(/[\s_]+/g,'-').slice(0,40)||'workspace')+'-'+Math.random().toString(36).slice(2,7);}
+function bindForm(id,handler){
+  const f=document.getElementById(id); if(!f) return;
+  f.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const btn=f.querySelector('button[type=submit]'); if(btn) btn.disabled=true;
+    try{await handler(new FormData(f),f);}finally{if(btn) btn.disabled=false;}
+  });
+}
+function showError(f,text){let el=f.querySelector('.msg');if(!el){el=document.createElement('p');f.prepend(el);}el.className='msg bad';el.setAttribute('role','alert');el.textContent=text;}
+
+/* ---------- session ---------- */
+async function loadSession(){
+  const me=await call('GET',API+'/me');
+  if(me.status===404&&me.data&&/isn’t available/.test(me.error)){state.unavailable=true;return;}
+  state.user=me.ok?me.data.user:null; state.workspaces=me.ok?me.data.workspaces:[];
+  const who=document.getElementById('who'), out=document.getElementById('logout');
+  who.classList.toggle('hidden',!state.user); out.classList.toggle('hidden',!state.user);
+  if(state.user) who.textContent=state.user.email;
+}
+document.getElementById('logout').addEventListener('click',async()=>{await call('POST',AUTH+'/sign-out',{});state.user=null;go('#/login');});
+
+/* ---------- views ---------- */
+function vUnavailable(){
+  view.innerHTML='<div class="card auth center"><h1>Chartwright Pro is coming soon</h1><p class="lead">Shared workspaces, team roles and live connections are on the way.</p><div class="row" style="justify-content:center"><a class="btn primary" href="/#waitlist">Join the waitlist</a><a class="btn" href="/app">Use the free app</a></div></div>';
+}
+
+function vLogin(next){
+  view.innerHTML='<div class="auth"><div class="card"><h1>Log in</h1><p class="lead">to your Chartwright workspaces.</p>'
+   +'<form id="f" novalidate><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>'
+   +'<div class="field"><label for="pw">Password</label><input id="pw" name="password" type="password" autocomplete="current-password" required></div>'
+   +'<button class="btn primary" type="submit" style="width:100%">Log in</button></form>'
+   +'<p class="hint" style="margin-top:14px">No account yet? <a href="#/signup'+(next?'?next='+encodeURIComponent(next):'')+'">Create one</a></p></div></div>';
+  bindForm('f',async(fd,f)=>{
+    const r=await call('POST',AUTH+'/sign-in/email',{email:fd.get('email').trim(),password:fd.get('password')});
+    if(!r.ok) return showError(f,r.status===401?'Email or password is not correct.':r.error);
+    await loadSession(); go(next||'#/');
+  });
+  document.getElementById('email').focus();
+}
+
+function vSignup(next){
+  view.innerHTML='<div class="auth"><div class="card"><h1>Create your account</h1><p class="lead">Share dashboards with your team in a workspace.</p>'
+   +'<form id="f" novalidate><div class="field"><label for="name">Your name</label><input id="name" name="name" type="text" autocomplete="name" required maxlength="80"></div>'
+   +'<div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" autocomplete="email" required></div>'
+   +'<div class="field"><label for="pw">Password</label><input id="pw" name="password" type="password" autocomplete="new-password" required minlength="10"><p class="hint">At least 10 characters.</p></div>'
+   +'<button class="btn primary" type="submit" style="width:100%">Create account</button>'
+   +'<p class="hint" style="margin-top:12px">By creating an account you agree to the processing described in our <a href="/privacy" target="_blank" rel="noopener">privacy policy</a>.</p></form>'
+   +'<p class="hint" style="margin-top:14px">Already have an account? <a href="#/login'+(next?'?next='+encodeURIComponent(next):'')+'">Log in</a></p></div></div>';
+  bindForm('f',async(fd,f)=>{
+    const name=fd.get('name').trim(), email=fd.get('email').trim(), password=fd.get('password');
+    if(!name) return showError(f,'Enter your name.');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return showError(f,'Enter a valid email address.');
+    if(password.length<10) return showError(f,'Use a password with at least 10 characters.');
+    const r=await call('POST',AUTH+'/sign-up/email',{name,email,password});
+    if(!r.ok) return showError(f,/exist/i.test(r.error)?'An account with this email already exists. Log in instead.':r.error);
+    await loadSession(); go(next||'#/');
+  });
+  document.getElementById('name').focus();
+}
+
+async function vHome(){
+  const inv=await call('GET',AUTH+'/organization/list-user-invitations');
+  const pending=(inv.ok&&Array.isArray(inv.data)?inv.data:[]).filter(i=>i.status==='pending');
+  const ws=state.workspaces;
+  view.innerHTML='<h1>Your workspaces</h1><p class="lead">A workspace holds your team’s shared dashboards.</p>'
+   +(pending.length?'<div class="card"><h2>Invitations for you</h2><ul class="list">'+pending.map(i=>'<li><div class="grow"><span class="name">'+esc(i.organizationName||'A workspace')+'</span><span class="meta">Invited as '+esc(ROLE_LABEL[i.role]||i.role)+'</span></div><a class="btn primary small" href="#/invite/'+esc(i.id)+'">View invitation</a></li>').join('')+'</ul></div>':'')
+   +'<div class="grid2"><div class="card"><h2>Workspaces</h2>'
+   +(ws.length?'<ul class="list">'+ws.map(w=>'<li><div class="grow"><a class="name" href="#/w/'+esc(w.id)+'">'+esc(w.name)+'</a></div><span class="tag '+esc(w.role)+'">'+esc(ROLE_LABEL[w.role]||w.role)+'</span><a class="btn small" href="#/w/'+esc(w.id)+'">Open</a></li>').join('')+'</ul>':'<p class="empty">You’re not in a workspace yet. Create one, or ask a colleague to invite you.</p>')
+   +'</div><div class="card"><h2>Create a workspace</h2><form id="f" novalidate><div class="field"><label for="wsname">Name</label><input id="wsname" name="name" type="text" maxlength="60" placeholder="For example: Orbit Delivery" required></div><button class="btn primary" type="submit">Create workspace</button><p class="hint" style="margin-top:10px">You’ll be its admin and can invite your team.</p></form></div></div>';
+  bindForm('f',async(fd,f)=>{
+    const name=fd.get('name').trim(); if(!name) return showError(f,'Give the workspace a name.');
+    const r=await call('POST',AUTH+'/organization/create',{name,slug:slugify(name)});
+    if(!r.ok) return showError(f,r.error);
+    await loadSession(); go('#/w/'+r.data.id);
+  });
+}
+
+function wsById(id){return state.workspaces.find(w=>w.id===id);}
+
+async function vWorkspace(id){
+  const w=wsById(id); if(!w){view.innerHTML=msg('bad','Workspace not found, or you don’t have access.')+'<a class="btn" href="#/">Back to your workspaces</a>';return;}
+  const r=await call('GET',API+'/workspaces/'+encodeURIComponent(id)+'/dashboards');
+  const canEdit=w.role==='admin'||w.role==='editor';
+  const list=r.ok?r.data.dashboards:[];
+  view.innerHTML='<p class="crumbs"><a href="#/">Workspaces</a> / '+esc(w.name)+'</p>'
+   +'<div class="row" style="justify-content:space-between;margin-bottom:18px"><div><h1>'+esc(w.name)+'</h1><span class="tag '+esc(w.role)+'">You’re '+esc((ROLE_LABEL[w.role]||w.role).toLowerCase())+'</span></div>'
+   +'<div class="row"><a class="btn" href="#/w/'+esc(id)+'/team">Team</a>'+(canEdit?'<a class="btn primary" href="/app">New dashboard in the app</a>':'')+'</div></div>'
+   +(r.ok?'':msg('bad',r.error))
+   +'<div class="card"><h2>Shared dashboards</h2>'
+   +(list.length?'<ul class="list">'+list.map(d=>'<li><div class="grow"><span class="name">'+esc(d.name)+'</span><span class="meta">Updated '+esc(fmtDate(d.updated_at))+(d.updated_by?' by '+esc(d.updated_by):'')+', '+fmtSize(d.size_bytes)+', version '+d.version+'</span></div>'
+      +'<a class="btn primary small" href="/app?ws='+encodeURIComponent(id)+'&d='+encodeURIComponent(d.id)+'">Open</a>'
+      +(canEdit?'<button class="btn danger small" type="button" data-del="'+esc(d.id)+'" data-name="'+esc(d.name)+'">Delete</button>':'')+'</li>').join('')+'</ul>'
+     :'<p class="empty">'+(canEdit?'No shared dashboards yet. Build one in the app, then use <strong>Save → Save to workspace</strong>.':'No shared dashboards yet. Editors in this workspace can add them.')+'</p>')
+   +'</div>';
+  view.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',async()=>{
+    if(b.dataset.confirm!=='1'){b.dataset.confirm='1';b.textContent='Confirm delete';return;}
+    b.disabled=true;
+    const d=await call('DELETE',API+'/workspaces/'+encodeURIComponent(id)+'/dashboards/'+encodeURIComponent(b.dataset.del));
+    if(!d.ok){b.disabled=false;b.textContent='Delete';alert(d.error);return;}
+    vWorkspace(id);
+  }));
+}
+
+async function vTeam(id){
+  const w=wsById(id); if(!w){view.innerHTML=msg('bad','Workspace not found, or you don’t have access.');return;}
+  const r=await call('GET',AUTH+'/organization/get-full-organization?organizationId='+encodeURIComponent(id));
+  if(!r.ok){view.innerHTML=msg('bad',r.error);return;}
+  const org=r.data||{}, isAdmin=w.role==='admin';
+  const members=org.members||[], invites=(org.invitations||[]).filter(i=>i.status==='pending');
+  const admins=members.filter(m=>m.role==='admin').length;
+  const roleSelect=(m)=>'<select aria-label="Role for '+esc(m.user&&m.user.name||m.user&&m.user.email)+'" data-member="'+esc(m.id)+'"'+((m.role==='admin'&&admins<=1)||(m.user&&state.user&&m.user.id===state.user.id&&m.role==='admin'&&admins<=1)?' disabled title="A workspace needs at least one admin"':'')+'>'
+     +['admin','editor','viewer'].map(x=>'<option value="'+x+'"'+(m.role===x?' selected':'')+'>'+ROLE_LABEL[x]+'</option>').join('')+'</select>';
+  const inviteLink=i=>location.origin+'/pro/#/invite/'+i.id;
+  view.innerHTML='<p class="crumbs"><a href="#/">Workspaces</a> / <a href="#/w/'+esc(id)+'">'+esc(w.name)+'</a> / Team</p><h1>Team</h1><p class="lead">'+members.length+' member'+(members.length===1?'':'s')+' in '+esc(w.name)+'.</p>'
+   +'<div class="grid2"><div><div class="card"><h2>Members</h2><ul class="list">'
+   +members.map(m=>{const u=m.user||{};const me=state.user&&u.id===state.user.id;
+      return '<li><div class="grow"><span class="name">'+esc(u.name||u.email)+(me?' (you)':'')+'</span><span class="meta">'+esc(u.email)+'</span></div>'
+        +(isAdmin?roleSelect(m)+(me?'':'<button class="btn danger small" type="button" data-remove="'+esc(m.id)+'">Remove</button>'):'<span class="tag '+esc(m.role)+'">'+esc(ROLE_LABEL[m.role]||m.role)+'</span>')+'</li>';}).join('')
+   +'</ul></div>'
+   +(invites.length?'<div class="card"><h2>Pending invitations</h2><ul class="list">'+invites.map(i=>'<li><div class="grow"><span class="name">'+esc(i.email)+'</span><span class="meta">'+esc(ROLE_LABEL[i.role]||i.role)+', expires '+esc(fmtDate(i.expiresAt))+'</span>'
+      +(isAdmin?'<div class="copybox"><input type="text" readonly value="'+esc(inviteLink(i))+'" aria-label="Invitation link for '+esc(i.email)+'"><button class="btn small" type="button" data-copy="'+esc(inviteLink(i))+'">Copy link</button></div>':'')+'</div>'
+      +(isAdmin?'<button class="btn danger small" type="button" data-cancel="'+esc(i.id)+'">Cancel</button>':'')+'</li>').join('')+'</ul></div>':'')
+   +'</div><div>'
+   +(isAdmin?'<div class="card"><h2>Invite someone</h2><form id="f" novalidate><div class="field"><label for="iemail">Email</label><input id="iemail" name="email" type="email" required placeholder="colleague@company.com"></div>'
+      +'<div class="field"><label for="irole">Role</label><select id="irole" name="role"><option value="viewer">Viewer: opens and filters dashboards</option><option value="editor">Editor: also creates and edits dashboards</option><option value="admin">Admin: also manages the team</option></select></div>'
+      +'<button class="btn primary" type="submit">Create invitation</button><p class="hint" style="margin-top:10px">Then copy the invitation link and send it to them. They join after signing in with this email address. Links expire after 7 days.</p></form></div>':'<div class="card"><p class="empty">Only admins can invite people and change roles.</p></div>')
+   +'<div class="card"><h2>What each role can do</h2><table class="perm"><thead><tr><th></th><th class="c">Admin</th><th class="c">Editor</th><th class="c">Viewer</th></tr></thead><tbody>'
+   +[['Open shared dashboards','✓','✓','✓'],['Create, edit, delete dashboards','✓','✓','—'],['Invite people, change roles','✓','—','—'],['See the audit log','✓','—','—']].map(r=>'<tr><td>'+r[0]+'</td><td class="c">'+r[1]+'</td><td class="c">'+r[2]+'</td><td class="c">'+r[3]+'</td></tr>').join('')
+   +'</tbody></table></div></div></div>';
+
+  bindForm('f',async(fd,f)=>{
+    const email=fd.get('email').trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return showError(f,'Enter a valid email address.');
+    const x=await call('POST',AUTH+'/organization/invite-member',{email,role:fd.get('role'),organizationId:id});
+    if(!x.ok) return showError(f,/already/i.test(x.error)?'This person is already a member or has a pending invitation.':x.error);
+    vTeam(id);
+  });
+  view.querySelectorAll('select[data-member]').forEach(s=>s.addEventListener('change',async()=>{
+    s.disabled=true;
+    const x=await call('POST',AUTH+'/organization/update-member-role',{memberId:s.dataset.member,role:s.value,organizationId:id});
+    if(!x.ok) alert(x.error);
+    await loadSession(); vTeam(id);
+  }));
+  view.querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',async()=>{
+    if(b.dataset.confirm!=='1'){b.dataset.confirm='1';b.textContent='Confirm remove';return;}
+    const x=await call('POST',AUTH+'/organization/remove-member',{memberIdOrEmail:b.dataset.remove,organizationId:id});
+    if(!x.ok) alert(x.error); vTeam(id);
+  }));
+  view.querySelectorAll('[data-cancel]').forEach(b=>b.addEventListener('click',async()=>{
+    const x=await call('POST',AUTH+'/organization/cancel-invitation',{invitationId:b.dataset.cancel});
+    if(!x.ok) alert(x.error); vTeam(id);
+  }));
+  view.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{
+    const inp=b.previousElementSibling;
+    try{await navigator.clipboard.writeText(b.dataset.copy);}catch(e){inp.select();document.execCommand('copy');}
+    b.textContent='Copied';setTimeout(()=>{b.textContent='Copy link';},2000);
+  }));
+}
+
+async function vInvite(invId){
+  if(!state.user){
+    view.innerHTML='<div class="auth"><div class="card"><h1>You’ve been invited</h1><p class="lead">Log in or create an account with the email address the invitation was sent to.</p><div class="row"><a class="btn primary" href="#/signup?next='+encodeURIComponent('#/invite/'+invId)+'">Create account</a><a class="btn" href="#/login?next='+encodeURIComponent('#/invite/'+invId)+'">Log in</a></div></div></div>';
+    return;
+  }
+  const r=await call('GET',AUTH+'/organization/get-invitation?id='+encodeURIComponent(invId));
+  if(!r.ok){view.innerHTML='<div class="auth"><div class="card"><h1>Invitation not available</h1>'+msg('bad','This invitation has expired, was cancelled, or was sent to a different email address than '+state.user.email+'.')+'<a class="btn" href="#/">Go to your workspaces</a></div></div>';return;}
+  const i=r.data;
+  view.innerHTML='<div class="auth"><div class="card"><h1>Join '+esc(i.organizationName||'this workspace')+'</h1><p class="lead">'+esc(i.inviterEmail||'A colleague')+' invited you as <strong>'+esc((ROLE_LABEL[i.role]||i.role).toLowerCase())+'</strong>.</p><div id="m"></div><div class="row"><button id="acc" class="btn primary" type="button">Join workspace</button><button id="rej" class="btn" type="button">Decline</button></div></div></div>';
+  document.getElementById('acc').addEventListener('click',async()=>{
+    const x=await call('POST',AUTH+'/organization/accept-invitation',{invitationId:invId});
+    if(!x.ok){document.getElementById('m').innerHTML=msg('bad',x.error);return;}
+    await loadSession(); go('#/w/'+i.organizationId);
+  });
+  document.getElementById('rej').addEventListener('click',async()=>{
+    await call('POST',AUTH+'/organization/reject-invitation',{invitationId:invId}); go('#/');
+  });
+}
+
+/* ---------- router ---------- */
+async function route(){
+  const h=location.hash||'#/', [path,query]=h.slice(1).split('?'), params=new URLSearchParams(query||''), parts=path.split('/').filter(Boolean);
+  if(state.unavailable) return vUnavailable();
+  if(parts[0]==='signup') return state.user?go(params.get('next')||'#/'):vSignup(params.get('next'));
+  if(parts[0]==='login') return state.user?go(params.get('next')||'#/'):vLogin(params.get('next'));
+  if(parts[0]==='invite') return vInvite(parts[1]);
+  if(!state.user) return go('#/login?next='+encodeURIComponent(h));
+  if(parts[0]==='w'&&parts[2]==='team') return vTeam(parts[1]);
+  if(parts[0]==='w') return vWorkspace(parts[1]);
+  return vHome();
+}
+window.addEventListener('hashchange',()=>{route().catch(err);});
+function err(e){console.error(e);view.innerHTML=msg('bad','Something went wrong. Please reload the page.');}
+loadSession().then(route).catch(err);
+})();
+</script>
+</body>
+</html>
