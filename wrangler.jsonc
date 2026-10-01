@@ -33,7 +33,7 @@
       "observability": { "enabled": true, "head_sampling_rate": 1 },
       "assets": { "directory": "./public", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
       "d1_databases": [
-        { "binding": "DB", "database_name": "chartwright-staging", "database_id": "PASTE-STAGING-DATABASE-ID", "migrations_dir": "migrations" }
+        { "binding": "DB", "database_name": "chartwright-staging", "database_id": "48dd77bf-dec5-4b74-8320-a8e7e01f71d9", "migrations_dir": "migrations" }
       ],
       "r2_buckets": [
         { "binding": "BLOBS", "bucket_name": "chartwright-blobs-staging" }
