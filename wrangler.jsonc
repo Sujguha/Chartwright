@@ -23,7 +23,9 @@
   "vars": {
     "BASE_URL": "https://chartwright.de",
     // Pro stays switched off in production until the Pro pages are released.
-    "PRO_ENABLED": "false"
+    "PRO_ENABLED": "false",
+    // Plan for workspaces without an entry in workspace_plan: "pro" (one admin, viewers) or "enterprise"
+    "DEFAULT_PLAN": "pro"
   },
   // Secret (set in Cloudflare, never in this file): BETTER_AUTH_SECRET
 
@@ -45,7 +47,8 @@
       "vars": {
         "BASE_URL": "https://chartwright-staging.sujoy-guha2.workers.dev",
         // Pro is on in staging so it can be tested before release.
-        "PRO_ENABLED": "true"
+        "PRO_ENABLED": "true",
+        "DEFAULT_PLAN": "pro"
       }
       // Secret for staging (set separately): BETTER_AUTH_SECRET
     }

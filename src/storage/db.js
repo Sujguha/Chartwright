@@ -10,9 +10,18 @@ export function createDb(DB) {
     },
     async workspacesForUser(userId) {
       const { results } = await DB.prepare(
-        'SELECT o.id, o.name, o.slug, m.role FROM member m JOIN organization o ON o.id = m.organizationId WHERE m.userId = ?1 ORDER BY o.name'
+        `SELECT o.id, o.name, o.slug, m.role, p.plan FROM member m JOIN organization o ON o.id = m.organizationId
+         LEFT JOIN workspace_plan p ON p.workspace_id = o.id WHERE m.userId = ?1 ORDER BY o.name`
       ).bind(userId).all();
       return results;
+    },
+    async workspacePlan(workspaceId) {
+      const row = await DB.prepare('SELECT plan FROM workspace_plan WHERE workspace_id = ?1').bind(workspaceId).first();
+      return row ? row.plan : null;
+    },
+    async countRole(workspaceId, role) {
+      const row = await DB.prepare("SELECT COUNT(*) AS n FROM member WHERE organizationId = ?1 AND (role = ?2 OR role LIKE ?2 || ',%')").bind(workspaceId, role).first();
+      return row ? row.n : 0;
     },
     async listDashboards(workspaceId) {
       const { results } = await DB.prepare(

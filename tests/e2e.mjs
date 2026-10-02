@@ -50,13 +50,34 @@ check('old unversioned address is gone', (await call('alice', 'GET', '/api/me'))
 const org = await call('alice', 'POST', V + '/auth/organization/create', { name: 'Orbit Delivery', slug: 'orbit-delivery' });
 check('alice creates workspace', org.s === 200 && !!org.d.id);
 const ws = org.d.id;
-check('alice is admin', (await call('alice', 'GET', V + '/me')).d.workspaces[0].role === 'admin');
+const me0 = await call('alice', 'GET', V + '/me');
+check('alice is admin', me0.d.workspaces[0].role === 'admin');
+check('new workspace starts on Pro', me0.d.workspaces[0].plan === 'pro');
+
+// ---- Pro plan: one admin, everyone else is a viewer ----
+check('Pro: inviting an editor is refused', (await call('alice', 'POST', V + '/auth/organization/invite-member', { email: 'ed@example.com', role: 'editor', organizationId: ws })).s === 403);
+check('Pro: inviting an admin is refused', (await call('alice', 'POST', V + '/auth/organization/invite-member', { email: 'ad@example.com', role: 'admin', organizationId: ws })).s === 403);
+const proInv = await call('alice', 'POST', V + '/auth/organization/invite-member', { email: 'dave@example.com', role: 'viewer', organizationId: ws });
+check('Pro: inviting a viewer works', proInv.s === 200);
+check('Pro: dave joins as viewer', (await call('dave', 'POST', V + '/auth/organization/accept-invitation', { invitationId: proInv.d.id })).s === 200);
+const daveMember = (await env.DB.prepare('SELECT id FROM member WHERE organizationId=?1 AND userId=(SELECT id FROM user WHERE email=?2)').bind(ws, 'dave@example.com').first()).id;
+check('Pro: promoting a viewer to editor is refused', (await call('alice', 'POST', V + '/auth/organization/update-member-role', { memberId: daveMember, role: 'editor', organizationId: ws })).s === 403);
+const aliceMember = (await env.DB.prepare('SELECT id FROM member WHERE organizationId=?1 AND userId=(SELECT id FROM user WHERE email=?2)').bind(ws, 'alice@example.com').first()).id;
+const demote = await call('alice', 'POST', V + '/auth/organization/update-member-role', { memberId: aliceMember, role: 'viewer', organizationId: ws });
+const aliceRole = (await env.DB.prepare('SELECT role FROM member WHERE id=?1').bind(aliceMember).first()).role;
+check('Pro: the admin cannot be demoted', demote.s >= 400 && aliceRole === 'admin', demote.s + ' ' + JSON.stringify(demote.d) + ' role=' + aliceRole);
+check('Pro: viewer cannot create dashboards', (await call('dave', 'POST', `${V}/workspaces/${ws}/dashboards`, { name: 'X', config: { app: 'chartwright', kind: 'dashboard' } })).s === 403);
+check('Pro: admin removes the viewer', (await call('alice', 'POST', V + '/auth/organization/remove-member', { memberIdOrEmail: daveMember, organizationId: ws })).s === 200);
+
+// ---- switch this workspace to Enterprise for the team-role tests below ----
+await env.DB.prepare("INSERT INTO workspace_plan (workspace_id, plan, updated_at) VALUES (?1, 'enterprise', ?2)").bind(ws, new Date().toISOString()).run();
+check('workspace shows Enterprise after upgrade', (await call('alice', 'GET', V + '/me')).d.workspaces[0].plan === 'enterprise');
 const invB = await call('alice', 'POST', V + '/auth/organization/invite-member', { email: 'bob@example.com', role: 'editor', organizationId: ws });
 const invC = await call('alice', 'POST', V + '/auth/organization/invite-member', { email: 'carol@example.com', role: 'viewer', organizationId: ws });
 check('invites sent', invB.s === 200 && invC.s === 200);
 check('bob accepts', (await call('bob', 'POST', V + '/auth/organization/accept-invitation', { invitationId: invB.d.id })).s === 200);
 check('carol accepts', (await call('carol', 'POST', V + '/auth/organization/accept-invitation', { invitationId: invC.d.id })).s === 200);
-check('dave cannot use bob’s invitation', (await call('dave', 'POST', V + '/auth/organization/accept-invitation', { invitationId: invB.d.id })).s >= 400);
+check('someone else cannot use bob’s invitation', (await call('dave', 'POST', V + '/auth/organization/accept-invitation', { invitationId: invB.d.id })).s >= 400);
 check('viewer cannot invite', (await call('carol', 'POST', V + '/auth/organization/invite-member', { email: 'eve@example.com', role: 'viewer', organizationId: ws })).s === 403);
 
 // ---- dashboards: D1 + R2 ----
@@ -73,7 +94,7 @@ check('viewer lists dashboards', (await call('carol', 'GET', D)).d.dashboards.le
 check('viewer cannot create', (await call('carol', 'POST', D, { name: 'X', config: cfg(1) })).s === 403);
 check('viewer cannot edit', (await call('carol', 'PUT', `${D}/${dId}`, { name: 'Hacked', config: cfg(1) })).s === 403);
 check('viewer cannot delete', (await call('carol', 'DELETE', `${D}/${dId}`)).s === 403);
-check('outsider gets not found', (await call('dave', 'GET', `${D}/${dId}`)).s === 404);
+check('outsider (removed member) gets not found', (await call('dave', 'GET', `${D}/${dId}`)).s === 404);
 check('logged-out gets 401', (await call(null, 'GET', D)).s === 401);
 check('invalid dashboard rejected', (await call('bob', 'POST', D, { name: 'X', config: { hello: 1 } })).s === 400);
 const big = { ...cfg(1), rows: [['x'.repeat(11 * 1024 * 1024)]] };

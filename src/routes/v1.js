@@ -4,6 +4,7 @@ import { createAuth } from '../lib/auth.js';
 import { services } from '../services/index.js';
 import { requireUser, requireRole } from '../services/access.js';
 import { HttpError } from '../lib/errors.js';
+import { DEFAULT_PLAN } from '../config.js';
 
 const v1 = new Hono();
 
@@ -12,7 +13,9 @@ v1.all('/auth/*', (c) => createAuth(c.env).handler(c.req.raw));
 v1.get('/me', async (c) => {
   const user = await requireUser(c);
   const { db } = services(c.env);
-  return c.json({ ok: true, user: { id: user.id, name: user.name, email: user.email }, workspaces: await db.workspacesForUser(user.id) });
+  const fallback = c.env.DEFAULT_PLAN || DEFAULT_PLAN;
+  const workspaces = (await db.workspacesForUser(user.id)).map((w) => ({ ...w, plan: w.plan || fallback }));
+  return c.json({ ok: true, user: { id: user.id, name: user.name, email: user.email }, workspaces });
 });
 
 async function jsonBody(c) {

@@ -81,6 +81,8 @@ input[type=text],input[type=email],input[type=password],select{width:100%;border
 .tag.editor{background:var(--accent-soft);color:var(--accent-text)}
 .tag.pending{background:var(--warn-soft);color:var(--warn-ink)}
 .list select{width:auto;min-width:130px}
+.tag.plan{background:var(--sunk);color:var(--ink)}
+.planbox{background:var(--blue-soft);color:var(--blue-ink);border-radius:12px;padding:12px 14px;font-size:14px;margin:0 0 14px}
 .empty{color:var(--ink-2);margin:4px 0 0}
 .copybox{display:flex;gap:8px;margin-top:8px}
 .copybox input{font-size:13px}
@@ -117,6 +119,7 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 const fmtDate=iso=>{const d=new Date(iso);return isNaN(d)?'':new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(d);};
 const fmtSize=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
 const ROLE_LABEL={admin:'Admin',editor:'Editor',viewer:'Viewer'};
+const PLAN_LABEL={pro:'Pro',enterprise:'Enterprise'};
 
 async function call(method,path,body){
   const opt={method,credentials:'same-origin',headers:{}};
@@ -197,7 +200,7 @@ async function vHome(){
   view.innerHTML='<h1>Your workspaces</h1><p class="lead">A workspace holds your team’s shared dashboards.</p>'
    +(pending.length?'<div class="card"><h2>Invitations for you</h2><ul class="list">'+pending.map(i=>'<li><div class="grow"><span class="name">'+esc(i.organizationName||'A workspace')+'</span><span class="meta">Invited as '+esc(ROLE_LABEL[i.role]||i.role)+'</span></div><a class="btn primary small" href="#/invite/'+esc(i.id)+'">View invitation</a></li>').join('')+'</ul></div>':'')
    +'<div class="grid2"><div class="card"><h2>Workspaces</h2>'
-   +(ws.length?'<ul class="list">'+ws.map(w=>'<li><div class="grow"><a class="name" href="#/w/'+esc(w.id)+'">'+esc(w.name)+'</a></div><span class="tag '+esc(w.role)+'">'+esc(ROLE_LABEL[w.role]||w.role)+'</span><a class="btn small" href="#/w/'+esc(w.id)+'">Open</a></li>').join('')+'</ul>':'<p class="empty">You’re not in a workspace yet. Create one, or ask a colleague to invite you.</p>')
+   +(ws.length?'<ul class="list">'+ws.map(w=>'<li><div class="grow"><a class="name" href="#/w/'+esc(w.id)+'">'+esc(w.name)+'</a><span class="meta">'+esc(PLAN_LABEL[w.plan]||'Pro')+' plan</span></div><span class="tag '+esc(w.role)+'">'+esc(ROLE_LABEL[w.role]||w.role)+'</span><a class="btn small" href="#/w/'+esc(w.id)+'">Open</a></li>').join('')+'</ul>':'<p class="empty">You’re not in a workspace yet. Create one, or ask a colleague to invite you.</p>')
    +'</div><div class="card"><h2>Create a workspace</h2><form id="f" novalidate><div class="field"><label for="wsname">Name</label><input id="wsname" name="name" type="text" maxlength="60" placeholder="For example: Orbit Delivery" required></div><button class="btn primary" type="submit">Create workspace</button><p class="hint" style="margin-top:10px">You’ll be its admin and can invite your team.</p></form></div></div>';
   bindForm('f',async(fd,f)=>{
     const name=fd.get('name').trim(); if(!name) return showError(f,'Give the workspace a name.');
@@ -215,7 +218,7 @@ async function vWorkspace(id){
   const canEdit=w.role==='admin'||w.role==='editor';
   const list=r.ok?r.data.dashboards:[];
   view.innerHTML='<p class="crumbs"><a href="#/">Workspaces</a> / '+esc(w.name)+'</p>'
-   +'<div class="row" style="justify-content:space-between;margin-bottom:18px"><div><h1>'+esc(w.name)+'</h1><span class="tag '+esc(w.role)+'">You’re '+esc((ROLE_LABEL[w.role]||w.role).toLowerCase())+'</span></div>'
+   +'<div class="row" style="justify-content:space-between;margin-bottom:18px"><div><h1>'+esc(w.name)+'</h1><div class="row"><span class="tag '+esc(w.role)+'">You’re '+esc((ROLE_LABEL[w.role]||w.role).toLowerCase())+'</span><span class="tag plan">'+esc(PLAN_LABEL[w.plan]||'Pro')+' plan</span></div></div>'
    +'<div class="row"><a class="btn" href="#/w/'+esc(id)+'/team">Team</a>'+(canEdit?'<a class="btn primary" href="/app">New dashboard in the app</a>':'')+'</div></div>'
    +(r.ok?'':msg('bad',r.error))
    +'<div class="card"><h2>Shared dashboards</h2>'
@@ -237,7 +240,7 @@ async function vTeam(id){
   const w=wsById(id); if(!w){view.innerHTML=msg('bad','Workspace not found, or you don’t have access.');return;}
   const r=await call('GET',AUTH+'/organization/get-full-organization?organizationId='+encodeURIComponent(id));
   if(!r.ok){view.innerHTML=msg('bad',r.error);return;}
-  const org=r.data||{}, isAdmin=w.role==='admin';
+  const org=r.data||{}, isAdmin=w.role==='admin', isPro=(w.plan||'pro')==='pro';
   const members=org.members||[], invites=(org.invitations||[]).filter(i=>i.status==='pending');
   const admins=members.filter(m=>m.role==='admin').length;
   const roleSelect=(m)=>'<select aria-label="Role for '+esc(m.user&&m.user.name||m.user&&m.user.email)+'" data-member="'+esc(m.id)+'"'+((m.role==='admin'&&admins<=1)||(m.user&&state.user&&m.user.id===state.user.id&&m.role==='admin'&&admins<=1)?' disabled title="A workspace needs at least one admin"':'')+'>'
@@ -247,16 +250,19 @@ async function vTeam(id){
    +'<div class="grid2"><div><div class="card"><h2>Members</h2><ul class="list">'
    +members.map(m=>{const u=m.user||{};const me=state.user&&u.id===state.user.id;
       return '<li><div class="grow"><span class="name">'+esc(u.name||u.email)+(me?' (you)':'')+'</span><span class="meta">'+esc(u.email)+'</span></div>'
-        +(isAdmin?roleSelect(m)+(me?'':'<button class="btn danger small" type="button" data-remove="'+esc(m.id)+'">Remove</button>'):'<span class="tag '+esc(m.role)+'">'+esc(ROLE_LABEL[m.role]||m.role)+'</span>')+'</li>';}).join('')
+        +((isAdmin&&!isPro)?roleSelect(m):'<span class="tag '+esc(m.role)+'">'+esc(ROLE_LABEL[m.role]||m.role)+'</span>')
+        +((isAdmin&&!me)?'<button class="btn danger small" type="button" data-remove="'+esc(m.id)+'">Remove</button>':'')+'</li>';}).join('')
    +'</ul></div>'
    +(invites.length?'<div class="card"><h2>Pending invitations</h2><ul class="list">'+invites.map(i=>'<li><div class="grow"><span class="name">'+esc(i.email)+'</span><span class="meta">'+esc(ROLE_LABEL[i.role]||i.role)+', expires '+esc(fmtDate(i.expiresAt))+'</span>'
       +(isAdmin?'<div class="copybox"><input type="text" readonly value="'+esc(inviteLink(i))+'" aria-label="Invitation link for '+esc(i.email)+'"><button class="btn small" type="button" data-copy="'+esc(inviteLink(i))+'">Copy link</button></div>':'')+'</div>'
       +(isAdmin?'<button class="btn danger small" type="button" data-cancel="'+esc(i.id)+'">Cancel</button>':'')+'</li>').join('')+'</ul></div>':'')
    +'</div><div>'
-   +(isAdmin?'<div class="card"><h2>Invite someone</h2><form id="f" novalidate><div class="field"><label for="iemail">Email</label><input id="iemail" name="email" type="email" required placeholder="colleague@company.com"></div>'
-      +'<div class="field"><label for="irole">Role</label><select id="irole" name="role"><option value="viewer">Viewer: opens and filters dashboards</option><option value="editor">Editor: also creates and edits dashboards</option><option value="admin">Admin: also manages the team</option></select></div>'
+   +(isAdmin?'<div class="card"><h2>Invite someone</h2>'
+      +(isPro?'<p class="planbox"><strong>Pro plan:</strong> you’re the workspace’s admin, and colleagues join as viewers who open and filter your dashboards. Several admins and editors are part of Enterprise.</p>':'')
+      +'<form id="f" novalidate><div class="field"><label for="iemail">Email</label><input id="iemail" name="email" type="email" required placeholder="colleague@company.com"></div>'
+      +'<div class="field"><label for="irole">Role</label><select id="irole" name="role"><option value="viewer">Viewer: opens and filters dashboards</option>'+(isPro?'':'<option value="editor">Editor: also creates and edits dashboards</option><option value="admin">Admin: also manages the team</option>')+'</select></div>'
       +'<button class="btn primary" type="submit">Create invitation</button><p class="hint" style="margin-top:10px">Then copy the invitation link and send it to them. They join after signing in with this email address. Links expire after 7 days.</p></form></div>':'<div class="card"><p class="empty">Only admins can invite people and change roles.</p></div>')
-   +'<div class="card"><h2>What each role can do</h2><table class="perm"><thead><tr><th></th><th class="c">Admin</th><th class="c">Editor</th><th class="c">Viewer</th></tr></thead><tbody>'
+   +'<div class="card"><h2>What each role can do</h2>'+(isPro?'<p class="hint" style="margin-bottom:10px">On Pro, the workspace has one admin and viewers. Editors and several admins come with Enterprise.</p>':'')+'<table class="perm"><thead><tr><th></th><th class="c">Admin</th><th class="c">Editor</th><th class="c">Viewer</th></tr></thead><tbody>'
    +[['Open shared dashboards','✓','✓','✓'],['Create, edit, delete dashboards','✓','✓','—'],['Invite people, change roles','✓','—','—'],['See the audit log','✓','—','—']].map(r=>'<tr><td>'+r[0]+'</td><td class="c">'+r[1]+'</td><td class="c">'+r[2]+'</td><td class="c">'+r[3]+'</td></tr>').join('')
    +'</tbody></table></div></div></div>';
 

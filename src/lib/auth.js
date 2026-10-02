@@ -6,7 +6,9 @@ import { betterAuth } from 'better-auth';
 import { organization } from 'better-auth/plugins';
 import { createAccessControl } from 'better-auth/plugins/access';
 import { defaultStatements } from 'better-auth/plugins/organization/access';
-import { API_PREFIX } from '../config.js';
+import { APIError } from 'better-auth/api';
+import { API_PREFIX, PLANS, DEFAULT_PLAN } from '../config.js';
+import { createDb } from '../storage/db.js';
 
 export const statements = { ...defaultStatements, dashboard: ['create', 'read', 'update', 'delete'] };
 export const ac = createAccessControl(statements);
@@ -19,8 +21,21 @@ export const roles = {
   viewer: ac.newRole({ dashboard: ['read'] }),
 };
 
+/** The plan of a workspace (falls back to DEFAULT_PLAN). */
+export async function planFor(env, workspaceId) {
+  const stored = await createDb(env.DB).workspacePlan(workspaceId);
+  const plan = stored || env.DEFAULT_PLAN || DEFAULT_PLAN;
+  return PLANS[plan] ? plan : DEFAULT_PLAN;
+}
+
+const proOnly = (what) => new APIError('FORBIDDEN', {
+  message: `On the Pro plan, ${what}. Several admins and editors are part of Enterprise.`,
+  code: 'PLAN_LIMIT',
+});
+
 export function createAuth(env, { sendInvitationEmail } = {}) {
   const base = env.BASE_URL || 'https://chartwright.de';
+  const db = createDb(env.DB);
   return betterAuth({
     appName: 'Chartwright',
     database: env.DB,
@@ -37,6 +52,24 @@ export function createAuth(env, { sendInvitationEmail } = {}) {
       organization({
         ac, roles, creatorRole: 'admin', allowUserToCreateOrganization: true, invitationExpiresIn: 60 * 60 * 24 * 7,
         async sendInvitationEmail(data) { if (sendInvitationEmail) await sendInvitationEmail(data); },
+        // Plan rules, enforced on the server for every way of adding or changing members
+        organizationHooks: {
+          async beforeCreateInvitation({ invitation, organization }) {
+            const plan = PLANS[await planFor(env, organization.id)];
+            if (!plan.roles.includes(invitation.role)) throw proOnly('you can invite colleagues as viewers');
+          },
+          async beforeUpdateMemberRole({ member, newRole, organization }) {
+            const plan = PLANS[await planFor(env, organization.id)];
+            if (plan.maxAdmins === 1 && (newRole !== 'viewer' || member.role === 'admin')) throw proOnly('the workspace has one admin and everyone else is a viewer');
+          },
+          async beforeAddMember({ member, organization }) {
+            const plan = PLANS[await planFor(env, organization.id)];
+            if (plan.maxAdmins === 1 && member.role !== 'viewer') {
+              const admins = await db.countRole(organization.id, 'admin');
+              if (member.role !== 'admin' || admins >= 1) throw proOnly('new members join as viewers');
+            }
+          },
+        },
       }),
     ],
   });

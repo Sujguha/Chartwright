@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.11.0** · [Changelog](CHANGELOG.md)
+**Version 1.12.0** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -129,6 +129,20 @@ tests/e2e.mjs         end-to-end test on a temporary local database and bucket
 | `PUT /api/v1/workspaces/:ws/dashboards/:id` | Admin, editor (send `version` to detect edit conflicts) |
 | `DELETE /api/v1/workspaces/:ws/dashboards/:id` | Admin, editor |
 | `GET /api/v1/workspaces/:ws/audit` | Admin |
+
+### Plans
+
+| Plan | Who can do what |
+|---|---|
+| Pro (default) | One admin builds and shares; everyone else is a viewer |
+| Enterprise | Several admins and editors |
+
+Until billing exists, move a workspace to Enterprise in the D1 Console:
+
+```sql
+INSERT OR REPLACE INTO workspace_plan (workspace_id, plan, updated_at)
+VALUES ('<workspace id>', 'enterprise', datetime('now'));
+```
 
 ### Environments
 

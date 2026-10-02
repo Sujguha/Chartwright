@@ -3,6 +3,16 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.12.0] - 2026-10-01
+
+### Added: plans per workspace
+- **Pro:** one admin builds and shares; everyone else in the workspace is a viewer. Invitations are viewer-only, nobody can be made editor or admin, and the admin can't be demoted. The rules are enforced on the server for every way of adding or changing members.
+- **Enterprise:** several admins and editors, as before.
+- New workspaces start on Pro (`DEFAULT_PLAN` in `wrangler.jsonc`). A workspace moves to Enterprise with an entry in the new `workspace_plan` table (`migrations/0004_workspace_plan.sql`) until billing exists.
+- The Pro pages show each workspace's plan; on Pro, the Team page explains the plan, offers only viewer invitations and shows no role menus.
+- The home page describes Pro as "for one person who builds and shares dashboards" and lists team workspaces under Enterprise.
+- Tests: 56 API checks (including the Pro rules) and the browser checks for both plans.
+
 ## [1.11.0] - 2026-10-01
 
 ### Added: Chartwright Pro pages (Phase 2, step 1). Live on staging; production keeps Pro switched off.

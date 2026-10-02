@@ -29,7 +29,7 @@ const ASSETS = {
     return new Response('Not found', { status: 404 });
   },
 };
-const env = { ...raw, ASSETS, BETTER_AUTH_SECRET: 'local-test-secret-'.repeat(3), BASE_URL: 'http://localhost:' + port, PRO_ENABLED: process.env.PRO_ENABLED || 'true' };
+const env = { ...raw, ASSETS, BETTER_AUTH_SECRET: 'local-test-secret-'.repeat(3), BASE_URL: 'http://localhost:' + port, PRO_ENABLED: process.env.PRO_ENABLED || 'true', DEFAULT_PLAN: process.env.DEFAULT_PLAN || raw.DEFAULT_PLAN || 'pro' };
 
 http.createServer(async (req, res) => {
   const chunks = []; for await (const c of req) chunks.push(c);
