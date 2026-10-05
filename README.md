@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.12.0** · [Changelog](CHANGELOG.md)
+**Version 1.13.0** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -103,10 +103,10 @@ src/
   index.js            entry point: rate limits, waitlist, Pro switch, /api/v1, website files
   config.js           all limits and role rights in one place
   routes/             HTTP only: v1.js (Pro API), waitlist.js
-  services/           business rules: access.js, dashboards.js, audit.js
+  services/           business rules: access.js, dashboards.js, audit.js, emails.js (account email texts)
   storage/            data access: db.js (D1 database), blobs.js (R2 file storage)
   middleware/         rateLimit.js, proGate.js
-  lib/                auth.js (Better Auth: login, workspaces, roles), errors.js
+  lib/                auth.js (Better Auth: login, workspaces, roles), mailer.js (sends email), errors.js
 migrations/           numbered database changes, applied in order
 tests/e2e.mjs         end-to-end test on a temporary local database and bucket
 ```
@@ -129,6 +129,21 @@ tests/e2e.mjs         end-to-end test on a temporary local database and bucket
 | `PUT /api/v1/workspaces/:ws/dashboards/:id` | Admin, editor (send `version` to detect edit conflicts) |
 | `DELETE /api/v1/workspaces/:ws/dashboards/:id` | Admin, editor |
 | `GET /api/v1/workspaces/:ws/audit` | Admin |
+
+### Account emails
+
+Chartwright Pro sends four emails, all through `src/lib/mailer.js` (the only file to change for another provider):
+
+| Email | When | Link valid for |
+|---|---|---|
+| Confirm your email address | After sign-up, or when logging in before confirming | 24 hours |
+| Reset your password | "Forgot password?" on the log-in page | 1 hour, once |
+| Invitation | An admin invites someone on the Team page | 7 days |
+| You already have an account | Someone signs up again with a known address | — |
+
+People must confirm their email address before they can log in. Emails are sent with **Cloudflare Email Service** (the `EMAIL` binding in `wrangler.jsonc`) from `no-reply@chartwright.de`; replies go to `privacy@chartwright.de`. Sending is set up for staging only until Pro launches in production.
+
+**One-time setup (Cloudflare):** the account must be on the **Workers Paid** plan ($5 a month, 3,000 emails included). Under **Email Service**, add `chartwright.de` as a sending domain and let Cloudflare add the DNS records (SPF, DKIM, DMARC).
 
 ### Plans
 
@@ -179,6 +194,7 @@ VALUES ('<workspace id>', 'enterprise', datetime('now'));
 npm install
 npm test              # API end-to-end test
 npm run serve:local   # run the site and Worker locally at http://localhost:8899 with a temporary database
+                      # (emails are printed in the terminal and listed at /__outbox, not sent)
 ```
 
 GitHub runs the same tests on every push.

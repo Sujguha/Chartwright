@@ -164,9 +164,12 @@ function vLogin(next){
    +'<form id="f" novalidate><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>'
    +'<div class="field"><label for="pw">Password</label><input id="pw" name="password" type="password" autocomplete="current-password" required></div>'
    +'<button class="btn primary" type="submit" style="width:100%">Log in</button></form>'
-   +'<p class="hint" style="margin-top:14px">No account yet? <a href="#/signup'+(next?'?next='+encodeURIComponent(next):'')+'">Create one</a></p></div></div>';
+   +'<p class="hint" style="margin-top:14px"><a href="#/forgot">Forgot password?</a></p>'
+   +'<p class="hint" style="margin-top:6px">No account yet? <a href="#/signup'+(next?'?next='+encodeURIComponent(next):'')+'">Create one</a></p></div></div>';
   bindForm('f',async(fd,f)=>{
-    const r=await call('POST',AUTH+'/sign-in/email',{email:fd.get('email').trim(),password:fd.get('password')});
+    const email=fd.get('email').trim();
+    const r=await call('POST',AUTH+'/sign-in/email',{email,password:fd.get('password')});
+    if(!r.ok&&r.status===403&&r.data&&r.data.code==='EMAIL_NOT_VERIFIED') return vCheckInbox(email,'Please confirm your email address first. We’ve sent you a new link.');
     if(!r.ok) return showError(f,r.status===401?'Email or password is not correct.':r.error);
     await loadSession(); go(next||'#/');
   });
@@ -187,10 +190,67 @@ function vSignup(next){
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return showError(f,'Enter a valid email address.');
     if(password.length<10) return showError(f,'Use a password with at least 10 characters.');
     const r=await call('POST',AUTH+'/sign-up/email',{name,email,password});
-    if(!r.ok) return showError(f,/exist/i.test(r.error)?'An account with this email already exists. Log in instead.':r.error);
-    await loadSession(); go(next||'#/');
+    if(!r.ok) return showError(f,r.error);
+    vCheckInbox(email);
   });
   document.getElementById('name').focus();
+}
+
+function vCheckInbox(email,note){
+  view.innerHTML='<div class="auth"><div class="card"><h1>Check your inbox</h1>'+(note?msg('info',note):'')
+   +'<p class="lead">We’ve sent a link to <strong>'+esc(email)+'</strong>. Open it to confirm your email address and log in.</p>'
+   +'<p class="hint">The link works for 24 hours. Nothing there? Check your spam folder, or send the email again.</p>'
+   +'<div id="m" style="margin-top:14px"></div><div class="row"><button id="again" class="btn" type="button">Send the email again</button><a class="btn link" href="#/login">Back to log in</a></div></div></div>';
+  document.getElementById('again').addEventListener('click',async e=>{
+    e.target.disabled=true;
+    const r=await call('POST',AUTH+'/send-verification-email',{email});
+    document.getElementById('m').innerHTML=r.ok?msg('good','Sent. Please check your inbox.'):msg('bad',r.error);
+    setTimeout(()=>{e.target.disabled=false;},20000);
+  });
+}
+
+async function vVerify(token){
+  view.innerHTML='<div class="auth"><div class="card center"><p class="lead">Confirming your email address…</p></div></div>';
+  const r=await call('GET',AUTH+'/verify-email?token='+encodeURIComponent(token));
+  if(r.ok){
+    await loadSession();
+    view.innerHTML='<div class="auth"><div class="card"><h1>Email address confirmed</h1>'+msg('good','Thanks! Your account is ready.')+'<a class="btn primary" href="#/">Go to your workspaces</a></div></div>';
+    return;
+  }
+  view.innerHTML='<div class="auth"><div class="card"><h1>This link doesn’t work any more</h1>'+msg('bad','The confirmation link has expired or isn’t complete.')
+   +'<p class="lead">Log in with your email and password, and we’ll send you a new link.</p><a class="btn primary" href="#/login">Log in</a></div></div>';
+}
+
+function vForgot(){
+  view.innerHTML='<div class="auth"><div class="card"><h1>Forgot your password?</h1><p class="lead">Enter your email address and we’ll send you a link to choose a new one.</p>'
+   +'<form id="f" novalidate><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>'
+   +'<button class="btn primary" type="submit" style="width:100%">Send reset link</button></form>'
+   +'<p class="hint" style="margin-top:14px"><a href="#/login">Back to log in</a></p></div></div>';
+  bindForm('f',async(fd,f)=>{
+    const email=fd.get('email').trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return showError(f,'Enter a valid email address.');
+    const r=await call('POST',AUTH+'/request-password-reset',{email});
+    if(!r.ok) return showError(f,r.error);
+    view.innerHTML='<div class="auth"><div class="card"><h1>Check your inbox</h1><p class="lead">If there’s a Chartwright account for <strong>'+esc(email)+'</strong>, we’ve sent it a link to choose a new password.</p><p class="hint">The link works for 1 hour. Nothing there? Check your spam folder.</p><p style="margin-top:14px"><a class="btn" href="#/login">Back to log in</a></p></div></div>';
+  });
+  document.getElementById('email').focus();
+}
+
+function vReset(token){
+  view.innerHTML='<div class="auth"><div class="card"><h1>Choose a new password</h1><p class="lead">You’ll be logged out on your other devices.</p>'
+   +'<form id="f" novalidate><div class="field"><label for="pw">New password</label><input id="pw" name="password" type="password" autocomplete="new-password" required minlength="10"><p class="hint">At least 10 characters.</p></div>'
+   +'<div class="field"><label for="pw2">Repeat new password</label><input id="pw2" name="password2" type="password" autocomplete="new-password" required></div>'
+   +'<button class="btn primary" type="submit" style="width:100%">Save new password</button></form></div></div>';
+  bindForm('f',async(fd,f)=>{
+    const password=fd.get('password');
+    if(password.length<10) return showError(f,'Use a password with at least 10 characters.');
+    if(password!==fd.get('password2')) return showError(f,'The two passwords don’t match.');
+    const r=await call('POST',AUTH+'/reset-password',{newPassword:password,token});
+    if(!r.ok) return showError(f,/token/i.test(r.error||'')?'This link has expired or was already used. Ask for a new one under “Forgot password?”.':r.error);
+    state.user=null;
+    view.innerHTML='<div class="auth"><div class="card"><h1>Password changed</h1>'+msg('good','Your new password is saved.')+'<a class="btn primary" href="#/login">Log in</a></div></div>';
+  });
+  document.getElementById('pw').focus();
 }
 
 async function vHome(){
@@ -255,13 +315,13 @@ async function vTeam(id){
    +'</ul></div>'
    +(invites.length?'<div class="card"><h2>Pending invitations</h2><ul class="list">'+invites.map(i=>'<li><div class="grow"><span class="name">'+esc(i.email)+'</span><span class="meta">'+esc(ROLE_LABEL[i.role]||i.role)+', expires '+esc(fmtDate(i.expiresAt))+'</span>'
       +(isAdmin?'<div class="copybox"><input type="text" readonly value="'+esc(inviteLink(i))+'" aria-label="Invitation link for '+esc(i.email)+'"><button class="btn small" type="button" data-copy="'+esc(inviteLink(i))+'">Copy link</button></div>':'')+'</div>'
-      +(isAdmin?'<button class="btn danger small" type="button" data-cancel="'+esc(i.id)+'">Cancel</button>':'')+'</li>').join('')+'</ul></div>':'')
+      +(isAdmin?'<button class="btn small" type="button" data-resend="'+esc(i.email)+'" data-role="'+esc(i.role)+'">Send again</button><button class="btn danger small" type="button" data-cancel="'+esc(i.id)+'">Cancel</button>':'')+'</li>').join('')+'</ul></div>':'')
    +'</div><div>'
    +(isAdmin?'<div class="card"><h2>Invite someone</h2>'
       +(isPro?'<p class="planbox"><strong>Pro plan:</strong> you’re the workspace’s admin, and colleagues join as viewers who open and filter your dashboards. Several admins and editors are part of Enterprise.</p>':'')
       +'<form id="f" novalidate><div class="field"><label for="iemail">Email</label><input id="iemail" name="email" type="email" required placeholder="colleague@company.com"></div>'
       +'<div class="field"><label for="irole">Role</label><select id="irole" name="role"><option value="viewer">Viewer: opens and filters dashboards</option>'+(isPro?'':'<option value="editor">Editor: also creates and edits dashboards</option><option value="admin">Admin: also manages the team</option>')+'</select></div>'
-      +'<button class="btn primary" type="submit">Create invitation</button><p class="hint" style="margin-top:10px">Then copy the invitation link and send it to them. They join after signing in with this email address. Links expire after 7 days.</p></form></div>':'<div class="card"><p class="empty">Only admins can invite people and change roles.</p></div>')
+      +'<button class="btn primary" type="submit">Send invitation</button><p class="hint" style="margin-top:10px">We email them an invitation link. They join after logging in with this email address. You can also copy the link under Pending invitations. Invitations expire after 7 days.</p></form></div>':'<div class="card"><p class="empty">Only admins can invite people and change roles.</p></div>')
    +'<div class="card"><h2>What each role can do</h2>'+(isPro?'<p class="hint" style="margin-bottom:10px">On Pro, the workspace has one admin and viewers. Editors and several admins come with Enterprise.</p>':'')+'<table class="perm"><thead><tr><th></th><th class="c">Admin</th><th class="c">Editor</th><th class="c">Viewer</th></tr></thead><tbody>'
    +[['Open shared dashboards','✓','✓','✓'],['Create, edit, delete dashboards','✓','✓','—'],['Invite people, change roles','✓','—','—'],['See the audit log','✓','—','—']].map(r=>'<tr><td>'+r[0]+'</td><td class="c">'+r[1]+'</td><td class="c">'+r[2]+'</td><td class="c">'+r[3]+'</td></tr>').join('')
    +'</tbody></table></div></div></div>';
@@ -273,6 +333,12 @@ async function vTeam(id){
     if(!x.ok) return showError(f,/already/i.test(x.error)?'This person is already a member or has a pending invitation.':x.error);
     vTeam(id);
   });
+  view.querySelectorAll('[data-resend]').forEach(b=>b.addEventListener('click',async()=>{
+    b.disabled=true;
+    const x=await call('POST',AUTH+'/organization/invite-member',{email:b.dataset.resend,role:b.dataset.role,organizationId:id,resend:true});
+    if(!x.ok){b.disabled=false;alert(x.error);return;}
+    b.textContent='Sent';
+  }));
   view.querySelectorAll('select[data-member]').forEach(s=>s.addEventListener('change',async()=>{
     s.disabled=true;
     const x=await call('POST',AUTH+'/organization/update-member-role',{memberId:s.dataset.member,role:s.value,organizationId:id});
@@ -297,7 +363,7 @@ async function vTeam(id){
 
 async function vInvite(invId){
   if(!state.user){
-    view.innerHTML='<div class="auth"><div class="card"><h1>You’ve been invited</h1><p class="lead">Log in or create an account with the email address the invitation was sent to.</p><div class="row"><a class="btn primary" href="#/signup?next='+encodeURIComponent('#/invite/'+invId)+'">Create account</a><a class="btn" href="#/login?next='+encodeURIComponent('#/invite/'+invId)+'">Log in</a></div></div></div>';
+    view.innerHTML='<div class="auth"><div class="card"><h1>You’ve been invited</h1><p class="lead">Log in or create an account with the email address the invitation was sent to. New accounts confirm their email address first; the invitation then waits on your home page.</p><div class="row"><a class="btn primary" href="#/signup?next='+encodeURIComponent('#/invite/'+invId)+'">Create account</a><a class="btn" href="#/login?next='+encodeURIComponent('#/invite/'+invId)+'">Log in</a></div></div></div>';
     return;
   }
   const r=await call('GET',AUTH+'/organization/get-invitation?id='+encodeURIComponent(invId));
@@ -321,6 +387,9 @@ async function route(){
   if(parts[0]==='signup') return state.user?go(params.get('next')||'#/'):vSignup(params.get('next'));
   if(parts[0]==='login') return state.user?go(params.get('next')||'#/'):vLogin(params.get('next'));
   if(parts[0]==='invite') return vInvite(parts[1]);
+  if(parts[0]==='verify') return vVerify(parts.slice(1).join('/'));
+  if(parts[0]==='reset') return vReset(parts.slice(1).join('/'));
+  if(parts[0]==='forgot') return vForgot();
   if(!state.user) return go('#/login?next='+encodeURIComponent(h));
   if(parts[0]==='w'&&parts[2]==='team') return vTeam(parts[1]);
   if(parts[0]==='w') return vWorkspace(parts[1]);
