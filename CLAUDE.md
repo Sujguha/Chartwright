@@ -61,7 +61,8 @@ Database migrations: staging gets them automatically (`wrangler d1 migrations ap
 
 - **Free:** everything in the browser; files are never uploaded.
 - **Pro preview features in the free app:** saved dashboards (IndexedDB), `.chartwright.json` dashboard files, automatic insights.
-- **Sign-up:** `SIGNUP_MODE` "waitlist" (only waitlist addresses and invited people; checked in `routes/v1.js` before Better Auth) or "open".
+- **Sign-up:** `SIGNUP_MODE` is "open" (anyone; Sujoy's decision, 2026-10-06). "waitlist" would allow only waitlist addresses and invited people (checked in `routes/v1.js` before Better Auth).
+- **Price (Sujoy's decision, 2026-10-06):** 7 days free, then €29 per month. Needs billing (Phase 4) before it can be charged; terms and home page still say "free during beta" until then.
 - **Deletion:** users delete their account on `/pro/#/account` (password always required); sole-member workspaces go with it; the only admin of a team workspace must remove members or delete the workspace first. Workspaces are deleted only through `DELETE /api/v1/workspaces/:ws` (removes R2 files too); Better Auth's own organization deletion is disabled.
 - **Pro plan (per workspace, the default):** exactly one admin who builds and shares; everyone else is a viewer. Enforced on the server in Better Auth `organizationHooks` (`src/lib/auth.js`).
 - **Enterprise plan:** several admins and editors. Set via the `workspace_plan` table until billing exists.
