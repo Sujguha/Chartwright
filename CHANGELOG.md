@@ -3,6 +3,37 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.13.0] - 2026-10-05
+
+### Added: account emails (Phase 2, step 2). Live on staging; production keeps Pro switched off.
+- **Confirm your email address:** after signing up, people get an email with a confirmation link (valid for 24 hours) and see a "Check your inbox" screen with **Send the email again**. Logging in before confirming is refused with a clear message, and a fresh link is sent. The link logs you in.
+- **Forgot password?** on the log-in screen: we email a link to choose a new password. The link works for 1 hour and only once, and saving the new password logs you out on all other devices. The answer is the same whether or not the address has an account, so nobody can find out who uses Chartwright.
+- **Invitation emails:** inviting someone now emails them the invitation link (the link can still be copied on the Team page). Admins can **Send again**. If the email fails, the invitation is still created.
+- **Pending invitations on the home page:** with confirmed email addresses, invitations now appear under "Invitations for you".
+- **Signing up again with a known address** gives the same answer as a new sign-up; the owner gets a "You already have an account" email with log-in and reset links.
+- **Email sending** goes through one module (`src/lib/mailer.js`), using Cloudflare Email Service (the `EMAIL` binding, staging only for now). Sender `no-reply@chartwright.de`, replies to `privacy@chartwright.de`. Emails are plain, friendly HTML with a text version and load no outside images.
+- Resending confirmation emails counts towards the limit of 10 log-in attempts per minute.
+- `npm run serve:local` prints emails to the console and lists them at `/__outbox` instead of sending them.
+- Draft privacy policy text for accounts and emails in `docs/privacy-draft-pro-accounts.md`, for the Pro launch (step 3).
+- Tests: 87 API checks (31 new: emails, confirmation, reset, invitations, failures, rate limits) and 16 browser checks for the email flows.
+
+### Changed
+- GitHub workflows now really use `actions/checkout@v5` and `actions/setup-node@v5` (1.10.3 described this, but the files still used v4).
+- Added `.gitignore` (`node_modules`, `.wrangler`, `.dev.vars`).
+
+### Note for existing staging accounts
+- Accounts created on staging before 1.13.0 are not confirmed yet. Logging in sends a confirmation link; after confirming, everything works as before.
+
+## [1.12.0] - 2026-10-01
+
+### Added: plans per workspace
+- **Pro:** one admin builds and shares; everyone else in the workspace is a viewer. Invitations are viewer-only, nobody can be made editor or admin, and the admin can't be demoted. The rules are enforced on the server for every way of adding or changing members.
+- **Enterprise:** several admins and editors, as before.
+- New workspaces start on Pro (`DEFAULT_PLAN` in `wrangler.jsonc`). A workspace moves to Enterprise with an entry in the new `workspace_plan` table (`migrations/0004_workspace_plan.sql`) until billing exists.
+- The Pro pages show each workspace's plan; on Pro, the Team page explains the plan, offers only viewer invitations and shows no role menus.
+- The home page describes Pro as "for one person who builds and shares dashboards" and lists team workspaces under Enterprise.
+- Tests: 56 API checks (including the Pro rules) and the browser checks for both plans.
+
 ## [1.11.0] - 2026-10-01
 
 ### Added: Chartwright Pro pages (Phase 2, step 1). Live on staging; production keeps Pro switched off.

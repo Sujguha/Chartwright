@@ -23,9 +23,12 @@
   "vars": {
     "BASE_URL": "https://chartwright.de",
     // Pro stays switched off in production until the Pro pages are released.
-    "PRO_ENABLED": "false"
+    "PRO_ENABLED": "false",
+    // Plan for workspaces without an entry in workspace_plan: "pro" (one admin, viewers) or "enterprise"
+    "DEFAULT_PLAN": "pro"
   },
   // Secret (set in Cloudflare, never in this file): BETTER_AUTH_SECRET
+  // Account emails are not set up in production yet: they arrive with the Pro launch (Phase 2, step 3).
 
   "env": {
     "staging": {
@@ -42,10 +45,18 @@
         { "name": "AUTH_LIMITER", "namespace_id": "2001", "simple": { "limit": 10, "period": 60 } },
         { "name": "API_LIMITER", "namespace_id": "2002", "simple": { "limit": 300, "period": 60 } }
       ],
+      // Account emails (confirm email, password reset, invitations) through Cloudflare Email Service.
+      "send_email": [
+        { "name": "EMAIL", "allowed_sender_addresses": ["no-reply@chartwright.de"] }
+      ],
       "vars": {
         "BASE_URL": "https://chartwright-staging.sujoy-guha2.workers.dev",
         // Pro is on in staging so it can be tested before release.
-        "PRO_ENABLED": "true"
+        "PRO_ENABLED": "true",
+        "DEFAULT_PLAN": "pro",
+        "EMAIL_FROM": "no-reply@chartwright.de",
+        "EMAIL_FROM_NAME": "Chartwright (staging)",
+        "EMAIL_REPLY_TO": "privacy@chartwright.de"
       }
       // Secret for staging (set separately): BETTER_AUTH_SECRET
     }
