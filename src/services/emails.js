@@ -84,6 +84,13 @@ export const templates = {
   }),
 };
 
+templates.deleted = ({ name }) => message({
+  subject: 'Your Chartwright account was deleted',
+  heading: 'Your account was deleted',
+  paragraphs: [`Hi ${esc(name || 'there')},`, 'As you asked, we deleted your Chartwright account, your log-in details and the workspaces where you were the only member, with their dashboards.', 'Dashboards you shared in other workspaces stay there for the team.'],
+  after: ['If you didn’t do this, reply to this email straight away.'],
+});
+
 const ROLE_WORD = { admin: 'an admin', editor: 'an editor', viewer: 'a viewer' };
 
 /** Sending functions used by the login setup (lib/auth.js). */
@@ -93,6 +100,7 @@ export function accountEmails(env) {
     verify: (user, token) => sendEmail(env, { to: user.email, ...templates.verify({ name: user.name, url: links.verify(base, token) }) }),
     reset: (user, token) => sendEmail(env, { to: user.email, ...templates.reset({ name: user.name, url: links.reset(base, token) }) }),
     invite: ({ email, inviter, workspace, role, id }) => sendEmail(env, { to: email, ...templates.invite({ inviter, workspace, role: ROLE_WORD[role] || role, url: links.invite(base, id) }) }),
+    deleted: (user) => sendEmail(env, { to: user.email, ...templates.deleted({ name: user.name }) }),
     existing: (user) => sendEmail(env, { to: user.email, ...templates.existing({ name: user.name, loginUrl: links.login(base), forgotUrl: links.forgot(base) }) }),
   };
 }

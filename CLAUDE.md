@@ -9,7 +9,7 @@ Chartwright turns spreadsheet and data exports (Excel, CSV, JSON, Jira, SAP) int
 
 ## Current version
 
-**1.13.0** (see `CHANGELOG.md`). The version appears in `public/app.html` (`APP_VERSION` constant and the `version` meta tag), `package.json`, `README.md` and `CHANGELOG.md`. Bump all four together for every release.
+**1.14.0** (see `CHANGELOG.md`). The version appears in `public/app.html` (`APP_VERSION` constant and the `version` meta tag), `package.json`, `README.md` and `CHANGELOG.md`. Bump all four together for every release.
 
 ## Architecture (all on Cloudflare)
 
@@ -30,14 +30,14 @@ src/
   index.js        entry: rate limits → waitlist → Pro switch → /api/v1 → static files
   config.js       all limits, role rights and plans (change limits here)
   routes/         HTTP only (v1.js, waitlist.js)
-  services/       business rules (access.js, dashboards.js, audit.js, emails.js)
+  services/       business rules (access.js, dashboards.js, workspaces.js (delete workspace/account), audit.js, emails.js)
   storage/        data access: db.js (all SQL), blobs.js (R2)
   middleware/     rateLimit.js, proGate.js
   lib/            auth.js (Better Auth setup, plan hooks, email settings), mailer.js (sends email), errors.js
 migrations/       numbered SQL files 0000–0004, applied in order
-public/           index.html (home/plans/waitlist), app.html (free app), pro/index.html (Pro area), privacy.html, fonts/, samples/, _redirects
+public/           index.html (home/plans/waitlist), app.html (free app), pro/index.html (Pro area), privacy.html, terms.html, impressum.html, fonts/, samples/, _redirects
 tests/            e2e.mjs (API test, `npm test`), server.mjs (local server, `npm run serve:local`; emails listed at /__outbox)
-docs/             notes that are not published (for example the privacy policy draft for the Pro launch)
+docs/             notes that are not published (launch-checklist.md)
 .github/workflows test.yml (tests on every push), deploy-staging.yml (deploys the staging branch)
 ```
 
@@ -61,6 +61,8 @@ Database migrations: staging gets them automatically (`wrangler d1 migrations ap
 
 - **Free:** everything in the browser; files are never uploaded.
 - **Pro preview features in the free app:** saved dashboards (IndexedDB), `.chartwright.json` dashboard files, automatic insights.
+- **Sign-up:** `SIGNUP_MODE` "waitlist" (only waitlist addresses and invited people; checked in `routes/v1.js` before Better Auth) or "open".
+- **Deletion:** users delete their account on `/pro/#/account` (password always required); sole-member workspaces go with it; the only admin of a team workspace must remove members or delete the workspace first. Workspaces are deleted only through `DELETE /api/v1/workspaces/:ws` (removes R2 files too); Better Auth's own organization deletion is disabled.
 - **Pro plan (per workspace, the default):** exactly one admin who builds and shares; everyone else is a viewer. Enforced on the server in Better Auth `organizationHooks` (`src/lib/auth.js`).
 - **Enterprise plan:** several admins and editors. Set via the `workspace_plan` table until billing exists.
 - Roles: admin (everything), editor (dashboards), viewer (read only). Outsiders get 404 so workspaces stay private.
@@ -72,33 +74,27 @@ Database migrations: staging gets them automatically (`wrangler d1 migrations ap
 - User-facing text: plain, friendly English; no jargon in UI messages.
 - No secrets in the repository. No external requests from pages except cdnjs.cloudflare.com (app libraries), which the privacy policy discloses.
 - **Keep `public/privacy.html` accurate**: any new data processing (accounts, cookies, emails, analytics, new providers) must be added there before it goes live in production.
-- Run `npm test` before every commit; add tests for every new rule (the suite has 87 checks).
+- Run `npm test` before every commit; add tests for every new rule (the suite has 111 checks, including a launch check: Pro can't be switched on in production while legal pages contain placeholders).
 - Update `CHANGELOG.md` for every change.
 
 ## Status (where we left off)
 
-Done: Phase 1 (layered backend, R2, staging, CI tests, rate limits, error logs), Phase 2 step 1 (Pro pages at `/pro`, Save to workspace in the app, Team page, invitations, Pro/Enterprise plan rules) and Phase 2 step 2 in code (1.13.0: email confirmation required before log-in, "Forgot password?", invitation emails, pending invitations on the home page; Cloudflare Email Service chosen). Pull request #2 is closed; 1.12.0 and 1.13.0 are on `main`; `.gitignore` added.
+Done: Phase 1, Phase 2 steps 1 and 2 (1.13.0 account emails, tested on staging via PR #4), and Phase 2 step 3 preparation in 1.14.0 on branch `pro-launch` (delete account and workspace, SIGNUP_MODE, terms, Impressum, privacy policy for accounts, production email config, launch safety check). Production still has `PRO_ENABLED` "false".
 
-Being completed by Sujoy (check with him; may already be done):
-1. Close pull request #3 without merging (staging → main again, by mistake).
-2. Merge main → staging (staging was still on 1.11.0 on 2026-10-05); confirm staging's `BETTER_AUTH_SECRET`.
-3. Cloudflare: switch to Workers Paid if needed; Email Service → add `chartwright.de` as a sending domain (DNS records added by Cloudflare).
-4. Test the Pro flow and all emails on staging (sign-up → confirm, forgot password, invitation email → join).
-5. Cloudflare production Worker: build only `main`, switch off non-production branch builds; deploy command `npx wrangler deploy --env=""`.
-6. Unlink Netlify from the repository (the old Netlify site is kept private as a backup).
+Open before the launch (see `docs/launch-checklist.md`):
+1. Sujoy: address, phone and VAT ID for the Impressum and privacy policy; legal check of terms and privacy; data processing agreement template.
+2. Test 1.14.0 on staging (pro-launch → staging).
+3. Merge pro-launch → main once the placeholders are filled (the legal pages then go live).
+4. Launch: home page Pro card and FAQ, `PRO_ENABLED` "true", after Sujoy approves.
 
 Small open items:
-- Disable the production `workers.dev` address (keep staging's).
-- Disable GitHub Pages for the repository (it still built on 2026-10-05).
-- Address placeholders (street, postcode) in `public/privacy.html`; Impressum page (`/impressum`) waits for tax details from the Finanzamt.
+- Cloudflare production Worker: build only `main`, no non-production branch builds; deploy command `npx wrangler deploy --env=""`.
+- Unlink Netlify; disable the production `workers.dev` address; disable GitHub Pages (it still builds on every push).
 
 ## Next work
 
-**Phase 2, step 3: launch Pro in production**
-- Put the privacy text from `docs/privacy-draft-pro-accounts.md` into `public/privacy.html` (accounts, session cookie, emails, Cloudflare Email Service); add terms of service.
-- Add the `send_email` binding and `EMAIL_FROM`, `EMAIL_FROM_NAME`, `EMAIL_REPLY_TO` to the production part of `wrangler.jsonc` (copy from staging).
-- Then set `PRO_ENABLED` to `"true"` in production.
-- Nice to have: delete account (GDPR), change email address.
+**Phase 2, step 3: launch Pro in production** (see above and `docs/launch-checklist.md`).
+- Nice to have later: change email address, change password while logged in, leave a workspace.
 
 **Gotchas**
 - Pro accounts must confirm their email before logging in (`requireEmailVerification`). Accounts created on staging before 1.13.0 get a confirmation link when they next log in.

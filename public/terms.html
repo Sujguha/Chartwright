@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Chartwright Pro terms of service: beta, your content, fair use, liability and how to end your account.">
+<title>Terms of service | Chartwright</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --bg:#EDF0F3;--surface:#FFFFFF;--sunk:#E4E9EF;--ink:#18202C;--ink-2:#556274;--line:#D3DAE3;
+  --accent:#0E6B6B;--accent-ink:#FFFFFF;--accent-text:#0B5454;--focus:#3D4FB0;--warn-bg:#FBEFD5;--warn-ink:#7A4E00;
+  --c1:#0E6B6B;--c2:#3D4FB0;--c3:#C98A12;--c4:#8B3F76;
+  --font:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12171E;--surface:#1A212B;--sunk:#212A36;--ink:#E6EBF1;--ink-2:#98A4B3;--line:#2C3542;
+    --accent:#3FB5AE;--accent-ink:#0B1A1A;--accent-text:#7DD3CD;--focus:#8C9BFF;--warn-bg:#3A2E14;--warn-ink:#F2CB7A;
+    --c1:#3FB5AE;--c2:#8C9BFF;--c3:#E8B044;--c4:#D983BE;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12171E;--surface:#1A212B;--sunk:#212A36;--ink:#E6EBF1;--ink-2:#98A4B3;--line:#2C3542;
+  --accent:#3FB5AE;--accent-ink:#0B1A1A;--accent-text:#7DD3CD;--focus:#8C9BFF;--warn-bg:#3A2E14;--warn-ink:#F2CB7A;
+  --c1:#3FB5AE;--c2:#8C9BFF;--c3:#E8B044;--c4:#D983BE;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 84px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-text)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 clamp(18px,4vw,40px)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--ink);text-decoration:none}
+.mark{display:grid;grid-template-columns:repeat(2,8px);gap:2px}
+.mark i{display:block;width:8px;height:8px;border-radius:2px}
+.mark i:nth-child(1){background:var(--c1)}.mark i:nth-child(2){background:var(--c2)}.mark i:nth-child(3){background:var(--c3)}.mark i:nth-child(4){background:var(--c4)}
+.spacer{flex:1}
+.btn{display:inline-flex;align-items:center;border-radius:10px;padding:10px 16px;font-weight:600;text-decoration:none;background:var(--accent);color:var(--accent-ink);white-space:nowrap}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:48px;padding:48px 0 72px}
+@media (max-width:860px){.layout{grid-template-columns:minmax(0,1fr);gap:24px;padding-top:32px}}
+.toc{position:sticky;top:100px;align-self:start;font-size:14px}
+.toc p{margin:0 0 8px;font-weight:700}
+.toc ol{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+.toc a{color:var(--ink-2);text-decoration:none}
+.toc a:hover{color:var(--ink)}
+@media (max-width:860px){.toc{position:static;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}}
+article{max-width:72ch}
+h1{margin:0 0 6px;font-size:clamp(34px,5vw,52px);line-height:1.05;letter-spacing:-.03em}
+.sub{margin:0 0 28px;color:var(--ink-2)}
+h2{margin:40px 0 10px;font-size:22px;letter-spacing:-.01em;line-height:1.25}
+h3{margin:22px 0 6px;font-size:17px}
+p{margin:0 0 12px}
+ul{margin:0 0 12px;padding-left:22px}
+li{margin:4px 0}
+.summary{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:18px 22px;margin:0 0 8px}
+.summary p{margin:0 0 8px}.summary ul{margin:0}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:8px 0 14px}
+.box p{margin:0}
+.ph{background:var(--warn-bg);color:var(--warn-ink);border-radius:6px;padding:1px 6px;font-weight:600}
+table{border-collapse:collapse;width:100%;font-size:15px;margin:6px 0 14px}
+th,td{text-align:left;vertical-align:top;padding:9px 10px;border-bottom:1px solid var(--line)}
+th{font-weight:600;color:var(--ink-2);font-size:14px}
+.tablewrap{overflow-x:auto}
+footer{border-top:1px solid var(--line);padding:24px 0 32px;color:var(--ink-2);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
+footer a{color:var(--ink-2)}
+@media print{.top,.toc,footer{display:none}.layout{display:block;padding:0}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Chartwright home"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Chartwright</a>
+    <span class="spacer"></span>
+    <a class="btn" href="/app">Open the app</a>
+  </div>
+</header>
+
+<main class="wrap layout">
+  <nav class="toc" aria-label="Contents">
+    <p>Contents</p>
+    <ol>
+      <li><a href="#scope">Who we are and what these terms cover</a></li>
+      <li><a href="#beta">Beta and price</a></li>
+      <li><a href="#account">Your account</a></li>
+      <li><a href="#workspaces">Workspaces and roles</a></li>
+      <li><a href="#content">Your content</a></li>
+      <li><a href="#use">Fair use</a></li>
+      <li><a href="#availability">Availability and backups</a></li>
+      <li><a href="#changes">Changes to Chartwright Pro and these terms</a></li>
+      <li><a href="#liability">Liability</a></li>
+      <li><a href="#ending">Ending</a></li>
+      <li><a href="#law">Law</a></li>
+    </ol>
+  </nav>
+
+  <article>
+    <h1>Terms of service</h1>
+    <p class="sub">Chartwright Pro · Last updated: 6 October 2026</p>
+
+    <div class="summary">
+      <p><strong>In short</strong></p>
+      <ul>
+        <li>Chartwright Pro is in beta and <strong>free</strong>. We’ll tell you at least 30 days before any paid plans start.</li>
+        <li><strong>Your dashboards stay yours.</strong> We only store and show them to your workspace.</li>
+        <li>The workspace admin decides who sees what.</li>
+        <li>You can <strong>delete your account at any time</strong>.</li>
+      </ul>
+    </div>
+
+    <h2 id="scope">1. Who we are and what these terms cover</h2>
+    <p>Chartwright Pro is provided by Sujoy Guha, Munich, Germany (“we”, “us”). Our full contact details are in the <a href="/impressum">Impressum</a>.</p>
+<p>These terms apply when you create a Chartwright Pro account and use workspaces and shared dashboards (“Pro”). The free Chartwright app needs no account; it runs in your browser and these terms don’t apply to it, except section 9 (liability).</p>
+<p>Chartwright Pro is meant for professional use, for example in your company or as a freelancer. If you use it as a consumer, your statutory rights stay unaffected wherever these terms say otherwise.</p>
+    <h2 id="beta">2. Beta and price</h2>
+    <p>Chartwright Pro is in <strong>beta</strong> and <strong>free of charge</strong> during the beta. We don’t charge anything automatically.</p>
+<p>Before paid plans start, we’ll tell you by email at least <strong>30 days in advance</strong>, with the prices. You can then choose a paid plan or delete your account. Nothing changes for you without your agreement.</p>
+    <h2 id="account">3. Your account</h2>
+    <ul>
+<li>Give a real name and an email address you can receive mail at. You confirm the address before your first log-in.</li>
+<li>An account is for one person. Keep your password to yourself and tell us straight away at <a href="mailto:privacy@chartwright.de">privacy@chartwright.de</a> if you think someone else knows it.</li>
+<li>You must be at least 16 years old.</li>
+<li>While Pro opens step by step, new accounts are available to people on the waitlist and to invited colleagues.</li>
+</ul>
+    <h2 id="workspaces">4. Workspaces and roles</h2>
+    <p>A workspace belongs to its <strong>admin</strong>. On the Pro plan, a workspace has one admin and everyone else joins as a viewer. The Enterprise plan allows several admins and editors.</p>
+<p>The admin decides whom to invite and is responsible for making sure that everyone invited may see the dashboards in the workspace. Admins can remove members and delete the workspace at any time.</p>
+    <h2 id="content">5. Your content</h2>
+    <p>Dashboards and data you save to a workspace (“your content”) <strong>remain yours</strong>. You give us only the right to store, copy and show your content to the members of the workspace, as far as needed to run Chartwright Pro. We don’t use your content for anything else, don’t sell it and don’t use it to train AI models.</p>
+<p>You are responsible for having the right to use and share your content. If your content contains personal data of other people (for example names in a ticket list), make sure you may share it with your workspace. For such data we process it on your behalf; if you need a data processing agreement (Art. 28 GDPR), email us at <a href="mailto:privacy@chartwright.de">privacy@chartwright.de</a>.</p>
+<p>Don’t store special categories of personal data (such as health data) in Chartwright Pro.</p>
+    <h2 id="use">6. Fair use</h2>
+    <p>Please don’t:</p>
+<ul>
+<li>use Chartwright Pro for anything illegal, or to store content that infringes other people’s rights,</li>
+<li>try to access workspaces or data you weren’t invited to, test our security without our written permission, or disrupt the service,</li>
+<li>get around limits (such as the dashboard size or the plan rules), use the service through automated scripts beyond normal use, or resell access.</li>
+</ul>
+<p>If someone breaks these rules, we may suspend their access. We’ll tell them why, unless the law prevents it.</p>
+    <h2 id="availability">7. Availability and backups</h2>
+    <p>We work to keep Chartwright Pro available and your data safe, but during the beta we <strong>can’t promise uninterrupted service</strong>. Maintenance and updates may cause short interruptions.</p>
+<p>Keep your own copies of important dashboards: in the app, use <strong>Save → Download dashboard file</strong>.</p>
+    <h2 id="changes">8. Changes to Chartwright Pro and these terms</h2>
+    <p>Chartwright Pro will change during the beta: we may add, change or remove features. If a change affects you significantly, we’ll tell you by email in advance.</p>
+<p>We may update these terms. We’ll email you the changes at least 30 days before they take effect. If you don’t agree, you can delete your account before then.</p>
+    <h2 id="liability">9. Liability</h2>
+    <p>We are liable without limit for damage caused intentionally or by gross negligence, for injury to life, body or health, under the German Product Liability Act, and where we have given a guarantee.</p>
+<p>As long as Chartwright Pro is <strong>free of charge</strong>, we are otherwise not liable (in line with German law on gratuitous services, §§ 521, 599 BGB).</p>
+<p>Once you use a paid plan, we are also liable for slight negligence, but only where we breach an obligation that is essential for the contract and that you regularly rely on, and only up to the damage that is typical and foreseeable for this kind of contract.</p>
+    <h2 id="ending">10. Ending</h2>
+    <p>You can <strong>delete your account at any time</strong> on the Account page. This deletes your account and the workspaces where you are the only member, with their dashboards.</p>
+<p>We may end the beta or close accounts with at least 30 days’ notice by email, so you have time to download your dashboards. We may close an account immediately for a serious breach of these terms.</p>
+    <h2 id="law">11. Law</h2>
+    <p>German law applies, excluding the UN Convention on Contracts for the International Sale of Goods. If you are a merchant (Kaufmann), the courts in Munich have jurisdiction. If you are a consumer, the mandatory consumer protection rules of the country you live in also apply.</p>
+<p>We are neither obliged nor willing to take part in dispute resolution proceedings before a consumer arbitration board.</p>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Chartwright</span>
+    <a href="/app">App</a>
+    <a href="/terms" aria-current="page">Terms</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/impressum">Impressum</a>
+  </div>
+</footer>
+</body>
+</html>

@@ -33,7 +33,7 @@ const ASSETS = {
 // Emails are not sent: they are printed here and listed at /__outbox (local server only).
 const outbox = [];
 const EMAIL = { async send(m) { outbox.push({ ...m, sentAt: new Date().toISOString() }); console.log('EMAIL to ' + m.to + ': ' + m.subject + '\n' + m.text + '\n'); return { messageId: 'local-' + outbox.length }; } };
-const env = { ...raw, ASSETS, EMAIL, EMAIL_FROM: 'no-reply@chartwright.de', EMAIL_FROM_NAME: 'Chartwright (local)', BETTER_AUTH_SECRET: 'local-test-secret-'.repeat(3), BASE_URL: 'http://localhost:' + port, PRO_ENABLED: process.env.PRO_ENABLED || 'true', DEFAULT_PLAN: process.env.DEFAULT_PLAN || raw.DEFAULT_PLAN || 'pro' };
+const env = { ...raw, ASSETS, EMAIL, EMAIL_FROM: 'no-reply@chartwright.de', EMAIL_FROM_NAME: 'Chartwright (local)', BETTER_AUTH_SECRET: 'local-test-secret-'.repeat(3), BASE_URL: 'http://localhost:' + port, PRO_ENABLED: process.env.PRO_ENABLED || 'true', SIGNUP_MODE: process.env.SIGNUP_MODE || raw.SIGNUP_MODE || 'waitlist', DEFAULT_PLAN: process.env.DEFAULT_PLAN || raw.DEFAULT_PLAN || 'pro' };
 
 http.createServer(async (req, res) => {
   const chunks = []; for await (const c of req) chunks.push(c);

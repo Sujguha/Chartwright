@@ -20,15 +20,24 @@
     // Rest of the API: 300 requests per minute per visitor
     { "name": "API_LIMITER", "namespace_id": "1002", "simple": { "limit": 300, "period": 60 } }
   ],
+  // Account emails (confirm email, password reset, invitations) through Cloudflare Email Service.
+  "send_email": [
+    { "name": "EMAIL", "allowed_sender_addresses": ["no-reply@chartwright.de"] }
+  ],
   "vars": {
     "BASE_URL": "https://chartwright.de",
-    // Pro stays switched off in production until the Pro pages are released.
+    // Pro stays switched off in production until the launch is approved.
+    // Before switching it on, fill in every [placeholder] in public/ (the tests check this).
     "PRO_ENABLED": "false",
     // Plan for workspaces without an entry in workspace_plan: "pro" (one admin, viewers) or "enterprise"
-    "DEFAULT_PLAN": "pro"
+    "DEFAULT_PLAN": "pro",
+    // Who may create a Pro account: "waitlist" (waitlist and invited people) or "open" (anyone)
+    "SIGNUP_MODE": "waitlist",
+    "EMAIL_FROM": "no-reply@chartwright.de",
+    "EMAIL_FROM_NAME": "Chartwright",
+    "EMAIL_REPLY_TO": "privacy@chartwright.de"
   },
   // Secret (set in Cloudflare, never in this file): BETTER_AUTH_SECRET
-  // Account emails are not set up in production yet: they arrive with the Pro launch (Phase 2, step 3).
 
   "env": {
     "staging": {
@@ -54,6 +63,7 @@
         // Pro is on in staging so it can be tested before release.
         "PRO_ENABLED": "true",
         "DEFAULT_PLAN": "pro",
+        "SIGNUP_MODE": "waitlist",
         "EMAIL_FROM": "no-reply@chartwright.de",
         "EMAIL_FROM_NAME": "Chartwright (staging)",
         "EMAIL_REPLY_TO": "privacy@chartwright.de"

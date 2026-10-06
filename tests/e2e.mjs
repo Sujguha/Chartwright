@@ -17,7 +17,7 @@ function fakeLimiter(limit) {
 const outbox = [];
 const EMAIL = { async send(m) { outbox.push(m); return { messageId: 'test-' + outbox.length }; } };
 const env = { ...raw, BETTER_AUTH_SECRET: 'test-secret-'.repeat(4), BASE_URL: 'https://chartwright.de', PRO_ENABLED: 'true',
-  EMAIL, EMAIL_FROM: 'no-reply@chartwright.de', EMAIL_FROM_NAME: 'Chartwright', EMAIL_REPLY_TO: 'privacy@chartwright.de',
+  SIGNUP_MODE: 'open', EMAIL, EMAIL_FROM: 'no-reply@chartwright.de', EMAIL_FROM_NAME: 'Chartwright', EMAIL_REPLY_TO: 'privacy@chartwright.de',
   AUTH_LIMITER: fakeLimiter(10), API_LIMITER: fakeLimiter(300), ASSETS: { fetch: async () => new Response('asset') } };
 const mailTo = (email) => outbox.filter((m) => m.to === email);
 const lastMail = (email) => mailTo(email).at(-1);
@@ -186,6 +186,54 @@ check('invitation is still created when its email fails (link can be copied)', i
 check('reset gives the normal answer even when the email fails', (await call(null, 'POST', V + '/auth/request-password-reset', { email: 'alice@example.com' })).s === 200);
 env.EMAIL = savedEmail;
 
+// ---- who may sign up (SIGNUP_MODE "waitlist") ----
+env.SIGNUP_MODE = 'waitlist';
+const closed = await call(null, 'POST', V + '/auth/sign-up/email', { name: 'Stranger', email: 'stranger@example.com', password: 'correct-horse-9' });
+check('waitlist mode: strangers can’t sign up', closed.s === 403 && closed.d.code === 'SIGNUP_CLOSED', closed.s + ' ' + (closed.d && closed.d.code));
+await call(null, 'POST', '/api/waitlist', { email: 'Early.Bird@example.com', consent: true });
+check('waitlist mode: a trailing slash doesn’t skip the check', (await call(null, 'POST', V + '/auth/sign-up/email/', { name: 'Stranger', email: 'stranger@example.com', password: 'correct-horse-9' })).s >= 400
+  && !(await env.DB.prepare("SELECT id FROM user WHERE email = 'stranger@example.com'").first()));
+check('waitlist mode: people on the waitlist can sign up', (await call(null, 'POST', V + '/auth/sign-up/email', { name: 'Early', email: 'early.bird@example.com', password: 'correct-horse-9' })).s === 200
+  && !!(await env.DB.prepare("SELECT id FROM user WHERE email = 'early.bird@example.com'").first()));
+check('waitlist mode: invited people can sign up', (await call(null, 'POST', V + '/auth/sign-up/email', { name: 'Gus', email: 'gus@example.com', password: 'correct-horse-9' })).s === 200
+  && !!(await env.DB.prepare("SELECT id FROM user WHERE email = 'gus@example.com'").first()));
+delete env.SIGNUP_MODE;
+check('sign-up is limited to the waitlist when no mode is set', (await call(null, 'POST', V + '/auth/sign-up/email', { name: 'S2', email: 'stranger2@example.com', password: 'correct-horse-9' })).s === 403);
+env.SIGNUP_MODE = 'open';
+
+// ---- deleting a workspace ----
+const r2Keys = async (wsId) => (await env.BLOBS.list({ prefix: `workspaces/${wsId}/` })).objects.length;
+const solo = await call('dave', 'POST', V + '/auth/organization/create', { name: 'Dave Solo', slug: 'dave-solo' });
+await call('dave', 'POST', `${V}/workspaces/${solo.d.id}/dashboards`, { name: 'Mine', config: cfg(2) });
+check('a member of another workspace can’t delete it', (await call('carol', 'DELETE', `${V}/workspaces/${solo.d.id}`, { confirm: 'Dave Solo' })).s === 404);
+check('deleting a workspace needs its exact name', (await call('dave', 'DELETE', `${V}/workspaces/${solo.d.id}`, { confirm: 'dave solo?' })).s === 400);
+check('Better Auth’s own workspace deletion is switched off', (await call('alice', 'POST', V + '/auth/organization/delete', { organizationId: ws })).s >= 400
+  && !!(await env.DB.prepare('SELECT id FROM organization WHERE id = ?1').bind(ws).first()));
+check('admin deletes the workspace', (await call('dave', 'DELETE', `${V}/workspaces/${solo.d.id}`, { confirm: 'Dave Solo' })).s === 200);
+check('…with its dashboards, files and members', !(await env.DB.prepare('SELECT id FROM organization WHERE id = ?1').bind(solo.d.id).first())
+  && !(await env.DB.prepare('SELECT id FROM dashboard WHERE workspace_id = ?1').bind(solo.d.id).first())
+  && !(await env.DB.prepare('SELECT id FROM member WHERE organizationId = ?1').bind(solo.d.id).first())
+  && (await r2Keys(solo.d.id)) === 0);
+
+// ---- deleting an account ----
+check('deleting an account needs the password', (await call('dave', 'POST', V + '/auth/delete-user', {})).s === 400);
+check('…also with a trailing slash in the address', (await call('dave', 'POST', V + '/auth/delete-user/', {})).s >= 400 && (await call('dave', 'GET', V + '/me')).s === 200);
+check('…the right password', (await call('dave', 'POST', V + '/auth/delete-user', { password: 'wrong-password-9' })).s === 400 && (await call('dave', 'GET', V + '/me')).s === 200);
+const onlyAdmin = await call('alice', 'POST', V + '/auth/delete-user', { password: 'correct-horse-9' });
+check('the only admin of a team workspace can’t delete their account', onlyAdmin.s === 409 && /only admin of “Orbit Delivery”/.test(onlyAdmin.d.message), onlyAdmin.s + ' ' + JSON.stringify(onlyAdmin.d));
+const solo2 = await call('dave', 'POST', V + '/auth/organization/create', { name: 'Dave Again', slug: 'dave-again' });
+await call('dave', 'POST', `${V}/workspaces/${solo2.d.id}/dashboards`, { name: 'Mine too', config: cfg(2) });
+await call('alice', 'POST', V + '/auth/organization/invite-member', { email: 'dave@example.com', role: 'viewer', organizationId: ws });
+check('account deleted with the password', (await call('dave', 'POST', V + '/auth/delete-user', { password: 'brand-new-pass-1' })).s === 200);
+check('…logged out and the log-in no longer works', (await call('dave', 'GET', V + '/me')).s === 401
+  && (await call('tmp', 'POST', V + '/auth/sign-in/email', { email: 'dave@example.com', password: 'brand-new-pass-1' })).s === 401);
+check('…their own workspace and its files are gone', !(await env.DB.prepare('SELECT id FROM organization WHERE id = ?1').bind(solo2.d.id).first()) && (await r2Keys(solo2.d.id)) === 0);
+check('…invitations to their address are gone', !(await env.DB.prepare("SELECT id FROM invitation WHERE email = 'dave@example.com'").first()));
+check('…and they get a confirmation email', /account was deleted/.test(lastMail('dave@example.com').subject));
+const teamBefore = (await call('alice', 'GET', D)).d.dashboards.length;
+check('an editor deletes their account', (await call('bob', 'POST', V + '/auth/delete-user', { password: 'correct-horse-9' })).s === 200);
+check('…and the dashboards they made stay with the team', (await call('alice', 'GET', D)).d.dashboards.length === teamBefore && teamBefore > 0);
+
 // ---- rate limits ----
 let blocked = 0;
 for (let i = 0; i < 12; i++) if ((await call(null, 'POST', V + '/auth/sign-in/email', { email: 'alice@example.com', password: 'wrong-password-' + i }, '203.0.113.7')).s === 429) blocked++;
@@ -206,6 +254,15 @@ env.PRO_ENABLED = 'false';
 check('switch off: Pro API closed', (await call(null, 'POST', V + '/auth/sign-up/email', { name: 'Z', email: 'z@example.com', password: 'correct-horse-9' })).s === 404);
 check('switch off: waitlist still works', (await call(null, 'POST', '/api/waitlist', { email: 'wait2@example.com', consent: true })).s === 200);
 check('switch off: website still served', (await app.fetch(new Request('https://chartwright.de/'), env)).status === 200);
+
+// ---- launch readiness: Pro can only be switched on in production when the legal pages are complete ----
+const wranglerConfig = JSON.parse(fs.readFileSync(new URL('../wrangler.jsonc', import.meta.url), 'utf8').replace(/^\s*\/\/.*$/gm, ''));
+const pages = ['privacy.html', 'terms.html', 'impressum.html'].map((f) => [f, fs.existsSync(new URL('../public/' + f, import.meta.url)) ? fs.readFileSync(new URL('../public/' + f, import.meta.url), 'utf8') : '']);
+check('privacy policy, terms and Impressum exist', pages.every(([, html]) => html.includes('</html>')));
+const unfinished = pages.filter(([, html]) => html.includes('class="ph"')).map(([f]) => f);
+check('Pro is only switched on in production when no [placeholders] are left', wranglerConfig.vars.PRO_ENABLED !== 'true' || unfinished.length === 0,
+  wranglerConfig.vars.PRO_ENABLED === 'true' ? 'placeholders in ' + unfinished.join(', ') : 'Pro is off; placeholders left in: ' + (unfinished.join(', ') || 'none'));
+check('production sends email when Pro is on', wranglerConfig.vars.PRO_ENABLED !== 'true' || (wranglerConfig.send_email || []).some((b) => b.name === 'EMAIL'));
 
 console.log(results.join('\n'));
 const passed = results.filter((r) => r.startsWith('PASS')).length;
