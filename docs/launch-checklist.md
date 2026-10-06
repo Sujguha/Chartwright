@@ -27,5 +27,5 @@ Files in `docs/` are not published on the website (only `public/` is).
 
 ## After the launch
 
-- Tell the first waitlist members they can sign up with their waitlist address.
-- When ready for everyone: `SIGNUP_MODE: "open"` in production.
+- Tell the waitlist members that Pro is open (`SIGNUP_MODE` is already `"open"`).
+- Pricing: 7 days free, then €29 per month, once billing exists (Phase 4). Update the terms (price, trial, cancellation, withdrawal right) at the same time.

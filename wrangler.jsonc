@@ -32,7 +32,7 @@
     // Plan for workspaces without an entry in workspace_plan: "pro" (one admin, viewers) or "enterprise"
     "DEFAULT_PLAN": "pro",
     // Who may create a Pro account: "waitlist" (waitlist and invited people) or "open" (anyone)
-    "SIGNUP_MODE": "waitlist",
+    "SIGNUP_MODE": "open",
     "EMAIL_FROM": "no-reply@chartwright.de",
     "EMAIL_FROM_NAME": "Chartwright",
     "EMAIL_REPLY_TO": "privacy@chartwright.de"
@@ -63,7 +63,7 @@
         // Pro is on in staging so it can be tested before release.
         "PRO_ENABLED": "true",
         "DEFAULT_PLAN": "pro",
-        "SIGNUP_MODE": "waitlist",
+        "SIGNUP_MODE": "open",
         "EMAIL_FROM": "no-reply@chartwright.de",
         "EMAIL_FROM_NAME": "Chartwright (staging)",
         "EMAIL_REPLY_TO": "privacy@chartwright.de"
