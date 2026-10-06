@@ -1,6 +1,6 @@
 # Chartwright
 
-**Version 1.13.0** · [Changelog](CHANGELOG.md)
+**Version 1.14.0** · [Changelog](CHANGELOG.md)
 
 **Drop a spreadsheet. Get a dashboard.**
 
@@ -76,7 +76,7 @@ The site runs as a **Cloudflare Worker with static assets**, deployed automatica
 | `migrations/` | Database tables for the waitlist, login and workspaces, and shared dashboards |
 | `tests/e2e.mjs` | End-to-end test (`npm test`) |
 | `package.json` | Dependencies (Better Auth, Hono, Wrangler) |
-| `public/` | Everything published as the website: `index.html` (home), `app.html` (app), `privacy.html`, `fonts/`, `samples/`, `_redirects` |
+| `public/` | Everything published as the website: `index.html` (home), `app.html` (app), `pro/` (Pro area), `privacy.html`, `terms.html`, `impressum.html`, `fonts/`, `samples/`, `_redirects` |
 
 ### One-time setup
 
@@ -128,6 +128,7 @@ tests/e2e.mjs         end-to-end test on a temporary local database and bucket
 | `GET /api/v1/workspaces/:ws/dashboards/:id` | Any member |
 | `PUT /api/v1/workspaces/:ws/dashboards/:id` | Admin, editor (send `version` to detect edit conflicts) |
 | `DELETE /api/v1/workspaces/:ws/dashboards/:id` | Admin, editor |
+| `DELETE /api/v1/workspaces/:ws` | Admin (send `confirm` with the workspace name) |
 | `GET /api/v1/workspaces/:ws/audit` | Admin |
 
 ### Account emails
@@ -144,6 +145,16 @@ Chartwright Pro sends four emails, all through `src/lib/mailer.js` (the only fil
 People must confirm their email address before they can log in. Emails are sent with **Cloudflare Email Service** (the `EMAIL` binding in `wrangler.jsonc`) from `no-reply@chartwright.de`; replies go to `privacy@chartwright.de`. Sending is set up for staging only until Pro launches in production.
 
 **One-time setup (Cloudflare):** the account must be on the **Workers Paid** plan ($5 a month, 3,000 emails included). Under **Email Service**, add `chartwright.de` as a sending domain and let Cloudflare add the DNS records (SPF, DKIM, DMARC).
+
+### Accounts and deletion
+
+- **Who can sign up:** `SIGNUP_MODE` in `wrangler.jsonc`. `"waitlist"` allows only people on the waitlist or with a pending invitation; `"open"` allows anyone.
+- **Delete my account:** on the Account page in `/pro` (password required). Workspaces where the person is the only member are deleted with it; the only admin of a team workspace must remove the members or delete the workspace first.
+- **Delete workspace:** admins, on the workspace page (type the name to confirm). Removes dashboards, stored files, members, invitations and audit log.
+
+### Legal pages
+
+`public/privacy.html`, `public/terms.html` and `public/impressum.html`. Before Pro is switched on in production, every `[placeholder]` must be filled in; `npm test` checks this. See `docs/launch-checklist.md`.
 
 ### Plans
 

@@ -3,6 +3,21 @@
 All notable changes to Chartwright are listed here. Versions follow [Semantic Versioning](https://semver.org/):
 **MAJOR** for changes that break how people use the app, **MINOR** for new features, **PATCH** for fixes.
 
+## [1.14.0] - 2026-10-06
+
+### Added: ready for the Pro launch (Phase 2, step 3). Live on staging; production keeps Pro switched off.
+- **Delete my account:** a new **Account** page in Chartwright Pro (select your email address at the top). Deleting needs your password and removes your account, your log-in and the workspaces where you're the only member, with their dashboards and files. Dashboards you shared in other workspaces stay with the team. The only admin of a workspace with other members is asked to remove them or delete the workspace first. A confirmation email follows. The Account page can also email a password reset link.
+- **Delete workspace:** admins delete a workspace by typing its name; this removes all its dashboards (database records and stored files), members, invitations and audit log.
+- **Who can sign up** (`SIGNUP_MODE`): `"waitlist"` (production and staging) lets only people on the waitlist or with a pending invitation create an account; others see a clear message with a link to the waitlist. `"open"` lets anyone sign up.
+- **Terms of service** at `/terms`: beta and free of charge, your content stays yours, fair use, availability, liability, ending, German law.
+- **Impressum** at `/impressum` (address, phone and VAT ID still to be filled in).
+- **Privacy policy:** new section 7 "Chartwright Pro accounts" (account data, log-in cookie, account emails, who can sign up, deletion), new rows in the overview, Cloudflare D1, R2 and Email Service listed as services; later sections renumbered.
+- Footers link to Terms, Privacy and Impressum; the sign-up form mentions the terms.
+- Production configuration has the email connection and sender settings, so Pro can be switched on with one change. `PRO_ENABLED` stays `"false"`.
+- **Launch safety check:** `npm test` fails if Pro is switched on in production while the legal pages still contain placeholders.
+- `docs/launch-checklist.md` lists what's left before the launch.
+- Tests: 111 API checks (deleting workspaces and accounts, sign-up modes, launch checks) and 11 new browser checks.
+
 ## [1.13.0] - 2026-10-05
 
 ### Added: account emails (Phase 2, step 2). Live on staging; production keeps Pro switched off.

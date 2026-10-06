@@ -7,9 +7,10 @@ import { organization } from 'better-auth/plugins';
 import { createAccessControl } from 'better-auth/plugins/access';
 import { defaultStatements } from 'better-auth/plugins/organization/access';
 import { APIError } from 'better-auth/api';
-import { API_PREFIX, PLANS, DEFAULT_PLAN } from '../config.js';
+import { API_PREFIX, PLANS, DEFAULT_PLAN, SIGNUP_MODES, DEFAULT_SIGNUP_MODE } from '../config.js';
 import { createDb } from '../storage/db.js';
 import { accountEmails } from '../services/emails.js';
+import { services } from '../services/index.js';
 
 export const statements = { ...defaultStatements, dashboard: ['create', 'read', 'update', 'delete'] };
 export const ac = createAccessControl(statements);
@@ -39,6 +40,14 @@ async function deliver(send) {
   try { await send(); } catch (e) {
     throw new APIError(e && e.status === 503 ? 'SERVICE_UNAVAILABLE' : 'BAD_GATEWAY', { message: (e && e.message) || 'The email couldn’t be sent.', code: 'EMAIL_FAILED' });
   }
+}
+
+/** Turns a service error into a Better Auth error, so the person sees the same clear message. */
+const asApiError = (e) => (e && e.status && !(e instanceof APIError)
+  ? new APIError(e.status, { message: e.message, code: e.status === 409 ? 'ONLY_ADMIN' : 'FAILED' }) : e);
+
+export function signupMode(env) {
+  return SIGNUP_MODES.includes(env.SIGNUP_MODE) ? env.SIGNUP_MODE : DEFAULT_SIGNUP_MODE;
 }
 
 export function createAuth(env) {
@@ -73,6 +82,19 @@ export function createAuth(env) {
       async sendVerificationEmail({ user, token }) { await deliver(() => emails.verify(user, token)); },
     },
     session: { expiresIn: 60 * 60 * 24 * 14, updateAge: 60 * 60 * 24 },
+    // "Delete my account" (the password is always required, see routes/v1.js).
+    user: {
+      deleteUser: {
+        enabled: true,
+        async beforeDelete(user) {
+          try { await services(env).workspaces.prepareAccountDeletion(user.id); } catch (e) { throw asApiError(e); }
+        },
+        async afterDelete(user) {
+          await db.deleteInvitationsFor(user.email);
+          await emails.deleted(user).catch((e) => console.error('Account-deleted email failed', e && e.message));
+        },
+      },
+    },
     // Rate limiting is done by Cloudflare's rate-limit binding (see middleware/rateLimit.js), which works across all servers.
     rateLimit: { enabled: false },
     advanced: { defaultCookieAttributes: { sameSite: 'lax', secure: true, httpOnly: true } },
@@ -82,6 +104,8 @@ export function createAuth(env) {
         // Invitations can only be opened by someone who confirmed the invited email address;
         // this also lists pending invitations on the invitee's home page.
         requireEmailVerificationOnInvitation: true,
+        // Workspaces are deleted through /api/v1/workspaces/:ws, which also removes their dashboard files.
+        disableOrganizationDeletion: true,
         // If the email fails, the invitation still exists and the admin can copy its link on the Team page.
         async sendInvitationEmail({ id, role, email, organization, inviter }) {
           await emails.invite({ id, role, email, workspace: organization.name, inviter: (inviter.user && (inviter.user.name || inviter.user.email)) || 'A colleague' })

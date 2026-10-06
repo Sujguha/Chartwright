@@ -90,6 +90,11 @@ table.perm{border-collapse:collapse;width:100%;font-size:14px}
 table.perm th,table.perm td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
 table.perm td.c,table.perm th.c{text-align:center}
 .center{text-align:center}
+.card.dangerzone{border-color:var(--danger)}
+.card.dangerzone h2{color:var(--danger)}
+footer{border-top:1px solid var(--line);color:var(--ink-2);font-size:14px}
+footer .in{max-width:1100px;margin:0 auto;padding:20px clamp(16px,4vw,32px) 32px;display:flex;flex-wrap:wrap;gap:12px 24px}
+footer a{color:var(--ink-2)}
 </style>
 </head>
 <body>
@@ -98,7 +103,7 @@ table.perm td.c,table.perm th.c{text-align:center}
     <a class="brand" href="#/"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Chartwright <span class="pro">PRO</span></a>
     <span class="spacer"></span>
     <a class="btn small" href="/app">Open the app</a>
-    <span id="who" class="who hidden"></span>
+    <a id="who" class="who hidden" href="#/account" title="Your account"></a>
     <button id="logout" class="btn small hidden" type="button">Log out</button>
   </div>
 </header>
@@ -106,6 +111,8 @@ table.perm td.c,table.perm th.c{text-align:center}
 <main id="view" aria-live="polite">
   <p class="center lead">Loading…</p>
 </main>
+
+<footer><div class="in"><span>Chartwright</span><a href="/app">App</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/impressum">Impressum</a></div></footer>
 
 <script>
 (function(){
@@ -182,7 +189,7 @@ function vSignup(next){
    +'<div class="field"><label for="email">Work email</label><input id="email" name="email" type="email" autocomplete="email" required></div>'
    +'<div class="field"><label for="pw">Password</label><input id="pw" name="password" type="password" autocomplete="new-password" required minlength="10"><p class="hint">At least 10 characters.</p></div>'
    +'<button class="btn primary" type="submit" style="width:100%">Create account</button>'
-   +'<p class="hint" style="margin-top:12px">By creating an account you agree to the processing described in our <a href="/privacy" target="_blank" rel="noopener">privacy policy</a>.</p></form>'
+   +'<p class="hint" style="margin-top:12px">By creating an account you accept the <a href="/terms" target="_blank" rel="noopener">terms of service</a>. How we handle your data is explained in our <a href="/privacy" target="_blank" rel="noopener">privacy policy</a>.</p></form>'
    +'<p class="hint" style="margin-top:14px">Already have an account? <a href="#/login'+(next?'?next='+encodeURIComponent(next):'')+'">Log in</a></p></div></div>';
   bindForm('f',async(fd,f)=>{
     const name=fd.get('name').trim(), email=fd.get('email').trim(), password=fd.get('password');
@@ -190,6 +197,7 @@ function vSignup(next){
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return showError(f,'Enter a valid email address.');
     if(password.length<10) return showError(f,'Use a password with at least 10 characters.');
     const r=await call('POST',AUTH+'/sign-up/email',{name,email,password});
+    if(!r.ok&&r.data&&r.data.code==='SIGNUP_CLOSED'){showError(f,r.error);f.querySelector('.msg').insertAdjacentHTML('beforeend',' <a href="/#waitlist">Join the waitlist</a>');return;}
     if(!r.ok) return showError(f,r.error);
     vCheckInbox(email);
   });
@@ -253,6 +261,28 @@ function vReset(token){
   document.getElementById('pw').focus();
 }
 
+function vAccount(){
+  const u=state.user;
+  view.innerHTML='<p class="crumbs"><a href="#/">Workspaces</a> / Account</p><h1>Your account</h1><p class="lead">'+esc(u.name)+' · '+esc(u.email)+'</p>'
+   +'<div class="grid2"><div class="card"><h2>Password</h2><p class="hint" style="margin-bottom:12px">To change your password, log out and use “Forgot password?” on the log-in page, or send yourself a reset link now.</p><div id="pm"></div><button id="reset" class="btn" type="button">Email me a reset link</button></div>'
+   +'<div class="card dangerzone"><h2>Delete my account</h2><p class="hint" style="margin-bottom:12px">This deletes your account, your log-in and the workspaces where you’re the only member, with their dashboards. It can’t be undone. Dashboards you shared in other workspaces stay there for the team. If you’re the only admin of a workspace with other members, remove them or delete the workspace first.</p>'
+   +'<form id="f" novalidate><div class="field"><label for="dpw">Your password</label><input id="dpw" name="password" type="password" autocomplete="current-password" required></div><button class="btn danger" type="submit">Delete my account</button></form></div></div>';
+  document.getElementById('reset').addEventListener('click',async e=>{
+    e.target.disabled=true;
+    const r=await call('POST',AUTH+'/request-password-reset',{email:u.email});
+    document.getElementById('pm').innerHTML=r.ok?msg('good','Sent. Check your inbox.'):msg('bad',r.error);
+  });
+  bindForm('f',async(fd,f)=>{
+    const password=fd.get('password'); if(!password) return showError(f,'Enter your password to delete your account.');
+    const btn=f.querySelector('button[type=submit]');
+    if(btn.dataset.confirm!=='1'){btn.dataset.confirm='1';btn.textContent='Yes, delete my account for good';return;}
+    const r=await call('POST',AUTH+'/delete-user',{password});
+    if(!r.ok){btn.dataset.confirm='';btn.textContent='Delete my account';return showError(f,/password/i.test(r.error||'')&&r.status===400?'That password isn’t correct.':r.error);}
+    state.user=null;state.workspaces=[];document.getElementById('who').classList.add('hidden');document.getElementById('logout').classList.add('hidden');
+    view.innerHTML='<div class="auth"><div class="card"><h1>Your account was deleted</h1><p class="lead">We’ve sent you a confirmation email. Thanks for trying Chartwright Pro.</p><div class="row"><a class="btn primary" href="/app">Use the free app</a><a class="btn" href="/">Home page</a></div></div></div>';
+  });
+}
+
 async function vHome(){
   const inv=await call('GET',AUTH+'/organization/list-user-invitations');
   const pending=(inv.ok&&Array.isArray(inv.data)?inv.data:[]).filter(i=>i.status==='pending');
@@ -286,7 +316,14 @@ async function vWorkspace(id){
       +'<a class="btn primary small" href="/app?ws='+encodeURIComponent(id)+'&d='+encodeURIComponent(d.id)+'">Open</a>'
       +(canEdit?'<button class="btn danger small" type="button" data-del="'+esc(d.id)+'" data-name="'+esc(d.name)+'">Delete</button>':'')+'</li>').join('')+'</ul>'
      :'<p class="empty">'+(canEdit?'No shared dashboards yet. Build one in the app, then use <strong>Save → Save to workspace</strong>.':'No shared dashboards yet. Editors in this workspace can add them.')+'</p>')
-   +'</div>';
+   +'</div>'
+   +(w.role==='admin'?'<div class="card dangerzone"><h2>Delete workspace</h2><p class="hint" style="margin-bottom:12px">Deletes '+esc(w.name)+' with all its shared dashboards, members and invitations. It can’t be undone.</p><form id="delws" novalidate><div class="field"><label for="wsconfirm">Type the workspace’s name to confirm</label><input id="wsconfirm" name="confirm" type="text" autocomplete="off" placeholder="'+esc(w.name)+'"></div><button class="btn danger" type="submit">Delete workspace</button></form></div>':'');
+  bindForm('delws',async(fd,f)=>{
+    if(fd.get('confirm').trim()!==w.name) return showError(f,'Type “'+w.name+'” exactly to confirm.');
+    const x=await call('DELETE',API+'/workspaces/'+encodeURIComponent(id),{confirm:fd.get('confirm').trim()});
+    if(!x.ok) return showError(f,x.error);
+    await loadSession(); go('#/');
+  });
   view.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',async()=>{
     if(b.dataset.confirm!=='1'){b.dataset.confirm='1';b.textContent='Confirm delete';return;}
     b.disabled=true;
@@ -391,6 +428,7 @@ async function route(){
   if(parts[0]==='reset') return vReset(parts.slice(1).join('/'));
   if(parts[0]==='forgot') return vForgot();
   if(!state.user) return go('#/login?next='+encodeURIComponent(h));
+  if(parts[0]==='account') return vAccount();
   if(parts[0]==='w'&&parts[2]==='team') return vTeam(parts[1]);
   if(parts[0]==='w') return vWorkspace(parts[1]);
   return vHome();

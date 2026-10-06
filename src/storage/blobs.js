@@ -16,5 +16,16 @@ export function createBlobs(BUCKET) {
     async remove(k) {
       if (k) await BUCKET.delete(k);
     },
+    /** Deletes all files of a workspace. */
+    async removeWorkspace(workspaceId) {
+      const prefix = `workspaces/${workspaceId}/`;
+      let cursor;
+      do {
+        const page = await BUCKET.list({ prefix, cursor });
+        const keys = page.objects.map((o) => o.key);
+        if (keys.length) await BUCKET.delete(keys);
+        cursor = page.truncated ? page.cursor : undefined;
+      } while (cursor);
+    },
   };
 }
