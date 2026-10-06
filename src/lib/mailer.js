@@ -23,7 +23,11 @@ export async function sendEmail(env, { to, subject, html, text }) {
       text,
     });
   } catch (e) {
-    console.error('Email could not be sent', subject, e && e.message ? e.message : e);
-    throw new HttpError(502, 'The email couldn’t be sent. Please try again in a few minutes.');
+    // The provider's own reason (for example an unverified sending domain) goes to the error log, not to the visitor.
+    const reason = [e && e.code, e && e.message ? e.message : String(e)].filter(Boolean).join(': ');
+    console.error(`Email could not be sent. Subject: "${subject}". Reason from Cloudflare: ${reason}`);
+    const err = new HttpError(502, 'The email couldn’t be sent. Please try again in a few minutes.');
+    err.reason = reason;
+    throw err;
   }
 }

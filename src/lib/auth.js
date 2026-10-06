@@ -69,10 +69,10 @@ export function createAuth(env) {
       resetPasswordTokenExpiresIn: 60 * 60,
       revokeSessionsOnPasswordReset: true,
       // A failed send is only logged: an error here would reveal that the address has an account.
-      async sendResetPassword({ user, token }) { await emails.reset(user, token).catch((e) => console.error('Password reset email failed', e && e.message)); },
+      async sendResetPassword({ user, token }) { await emails.reset(user, token).catch((e) => console.error('Password reset email failed:', (e && (e.reason || e.message)))); },
       // Signing up again with a known address gives the same answer as a new sign-up (so nobody learns who has an account),
       // and the owner gets a "you already have an account" email instead.
-      async onExistingUserSignUp({ user }) { await emails.existing(user).catch((e) => console.error('Existing-account email failed', e && e.message)); },
+      async onExistingUserSignUp({ user }) { await emails.existing(user).catch((e) => console.error('Existing-account email failed:', (e && (e.reason || e.message)))); },
     },
     emailVerification: {
       sendOnSignUp: true,
@@ -91,7 +91,7 @@ export function createAuth(env) {
         },
         async afterDelete(user) {
           await db.deleteInvitationsFor(user.email);
-          await emails.deleted(user).catch((e) => console.error('Account-deleted email failed', e && e.message));
+          await emails.deleted(user).catch((e) => console.error('Account-deleted email failed:', (e && (e.reason || e.message))));
         },
       },
     },
@@ -109,7 +109,7 @@ export function createAuth(env) {
         // If the email fails, the invitation still exists and the admin can copy its link on the Team page.
         async sendInvitationEmail({ id, role, email, organization, inviter }) {
           await emails.invite({ id, role, email, workspace: organization.name, inviter: (inviter.user && (inviter.user.name || inviter.user.email)) || 'A colleague' })
-            .catch((e) => console.error('Invitation email failed', e && e.message));
+            .catch((e) => console.error('Invitation email failed:', (e && (e.reason || e.message))));
         },
         // Plan rules, enforced on the server for every way of adding or changing members
         organizationHooks: {
